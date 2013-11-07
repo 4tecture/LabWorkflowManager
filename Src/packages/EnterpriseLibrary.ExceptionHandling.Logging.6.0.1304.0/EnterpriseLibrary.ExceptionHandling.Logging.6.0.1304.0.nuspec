@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>EnterpriseLibrary.ExceptionHandling.Logging</id>
+    <version>6.0.1304.0</version>
+    <title>Enterprise Library - Exception Handling Application Block Logging Handler</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.opensource.org/licenses/ms-pl</licenseUrl>
+    <projectUrl>http://msdn.microsoft.com/entlib</projectUrl>
+    <iconUrl>http://nuget.org/Media/Default/Packages/Unity/2.0/entlib_new_icon_100x100.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>This exception handler lets you log formatted exception information in locations specified in the configuration file.</description>
+    <summary>This exception handler lets you log formatted exception information in locations specified in the configuration file.</summary>
+    <releaseNotes />
+    <copyright />
+    <language />
+    <tags>entlib entlib6 Enterprise Library exception ehab error management eab logging lab handler LOB</tags>
+    <dependencies>
+      <dependency id="EnterpriseLibrary.ExceptionHandling" version="6.0" />
+      <dependency id="EnterpriseLibrary.Logging" version="6.0" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="mscorlib" targetFramework=".NETFramework4.5" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
