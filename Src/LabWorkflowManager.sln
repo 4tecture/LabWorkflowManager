@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabWorkflowManager", "LabWorkflowManager\LabWorkflowManager.csproj", "{63732A02-FB54-4117-8CC6-20572650941C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{E1880AFA-B424-4211-93CC-B1EFAE340E87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4tecture.UI.Common", "Common\4tecture.UI.Common\4tecture.UI.Common.csproj", "{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63732A02-FB54-4117-8CC6-20572650941C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63732A02-FB54-4117-8CC6-20572650941C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63732A02-FB54-4117-8CC6-20572650941C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63732A02-FB54-4117-8CC6-20572650941C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5} = {E1880AFA-B424-4211-93CC-B1EFAE340E87}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.Logging.6.0.1304.0\lib\NET45
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
+	EndGlobalSection
+EndGlobal
