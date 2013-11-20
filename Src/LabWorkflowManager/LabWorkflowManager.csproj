@@ -170,6 +170,14 @@
       <Project>{f2cf26ea-7d76-4b53-8401-bb31b8bd1aa0}</Project>
       <Name>LabWorkflowManager.TFS.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TFS\LabWorkflowManager.TFS2012\LabWorkflowManager.TFS2012.csproj">
+      <Project>{a28091bd-73ed-4d5c-8cfa-0d3490036c04}</Project>
+      <Name>LabWorkflowManager.TFS2012</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TFS\LabWorkflowManager.UI\LabWorkflowManager.UI.csproj">
+      <Project>{e346be1e-146a-461e-8684-35a91d8f1075}</Project>
+      <Name>LabWorkflowManager.UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />

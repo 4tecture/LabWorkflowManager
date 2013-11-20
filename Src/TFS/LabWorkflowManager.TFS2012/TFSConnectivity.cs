@@ -34,6 +34,9 @@ namespace LabWorkflowManager.TFS2012
             }
         }
 
+        public string TfsUri { get { return this.Tpc != null ? this.Tpc.Uri.ToString() : string.Empty; } }
+        public string TeamProjectName { get { return this.TeamProjects != null && this.TeamProjects.Count() > 0 ? this.TeamProjects.First().Name : string.Empty; } }
+
         public TfsTeamProjectCollection Tpc { get; set; }
 
         public IEnumerable<Microsoft.TeamFoundation.Server.ProjectInfo> TeamProjects { get; set; }

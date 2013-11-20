@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FCE8B512
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabWorkflowManager.TFS2012.Tests.Integration", "Tests\LabWorkflowManager.TFS2012.Tests.Integration\LabWorkflowManager.TFS2012.Tests.Integration.csproj", "{E89DB45E-C2E3-4093-BF7C-75852F556B72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabWorkflowManager.UI", "TFS\LabWorkflowManager.UI\LabWorkflowManager.UI.csproj", "{E346BE1E-146A-461E-8684-35A91D8F1075}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{E89DB45E-C2E3-4093-BF7C-75852F556B72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E89DB45E-C2E3-4093-BF7C-75852F556B72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E89DB45E-C2E3-4093-BF7C-75852F556B72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E346BE1E-146A-461E-8684-35A91D8F1075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E346BE1E-146A-461E-8684-35A91D8F1075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E346BE1E-146A-461E-8684-35A91D8F1075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E346BE1E-146A-461E-8684-35A91D8F1075}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5} = {E1880AFA-B424-4211-93CC-B1EFAE340E87}
 		{F2CF26EA-7D76-4B53-8401-BB31B8BD1AA0} = {E1880AFA-B424-4211-93CC-B1EFAE340E87}
 		{A28091BD-73ED-4D5C-8CFA-0D3490036C04} = {40227755-8CDD-457B-8607-13B3E83156B2}
+		{E346BE1E-146A-461E-8684-35A91D8F1075} = {40227755-8CDD-457B-8607-13B3E83156B2}
 		{E89DB45E-C2E3-4093-BF7C-75852F556B72} = {FCE8B512-3D8F-4B51-996E-34E481A70981}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
