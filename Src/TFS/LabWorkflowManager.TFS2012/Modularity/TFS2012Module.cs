@@ -1,4 +1,5 @@
 ﻿using _4tecture.UI.Common.DependencyInjection;
+using LabWorkflowManager.TFS.Common;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
 using System;
@@ -22,6 +23,10 @@ namespace LabWorkflowManager.TFS2012.Modularity
         {
             //DataTemplateHelper.RegisterAndCreateTemplate<WarehouseControlViewModel, WarehouseControlView>(this.container);
             //DataTemplateHelper.RegisterAndCreateTemplate<MainReportingViewModel, MainReportingView>(this.container,RegionNames.MainRegion);
+            this.container.RegisterInstance<ITFSConnectivity>(new TFSConnectivity());
+            this.container.RegisterType<ITFSBuild, TFSBuild>();
+            this.container.RegisterType<ITFSLabEnvironment, TFSLabEnvironment>();
+            this.container.RegisterType<ITFSTest, TFSTest>();
         }
     }
 }

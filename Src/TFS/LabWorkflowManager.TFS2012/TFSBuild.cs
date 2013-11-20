@@ -11,22 +11,24 @@ using System.Threading.Tasks;
 
 namespace LabWorkflowManager.TFS2012
 {
-    public class TFSBuild
+    public class TFSBuild : ITFSBuild
     {
-        public TFSBuild()
+        public TFSBuild(ITFSConnectivity connectivity)
         {
-            this.Connectivity = new TFSConnectivity();
+            this.Connectivity = connectivity as TFSConnectivity;
         }
         private TFSConnectivity connectivity;
-        public ITFSConnectivity Connectivity { get{return this.connectivity;} private set{this.connectivity = value as TFSConnectivity;} }
+        public ITFSConnectivity Connectivity { get { return this.connectivity; } private set { this.connectivity = value as TFSConnectivity; } }
 
-        public IBuildServer BuildServer { get
+        public IBuildServer BuildServer
         {
-             if (this.Connectivity.IsConnected)
+            get
             {
-                return this.connectivity.Tpc.GetService<IBuildServer>();
-            }
-            return null;
+                if (this.Connectivity.IsConnected)
+                {
+                    return this.connectivity.Tpc.GetService<IBuildServer>();
+                }
+                return null;
             }
         }
 
@@ -40,69 +42,147 @@ namespace LabWorkflowManager.TFS2012
             return new List<IBuildDefinition>();
         }
 
-        public IBuildDefinition CreateBuildDefinition(string buildDefinitionName, string buildDefinitionDescription, string buildControllerName, string processTemplateFilename, LabWorkflowManager.TFS.Common.SourceBuildDetails sourceBuildDetails, LabWorkflowManager.TFS.Common.EnvironmentDetails labEnvironmentDetails, LabWorkflowManager.TFS.Common.DeploymentDetails deploymentDetails, LabWorkflowManager.TFS.Common.TestDetails testDetails)
+        public IEnumerable<LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition> GetMultiEnvAssociatedBuildDefinitions(Guid multiEnvConfigId)
         {
-            if(this.BuildServer != null)
+            var results = this.QueryBuildDefinitions().Where(o => o.Description.Contains(string.Format("MultiEnvironmentWorkflowDefinition:{0}", multiEnvConfigId.ToString())));
+            foreach(var res in results)
+            {
+                yield return ConvertToAssociatedBuildDefinition(res);
+            }
+        }
+
+        public IEnumerable<LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition> GetAssociatedDefinitions()
+        {
+            var results = this.QueryBuildDefinitions();
+            foreach (var res in results)
+            {
+                yield return ConvertToAssociatedBuildDefinition(res);
+            }
+        }
+
+        private static TFS.Common.WorkflowConfig.AssociatedBuildDefinition ConvertToAssociatedBuildDefinition(IBuildDefinition res)
+        {
+            var abd = new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition();
+            abd.BuildControllerName = res.BuildController.Name;
+            abd.BuildControllerUri = res.BuildControllerUri;
+            abd.ContinuousIntegrationQuietPeriod = res.ContinuousIntegrationQuietPeriod;
+            abd.ContinuousIntegrationType = (LabWorkflowManager.TFS.Common.WorkflowConfig.BuildDefinitionContinuousIntegrationType)res.ContinuousIntegrationType;
+            abd.DateCreated = res.DateCreated;
+            abd.Description = res.Description;
+            abd.Id = res.Id;
+            abd.LastBuildUri = res.LastBuildUri;
+            abd.LastGoodBuildLabel = res.LastGoodBuildLabel;
+            abd.LastGoodBuildUri = res.LastGoodBuildUri;
+            abd.Builds = res.QueryBuilds().Select(o => new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDetail(){ Uri = o.Uri, LabelName = o.LabelName}).ToList();
+            abd.Uri = res.Uri;
+            return abd;
+        }
+
+        public LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition CreateBuildDefinitionFromDefinition(LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails labworkflowDefinitionDetails)
+        {
+            return ConvertToAssociatedBuildDefinition(this.CreateBuildDefinition(labworkflowDefinitionDetails));
+        }
+
+        public void DeleteBuildDefinition(params Uri[] uris)
+        {
+            this.BuildServer.DeleteBuildDefinitions(uris);
+        }
+
+        public IBuildDefinition CreateBuildDefinition(LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails labworkflowDefinitionDetails)
+        {
+            if (this.BuildServer != null)
             {
                 var buildDefinition = this.BuildServer.CreateBuildDefinition(this.connectivity.TeamProjects.First().Name);
 
-                buildDefinition.Name = buildDefinitionName;
-                buildDefinition.Description = buildDefinitionDescription;
-                //buildDefinition.ContinuousIntegrationType = buildDefinitionConinuousIntegrationType;
-                buildDefinition.BuildController = this.BuildServer.GetBuildController(string.Format("*{0}*", buildControllerName));
+                ConfigMainBuildDefinitionSettings(labworkflowDefinitionDetails.LabBuildDefinitionDetails, buildDefinition);
 
-                var buildDefinitionProcessTemplate = this.BuildServer.QueryProcessTemplates(this.connectivity.TeamProjects.First().Name).Where(t => t.ServerPath.Contains(processTemplateFilename)).First();
-                buildDefinition.Process = buildDefinitionProcessTemplate;
-                var process = WorkflowHelpers.DeserializeProcessParameters(buildDefinition.ProcessParameters);
+                var processParameters = WorkflowHelpers.DeserializeProcessParameters(buildDefinition.ProcessParameters);
 
                 var labWorkflowDetails = new LabWorkflowDetails();
-                if (sourceBuildDetails.BuildDefinitionUri != null)
-                {
-                    var compileBuildDefinition = this.BuildServer.GetBuildDefinition(sourceBuildDetails.BuildDefinitionUri);
-                    labWorkflowDetails.BuildDetails.BuildDefinitionUri = compileBuildDefinition.Uri;
-                    labWorkflowDetails.BuildDetails.BuildDefinitionName = compileBuildDefinition.Name;
-                    labWorkflowDetails.BuildDetails.BuildUri = sourceBuildDetails.BuildUri;
-                    labWorkflowDetails.BuildDetails.IsTeamSystemBuild = true;
-                }
-                else
-                {
-                    labWorkflowDetails.BuildDetails.CustomBuildPath = sourceBuildDetails.CustomBuildPath;
-                }
+                ConfigLabBuildSettings(labworkflowDefinitionDetails.SourceBuildDetails, labWorkflowDetails);
+                ConfigLabEnvironmentSettings(labworkflowDefinitionDetails.LabEnvironmentDetails, labWorkflowDetails);
+                ConfigLabDeploymentSettings(labworkflowDefinitionDetails.DeploymentDetails, labWorkflowDetails);
+                ConfigLabTestSettings(labworkflowDefinitionDetails.TestDetails, labWorkflowDetails);
 
-                var labService = this.connectivity.Tpc.GetService<LabService>();
-                var environment = labService.GetLabEnvironment(labEnvironmentDetails.LabEnvironmentUri);
-                labWorkflowDetails.EnvironmentDetails.LabEnvironmentUri = environment.Uri;
-                labWorkflowDetails.EnvironmentDetails.LabEnvironmentName = environment.Name;
-                if(!string.IsNullOrWhiteSpace(labEnvironmentDetails.SnapshotName))
-                {
-                    labWorkflowDetails.EnvironmentDetails.SnapshotName = labEnvironmentDetails.SnapshotName;
-                    labWorkflowDetails.EnvironmentDetails.RevertToSnapshot = true;
-                }
-
-
-                labWorkflowDetails.DeploymentDetails.DeploymentNeeded = true;
-                labWorkflowDetails.DeploymentDetails.UseRoleForDeployment = true;
-                labWorkflowDetails.DeploymentDetails.TakePostDeploymentSnapshot = true;
-                labWorkflowDetails.DeploymentDetails.PostDeploymentSnapshotName = deploymentDetails.SnapshotName;
-                labWorkflowDetails.DeploymentDetails.UseRoleForDeployment = true;
-                labWorkflowDetails.DeploymentDetails.Scripts = new Microsoft.TeamFoundation.Build.Workflow.Activities.StringList();
-                labWorkflowDetails.DeploymentDetails.Scripts.AddRange(deploymentDetails.ScriptStrings);
-
-                labWorkflowDetails.TestParameters.ProjectName = this.connectivity.TeamProjects.First().Name;
-                labWorkflowDetails.TestParameters.RunTest = true;
-                labWorkflowDetails.TestParameters.TestPlanId = testDetails.TestPlanId;
-                labWorkflowDetails.TestParameters.TestSuiteIdList = testDetails.TestSuiteIdList;
-                labWorkflowDetails.TestParameters.TestConfigurationId = testDetails.TestConfigurationId;
-
-
-                process.Add("LabWorkflowParameters", labWorkflowDetails);
-                
-                buildDefinition.ProcessParameters = WorkflowHelpers.SerializeProcessParameters(process);
+                processParameters.Add("LabWorkflowParameters", labWorkflowDetails);
+                buildDefinition.ProcessParameters = WorkflowHelpers.SerializeProcessParameters(processParameters);
                 buildDefinition.Save();
                 return buildDefinition;
 
             }
             throw new Exception("No connection to TFS!");
+        }
+               
+
+        private void ConfigLabTestSettings(LabWorkflowManager.TFS.Common.WorkflowConfig.TestDetails testDetails, LabWorkflowDetails labWorkflowDetails)
+        {
+            labWorkflowDetails.TestParameters.ProjectName = this.connectivity.TeamProjects.First().Name;
+            labWorkflowDetails.TestParameters.RunTest = true;
+            labWorkflowDetails.TestParameters.TestPlanId = testDetails.TestPlanId;
+            labWorkflowDetails.TestParameters.TestSuiteIdList = testDetails.TestSuiteIdList;
+            labWorkflowDetails.TestParameters.TestSettingsId = testDetails.TestSettingsId;
+            labWorkflowDetails.TestParameters.TestConfigurationId = testDetails.TestConfigurationId;
+        }
+
+        private static void ConfigLabDeploymentSettings(LabWorkflowManager.TFS.Common.WorkflowConfig.DeploymentDetails deploymentDetails, LabWorkflowDetails labWorkflowDetails)
+        {
+            labWorkflowDetails.DeploymentDetails.DeploymentNeeded = true;
+            labWorkflowDetails.DeploymentDetails.UseRoleForDeployment = true;
+            labWorkflowDetails.DeploymentDetails.TakePostDeploymentSnapshot = true;
+            labWorkflowDetails.DeploymentDetails.PostDeploymentSnapshotName = deploymentDetails.SnapshotName;
+            labWorkflowDetails.DeploymentDetails.UseRoleForDeployment = true;
+            labWorkflowDetails.DeploymentDetails.Scripts = new Microsoft.TeamFoundation.Build.Workflow.Activities.StringList();
+            labWorkflowDetails.DeploymentDetails.Scripts.AddRange(deploymentDetails.ScriptStrings);
+        }
+
+        private void ConfigLabEnvironmentSettings(LabWorkflowManager.TFS.Common.WorkflowConfig.LabEnvironmentDetails labEnvironmentDetails, LabWorkflowDetails labWorkflowDetails)
+        {
+            var labService = this.connectivity.Tpc.GetService<LabService>();
+            var environment = labService.GetLabEnvironment(labEnvironmentDetails.LabEnvironmentUri);
+            labWorkflowDetails.EnvironmentDetails.LabEnvironmentUri = environment.Uri;
+            labWorkflowDetails.EnvironmentDetails.LabEnvironmentName = environment.Name;
+            if (!string.IsNullOrWhiteSpace(labEnvironmentDetails.SnapshotName))
+            {
+                labWorkflowDetails.EnvironmentDetails.SnapshotName = labEnvironmentDetails.SnapshotName;
+                labWorkflowDetails.EnvironmentDetails.RevertToSnapshot = true;
+            }
+        }
+
+        private LabWorkflowDetails ConfigLabBuildSettings(LabWorkflowManager.TFS.Common.WorkflowConfig.SourceBuildDetails sourceBuildDetails, LabWorkflowDetails labWorkflowDetails)
+        {
+            if (sourceBuildDetails.BuildDefinitionUri != null)
+            {
+                var compileBuildDefinition = this.BuildServer.GetBuildDefinition(sourceBuildDetails.BuildDefinitionUri);
+                labWorkflowDetails.BuildDetails.BuildDefinitionUri = compileBuildDefinition.Uri;
+                labWorkflowDetails.BuildDetails.BuildDefinitionName = compileBuildDefinition.Name;
+                labWorkflowDetails.BuildDetails.BuildUri = sourceBuildDetails.BuildUri;
+                labWorkflowDetails.BuildDetails.IsTeamSystemBuild = true;
+            }
+            else
+            {
+                labWorkflowDetails.BuildDetails.CustomBuildPath = sourceBuildDetails.CustomBuildPath;
+            }
+            return labWorkflowDetails;
+        }
+
+        private void ConfigMainBuildDefinitionSettings(LabWorkflowManager.TFS.Common.WorkflowConfig.LabBuildDefinitionDetails buildDefinitionDetails, IBuildDefinition buildDefinition)
+        {
+            buildDefinition.Name = buildDefinitionDetails.Name;
+            buildDefinition.Description = buildDefinitionDetails.Description;
+            buildDefinition.ContinuousIntegrationType = (ContinuousIntegrationType)buildDefinitionDetails.ContinuousIntegrationType;
+            if (buildDefinition.ContinuousIntegrationType == ContinuousIntegrationType.Schedule || buildDefinition.ContinuousIntegrationType == ContinuousIntegrationType.ScheduleForced)
+            {
+                var schedule = buildDefinition.AddSchedule();
+                schedule.DaysToBuild = (ScheduleDays)buildDefinitionDetails.ScheduledDays;
+            }
+            else if (buildDefinition.ContinuousIntegrationType == ContinuousIntegrationType.Batch)
+            {
+                buildDefinition.ContinuousIntegrationQuietPeriod = buildDefinitionDetails.QuietPeriod;
+            }
+            buildDefinition.BuildController = this.BuildServer.GetBuildController(string.Format("*{0}*", buildDefinitionDetails.ControllerName));
+
+            var buildDefinitionProcessTemplate = this.BuildServer.QueryProcessTemplates(this.connectivity.TeamProjects.First().Name).Where(t => t.ServerPath.Contains(buildDefinitionDetails.ProcessTemplateFilename)).First();
+            buildDefinition.Process = buildDefinitionProcessTemplate;
         }
     }
 }

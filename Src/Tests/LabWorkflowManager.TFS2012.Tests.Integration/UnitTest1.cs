@@ -11,7 +11,7 @@ namespace LabWorkflowManager.TFS2012.Tests.Integration
         [TestMethod]
         public void TestMethod1()
         {
-            var tfsbuild = new TFSBuild();
+            var tfsbuild = new TFSBuild(new TFSConnectivity());
             tfsbuild.Connectivity.Connect("http://vsalm:8080/tfs/FabrikamFiberCollection", "FabrikamFiber");
 
             var buildDefinitions = tfsbuild.QueryBuildDefinitions();
@@ -49,6 +49,10 @@ namespace LabWorkflowManager.TFS2012.Tests.Integration
                                 var TfsUrl = lwd.EnvironmentDetails.TfsUrl;
 
                                 var scripts = lwd.DeploymentDetails.Scripts;
+
+                                var planid = lwd.TestParameters.TestPlanId;
+                                var testsuitelist = lwd.TestParameters.TestSuiteIdList;
+                                var configurationdi = lwd.TestParameters.TestConfigurationId;
                             }
                         }
                     }

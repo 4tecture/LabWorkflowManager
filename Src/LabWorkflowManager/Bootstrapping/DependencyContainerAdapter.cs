@@ -17,9 +17,15 @@ namespace LabWorkflowManager.Bootstrapping
             this.container = container;
         }
 
-        public IDependencyContainer RegisterInstance(Type t, string name, object instance)
+        public IDependencyContainer RegisterInstance(Type t, object instance, string name = null)
         {
             this.container.RegisterInstance(t, name, instance);
+            return this;
+        }
+
+        public IDependencyContainer RegisterInstance<TFrom>(object instance, string name = null)
+        {
+            this.RegisterInstance(typeof(TFrom), instance, name);
             return this;
         }
 
