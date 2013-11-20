@@ -9,6 +9,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{E1880A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4tecture.UI.Common", "Common\4tecture.UI.Common\4tecture.UI.Common.csproj", "{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabWorkflowManager.TFS.Common", "Common\LabWorkflowManager.TFS.Common\LabWorkflowManager.TFS.Common.csproj", "{F2CF26EA-7D76-4B53-8401-BB31B8BD1AA0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TFS", "TFS", "{40227755-8CDD-457B-8607-13B3E83156B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabWorkflowManager.TFS2012", "TFS\LabWorkflowManager.TFS2012\LabWorkflowManager.TFS2012.csproj", "{A28091BD-73ED-4D5C-8CFA-0D3490036C04}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FCE8B512-3D8F-4B51-996E-34E481A70981}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabWorkflowManager.TFS2012.Tests.Integration", "Tests\LabWorkflowManager.TFS2012.Tests.Integration\LabWorkflowManager.TFS2012.Tests.Integration.csproj", "{E89DB45E-C2E3-4093-BF7C-75852F556B72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,12 +33,27 @@ Global
 		{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2CF26EA-7D76-4B53-8401-BB31B8BD1AA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2CF26EA-7D76-4B53-8401-BB31B8BD1AA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2CF26EA-7D76-4B53-8401-BB31B8BD1AA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2CF26EA-7D76-4B53-8401-BB31B8BD1AA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A28091BD-73ED-4D5C-8CFA-0D3490036C04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A28091BD-73ED-4D5C-8CFA-0D3490036C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A28091BD-73ED-4D5C-8CFA-0D3490036C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A28091BD-73ED-4D5C-8CFA-0D3490036C04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E89DB45E-C2E3-4093-BF7C-75852F556B72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E89DB45E-C2E3-4093-BF7C-75852F556B72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E89DB45E-C2E3-4093-BF7C-75852F556B72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E89DB45E-C2E3-4093-BF7C-75852F556B72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5} = {E1880AFA-B424-4211-93CC-B1EFAE340E87}
+		{F2CF26EA-7D76-4B53-8401-BB31B8BD1AA0} = {E1880AFA-B424-4211-93CC-B1EFAE340E87}
+		{A28091BD-73ED-4D5C-8CFA-0D3490036C04} = {40227755-8CDD-457B-8607-13B3E83156B2}
+		{E89DB45E-C2E3-4093-BF7C-75852F556B72} = {FCE8B512-3D8F-4B51-996E-34E481A70981}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.Logging.6.0.1304.0\lib\NET45

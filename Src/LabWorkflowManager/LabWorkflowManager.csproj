@@ -166,6 +166,10 @@
       <Project>{67dd2f0b-5fed-4f94-bab2-4debc0b58cb5}</Project>
       <Name>4tecture.UI.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common\LabWorkflowManager.TFS.Common\LabWorkflowManager.TFS.Common.csproj">
+      <Project>{f2cf26ea-7d76-4b53-8401-bb31b8bd1aa0}</Project>
+      <Name>LabWorkflowManager.TFS.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
