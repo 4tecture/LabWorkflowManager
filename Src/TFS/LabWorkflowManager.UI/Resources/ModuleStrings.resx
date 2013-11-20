@@ -117,13 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BtnAdd" xml:space="preserve">
+    <value>Add new Definition</value>
+  </data>
   <data name="BtnConnect" xml:space="preserve">
     <value>Connect</value>
+  </data>
+  <data name="BtnDelete" xml:space="preserve">
+    <value>Delete Definition</value>
+  </data>
+  <data name="BtnEdit" xml:space="preserve">
+    <value>Edit Definition</value>
+  </data>
+  <data name="BtnSave" xml:space="preserve">
+    <value>Save all</value>
   </data>
   <data name="GrpConnection" xml:space="preserve">
     <value>TFS Connection</value>
   </data>
-  <data name="NavigationTitle" xml:space="preserve">
+  <data name="GrpDefinitionGeneral" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="GrpDefinitions" xml:space="preserve">
+    <value>Multi Environemnt Workflow Definitions</value>
+  </data>
+  <data name="LblDefinitionDescription" xml:space="preserve">
+    <value>Description:</value>
+  </data>
+  <data name="LblDefinitionId" xml:space="preserve">
+    <value>Id:</value>
+  </data>
+  <data name="LblDefinitionName" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="NewDefinitionname" xml:space="preserve">
+    <value>[New Definition]</value>
+  </data>
+  <data name="TitleEdit" xml:space="preserve">
+    <value>Definition: </value>
+  </data>
+  <data name="TitleManage" xml:space="preserve">
     <value>Manage</value>
   </data>
 </root>

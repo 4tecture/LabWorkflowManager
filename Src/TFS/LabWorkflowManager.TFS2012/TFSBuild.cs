@@ -64,17 +64,17 @@ namespace LabWorkflowManager.TFS2012
         {
             var abd = new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition();
             abd.BuildControllerName = res.BuildController.Name;
-            abd.BuildControllerUri = res.BuildControllerUri;
+            abd.BuildControllerUri = res.BuildControllerUri.ToString();
             abd.ContinuousIntegrationQuietPeriod = res.ContinuousIntegrationQuietPeriod;
             abd.ContinuousIntegrationType = (LabWorkflowManager.TFS.Common.WorkflowConfig.BuildDefinitionContinuousIntegrationType)res.ContinuousIntegrationType;
             abd.DateCreated = res.DateCreated;
             abd.Description = res.Description;
             abd.Id = res.Id;
-            abd.LastBuildUri = res.LastBuildUri;
+            abd.LastBuildUri = res.LastBuildUri.ToString();
             abd.LastGoodBuildLabel = res.LastGoodBuildLabel;
-            abd.LastGoodBuildUri = res.LastGoodBuildUri;
-            abd.Builds = res.QueryBuilds().Select(o => new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDetail(){ Uri = o.Uri, LabelName = o.LabelName}).ToList();
-            abd.Uri = res.Uri;
+            abd.LastGoodBuildUri = res.LastGoodBuildUri.ToString();
+            abd.Builds = res.QueryBuilds().Select(o => new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDetail() { Uri = o.Uri.ToString(), LabelName = o.LabelName }).ToList();
+            abd.Uri = res.Uri.ToString();
             return abd;
         }
 
@@ -119,7 +119,7 @@ namespace LabWorkflowManager.TFS2012
             labWorkflowDetails.TestParameters.ProjectName = this.connectivity.TeamProjects.First().Name;
             labWorkflowDetails.TestParameters.RunTest = true;
             labWorkflowDetails.TestParameters.TestPlanId = testDetails.TestPlanId;
-            labWorkflowDetails.TestParameters.TestSuiteIdList = testDetails.TestSuiteIdList;
+            labWorkflowDetails.TestParameters.TestSuiteIdList = testDetails.TestSuiteIdList.ToList();
             labWorkflowDetails.TestParameters.TestSettingsId = testDetails.TestSettingsId;
             labWorkflowDetails.TestParameters.TestConfigurationId = testDetails.TestConfigurationId;
         }
@@ -138,7 +138,7 @@ namespace LabWorkflowManager.TFS2012
         private void ConfigLabEnvironmentSettings(LabWorkflowManager.TFS.Common.WorkflowConfig.LabEnvironmentDetails labEnvironmentDetails, LabWorkflowDetails labWorkflowDetails)
         {
             var labService = this.connectivity.Tpc.GetService<LabService>();
-            var environment = labService.GetLabEnvironment(labEnvironmentDetails.LabEnvironmentUri);
+            var environment = labService.GetLabEnvironment(new Uri(labEnvironmentDetails.LabEnvironmentUri));
             labWorkflowDetails.EnvironmentDetails.LabEnvironmentUri = environment.Uri;
             labWorkflowDetails.EnvironmentDetails.LabEnvironmentName = environment.Name;
             if (!string.IsNullOrWhiteSpace(labEnvironmentDetails.SnapshotName))
@@ -152,10 +152,10 @@ namespace LabWorkflowManager.TFS2012
         {
             if (sourceBuildDetails.BuildDefinitionUri != null)
             {
-                var compileBuildDefinition = this.BuildServer.GetBuildDefinition(sourceBuildDetails.BuildDefinitionUri);
+                var compileBuildDefinition = this.BuildServer.GetBuildDefinition(new Uri(sourceBuildDetails.BuildDefinitionUri));
                 labWorkflowDetails.BuildDetails.BuildDefinitionUri = compileBuildDefinition.Uri;
                 labWorkflowDetails.BuildDetails.BuildDefinitionName = compileBuildDefinition.Name;
-                labWorkflowDetails.BuildDetails.BuildUri = sourceBuildDetails.BuildUri;
+                labWorkflowDetails.BuildDetails.BuildUri = new Uri(sourceBuildDetails.BuildUri);
                 labWorkflowDetails.BuildDetails.IsTeamSystemBuild = true;
             }
             else

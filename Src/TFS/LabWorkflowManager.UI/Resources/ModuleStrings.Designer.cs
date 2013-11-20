@@ -61,11 +61,47 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new Definition.
+        /// </summary>
+        public static string BtnAdd {
+            get {
+                return ResourceManager.GetString("BtnAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect.
         /// </summary>
         public static string BtnConnect {
             get {
                 return ResourceManager.GetString("BtnConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Definition.
+        /// </summary>
+        public static string BtnDelete {
+            get {
+                return ResourceManager.GetString("BtnDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Definition.
+        /// </summary>
+        public static string BtnEdit {
+            get {
+                return ResourceManager.GetString("BtnEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save all.
+        /// </summary>
+        public static string BtnSave {
+            get {
+                return ResourceManager.GetString("BtnSave", resourceCulture);
             }
         }
         
@@ -79,11 +115,74 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General Settings.
+        /// </summary>
+        public static string GrpDefinitionGeneral {
+            get {
+                return ResourceManager.GetString("GrpDefinitionGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multi Environemnt Workflow Definitions.
+        /// </summary>
+        public static string GrpDefinitions {
+            get {
+                return ResourceManager.GetString("GrpDefinitions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description:.
+        /// </summary>
+        public static string LblDefinitionDescription {
+            get {
+                return ResourceManager.GetString("LblDefinitionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id:.
+        /// </summary>
+        public static string LblDefinitionId {
+            get {
+                return ResourceManager.GetString("LblDefinitionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        public static string LblDefinitionName {
+            get {
+                return ResourceManager.GetString("LblDefinitionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [New Definition].
+        /// </summary>
+        public static string NewDefinitionname {
+            get {
+                return ResourceManager.GetString("NewDefinitionname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Definition: .
+        /// </summary>
+        public static string TitleEdit {
+            get {
+                return ResourceManager.GetString("TitleEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage.
         /// </summary>
-        public static string NavigationTitle {
+        public static string TitleManage {
             get {
-                return ResourceManager.GetString("NavigationTitle", resourceCulture);
+                return ResourceManager.GetString("TitleManage", resourceCulture);
             }
         }
     }

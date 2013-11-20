@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Microsoft.TeamFoundation.Build.Client;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace LabWorkflowManager.TFS2012.Tests.Integration
 {
@@ -22,10 +23,10 @@ namespace LabWorkflowManager.TFS2012.Tests.Integration
             // Act
             tfsbuild.CreateBuildDefinition(new LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails(){
                 LabBuildDefinitionDetails =  new LabWorkflowManager.TFS.Common.WorkflowConfig.LabBuildDefinitionDetails() { Name = name, Description = description, ControllerName = "VSALM", ProcessTemplateFilename = "LabDefaultTemplate.11.xaml" },
-                SourceBuildDetails = new LabWorkflowManager.TFS.Common.WorkflowConfig.SourceBuildDetails() { BuildDefinitionUri = new Uri("vstfs:///Build/Definition/1") },
-                LabEnvironmentDetails = new LabWorkflowManager.TFS.Common.WorkflowConfig.LabEnvironmentDetails() { LabEnvironmentUri = new Uri("vstfs:///LabManagement/LabEnvironment/2") },
-                DeploymentDetails = new LabWorkflowManager.TFS.Common.WorkflowConfig.DeploymentDetails() { Scripts = new System.Collections.Generic.List<TFS.Common.WorkflowConfig.DeploymentScript>() { new TFS.Common.WorkflowConfig.DeploymentScript() { Role = "Desktop Client", Script = @"notepad.exe", WorkingDirectory = @"C:\temp" } } },
-                TestDetails = new LabWorkflowManager.TFS.Common.WorkflowConfig.TestDetails() { TestPlanId = 3, TestSuiteIdList = new List<int>() { 3, 4 }, TestConfigurationId = 1 }
+                SourceBuildDetails = new LabWorkflowManager.TFS.Common.WorkflowConfig.SourceBuildDetails() { BuildDefinitionUri = "vstfs:///Build/Definition/1" },
+                LabEnvironmentDetails = new LabWorkflowManager.TFS.Common.WorkflowConfig.LabEnvironmentDetails() { LabEnvironmentUri = "vstfs:///LabManagement/LabEnvironment/2" },
+                DeploymentDetails = new LabWorkflowManager.TFS.Common.WorkflowConfig.DeploymentDetails() { Scripts = new ObservableCollection<TFS.Common.WorkflowConfig.DeploymentScript>() { new TFS.Common.WorkflowConfig.DeploymentScript() { Role = "Desktop Client", Script = @"notepad.exe", WorkingDirectory = @"C:\temp" } } },
+                TestDetails = new LabWorkflowManager.TFS.Common.WorkflowConfig.TestDetails() { TestPlanId = 3, TestSuiteIdList = new ObservableCollection<int>() { 3, 4 }, TestConfigurationId = 1 }
             });
 
             // Assert

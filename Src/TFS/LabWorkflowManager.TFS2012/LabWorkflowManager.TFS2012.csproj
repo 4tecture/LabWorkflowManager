@@ -82,6 +82,7 @@
     <Compile Include="TFSConnectivity.cs" />
     <Compile Include="TFSLabEnvironment.cs" />
     <Compile Include="TFSTest.cs" />
+    <Compile Include="WorkflowManagerStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\4tecture.UI.Common\4tecture.UI.Common.csproj">

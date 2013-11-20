@@ -81,7 +81,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModuleStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\MultiEnvironmentWorkflowDefinitionViewModel.cs" />
     <Compile Include="ViewModels\MultiEnvironmentWorkflowsViewModel.cs" />
+    <Compile Include="Views\MultiEnvironmentWorkflowDefinitionView.xaml.cs">
+      <DependentUpon>MultiEnvironmentWorkflowDefinitionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MultiEnvironmentWorkflowsView.xaml.cs">
       <DependentUpon>MultiEnvironmentWorkflowsView.xaml</DependentUpon>
     </Compile>
@@ -111,6 +115,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\MultiEnvironmentWorkflowDefinitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MultiEnvironmentWorkflowsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

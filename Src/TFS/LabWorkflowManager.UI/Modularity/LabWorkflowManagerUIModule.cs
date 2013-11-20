@@ -26,6 +26,7 @@ namespace LabWorkflowManager.UI.Modularity
         public void Initialize()
         {
             DataTemplateHelper.RegisterAndCreateTemplate<MultiEnvironmentWorkflowsViewModel, MultiEnvironmentWorkflowsView>(this.container, RegionNames.MainRegion);
+            DataTemplateHelper.RegisterAndCreateTemplate<MultiEnvironmentWorkflowDefinitionViewModel, MultiEnvironmentWorkflowDefinitionView>(this.container);
         }
     }
 }

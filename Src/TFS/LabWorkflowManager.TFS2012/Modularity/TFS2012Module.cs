@@ -21,8 +21,7 @@ namespace LabWorkflowManager.TFS2012.Modularity
 
         public void Initialize()
         {
-            //DataTemplateHelper.RegisterAndCreateTemplate<WarehouseControlViewModel, WarehouseControlView>(this.container);
-            //DataTemplateHelper.RegisterAndCreateTemplate<MainReportingViewModel, MainReportingView>(this.container,RegionNames.MainRegion);
+            this.container.RegisterInstance<IWorkflowManagerStorage>(new WorkflowManagerStorage());
             this.container.RegisterInstance<ITFSConnectivity>(new TFSConnectivity());
             this.container.RegisterType<ITFSBuild, TFSBuild>();
             this.container.RegisterType<ITFSLabEnvironment, TFSLabEnvironment>();

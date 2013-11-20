@@ -41,7 +41,7 @@ namespace LabWorkflowManager.TFS2012
         private TFS.Common.WorkflowConfig.AssociatedLabEnvironment ConvertLabEnvironment(LabEnvironment env)
         {
             var ale = new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedLabEnvironment();
-            ale.Uri = env.Uri;
+            ale.Uri = env.Uri.ToString();
             ale.Name = env.Name;
             ale.Snapshots = env.QueryLabEnvironmentSnapshots().Select(o => o.Name).ToList();
 

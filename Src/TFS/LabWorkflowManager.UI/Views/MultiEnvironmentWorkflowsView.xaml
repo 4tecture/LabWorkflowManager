@@ -9,8 +9,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="80px"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpConnection}">
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpConnection}" Grid.Row="0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
@@ -24,6 +25,31 @@
                 <TextBlock Text="{Binding TeamProjectNamei}" Grid.Column="1"/>
                 <Button Content="{x:Static appres:ModuleStrings.BtnConnect}" Command="{Binding ConnectToTfsCommand}" Grid.Column="2"/>
             </Grid>
+        </GroupBox>
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitions}" Grid.Row="1">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="{x:Static appres:ModuleStrings.BtnAdd}" Command="{Binding AddNewDefinitionCommand}" />
+                    <Button Content="{x:Static appres:ModuleStrings.BtnDelete}" Command="{Binding DeleteDefinitionCommand}" CommandParameter="{Binding ElementName=lstDefinitions, Path=SelectedItem}" />
+                    <Button Content="{x:Static appres:ModuleStrings.BtnSave}" Command="{Binding SaveCommand}" />
+                </StackPanel>
+                <ListView x:Name="lstDefinitions" ItemsSource="{Binding Definitions}" SelectedItem="{Binding CurrentDefinition}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Name}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Descriptoin}" />
+                                <Button Grid.Column="2" Content="{x:Static appres:ModuleStrings.BtnEdit}" Command="{Binding DataContext.EditDefinitionCommand, ElementName=lstDefinitions}" CommandParameter="{Binding}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
         </GroupBox>
     </Grid>
 </UserControl>
