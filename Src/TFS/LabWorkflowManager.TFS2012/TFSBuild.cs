@@ -64,15 +64,15 @@ namespace LabWorkflowManager.TFS2012
         {
             var abd = new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition();
             abd.BuildControllerName = res.BuildController.Name;
-            abd.BuildControllerUri = res.BuildControllerUri.ToString();
+            abd.BuildControllerUri = res.BuildControllerUri != null ? res.BuildControllerUri.ToString() : string.Empty;
             abd.ContinuousIntegrationQuietPeriod = res.ContinuousIntegrationQuietPeriod;
             abd.ContinuousIntegrationType = (LabWorkflowManager.TFS.Common.WorkflowConfig.BuildDefinitionContinuousIntegrationType)res.ContinuousIntegrationType;
             abd.DateCreated = res.DateCreated;
             abd.Description = res.Description;
             abd.Id = res.Id;
-            abd.LastBuildUri = res.LastBuildUri.ToString();
+            abd.LastBuildUri = res.LastBuildUri != null ? res.LastBuildUri.ToString() : string.Empty;
             abd.LastGoodBuildLabel = res.LastGoodBuildLabel;
-            abd.LastGoodBuildUri = res.LastGoodBuildUri.ToString();
+            abd.LastGoodBuildUri = res.LastGoodBuildUri != null ? res.LastGoodBuildUri.ToString() : string.Empty;
             abd.Builds = res.QueryBuilds().Select(o => new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDetail() { Uri = o.Uri.ToString(), LabelName = o.LabelName }).ToList();
             abd.Uri = res.Uri.ToString();
             return abd;
