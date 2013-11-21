@@ -22,7 +22,7 @@
                     <RowDefinition Height="30px"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding TeamProjectCollectionUri}" Grid.Column="0" />
-                <TextBlock Text="{Binding TeamProjectNamei}" Grid.Column="1"/>
+                <TextBlock Text="{Binding TeamProjectName}" Grid.Column="1"/>
                 <Button Content="{x:Static appres:ModuleStrings.BtnConnect}" Command="{Binding ConnectToTfsCommand}" Grid.Column="2"/>
             </Grid>
         </GroupBox>

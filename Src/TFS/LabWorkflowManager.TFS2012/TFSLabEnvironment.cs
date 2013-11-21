@@ -53,6 +53,7 @@ namespace LabWorkflowManager.TFS2012
             if(this.LabService != null)
             {
                 var environments = this.LabService.QueryLabEnvironments(new LabEnvironmentQuerySpec() { Project = this.connectivity.TeamProjects.First().Name });
+                return environments;
             }
             return new List<LabEnvironment>();
         }

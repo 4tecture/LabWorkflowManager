@@ -115,6 +115,33 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string GrpDefinitionActions {
+            get {
+                return ResourceManager.GetString("GrpDefinitionActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deployment.
+        /// </summary>
+        public static string GrpDefinitionDeployment {
+            get {
+                return ResourceManager.GetString("GrpDefinitionDeployment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Environments.
+        /// </summary>
+        public static string GrpDefinitionEnvironments {
+            get {
+                return ResourceManager.GetString("GrpDefinitionEnvironments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General Settings.
         /// </summary>
         public static string GrpDefinitionGeneral {
@@ -129,6 +156,15 @@ namespace LabWorkflowManager.UI.Resources {
         public static string GrpDefinitions {
             get {
                 return ResourceManager.GetString("GrpDefinitions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tests.
+        /// </summary>
+        public static string GrpDefinitionTests {
+            get {
+                return ResourceManager.GetString("GrpDefinitionTests", resourceCulture);
             }
         }
         

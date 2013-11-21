@@ -7,7 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionGeneral}" Grid.Row="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionGeneral}" Grid.Row="0" Grid.Column="0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -25,6 +34,70 @@
                 <Label Content="{x:Static appres:ModuleStrings.LblDefinitionId}" Grid.Column="0" Grid.Row="2" />
                 <TextBlock Text="{Binding Item.Id}" Grid.Column="1" Grid.Row="2" />
             </Grid>
+        </GroupBox>
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionActions}" Grid.Row="0" Grid.Column="1">
+            
+        </GroupBox>
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionEnvironments}" Grid.Row="1" Grid.Column="0">
+            <ListView x:Name="lstAvailableEnvironments" ItemsSource="{Binding AvailableEnvironments}" SelectionMode="Multiple">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Name}" />
+                            <ListView Grid.Column="1" ItemsSource="{Binding Snapshots}" />
+                            <TextBlock Grid.Column="2" Text="{Binding Uri}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </GroupBox>
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionTests}" Grid.Row="1" Grid.Column="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <ComboBox ItemsSource="{Binding AvailableTestPlans}" SelectedItem="{Binding SelectedTestPlan}" Grid.Row="0" Grid.Column="0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ListBox ItemsSource="{Binding AvailableTestSuites}" SelectedItem="{Binding SelectedTestSuites}" SelectionMode="Multiple" Grid.Row="0" Grid.Column="1">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Title}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ComboBox ItemsSource="{Binding AvailableTestSettings}" SelectedItem="{Binding SelectedTestSettings}" Grid.Row="1" Grid.Column="0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ListBox ItemsSource="{Binding AvailableTestConfigurations}" SelectedItem="{Binding SelectedTestConfigurations}" SelectionMode="Multiple" Grid.Row="1" Grid.Column="1">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionDeployment}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+
         </GroupBox>
     </Grid>
 </UserControl>

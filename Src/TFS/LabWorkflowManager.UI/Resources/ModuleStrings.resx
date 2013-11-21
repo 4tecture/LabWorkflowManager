@@ -135,11 +135,23 @@
   <data name="GrpConnection" xml:space="preserve">
     <value>TFS Connection</value>
   </data>
+  <data name="GrpDefinitionActions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="GrpDefinitionDeployment" xml:space="preserve">
+    <value>Deployment</value>
+  </data>
+  <data name="GrpDefinitionEnvironments" xml:space="preserve">
+    <value>Environments</value>
+  </data>
   <data name="GrpDefinitionGeneral" xml:space="preserve">
     <value>General Settings</value>
   </data>
   <data name="GrpDefinitions" xml:space="preserve">
     <value>Multi Environemnt Workflow Definitions</value>
+  </data>
+  <data name="GrpDefinitionTests" xml:space="preserve">
+    <value>Tests</value>
   </data>
   <data name="LblDefinitionDescription" xml:space="preserve">
     <value>Description:</value>
