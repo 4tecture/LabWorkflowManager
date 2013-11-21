@@ -97,6 +97,15 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generate Build Defnitions.
+        /// </summary>
+        public static string BtnGenerateBuildDefnitions {
+            get {
+                return ResourceManager.GetString("BtnGenerateBuildDefnitions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save all.
         /// </summary>
         public static string BtnSave {

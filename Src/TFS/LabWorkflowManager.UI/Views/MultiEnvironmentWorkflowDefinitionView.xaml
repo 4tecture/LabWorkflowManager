@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:appres="clr-namespace:LabWorkflowManager.UI.Resources"
+             xmlns:behaviors="clr-namespace:_4tecture.UI.Common.Behaviors;assembly=4tecture.UI.Common"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -36,21 +37,25 @@
             </Grid>
         </GroupBox>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionActions}" Grid.Row="0" Grid.Column="1">
-            
+            <StackPanel>
+                <Button Content="{x:Static appres:ModuleStrings.BtnGenerateBuildDefnitions}" Command="{Binding GenerateBuildDefinitionsCommand}" Grid.Column="2"/>
+            </StackPanel>
         </GroupBox>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionEnvironments}" Grid.Row="1" Grid.Column="0">
-            <ListView x:Name="lstAvailableEnvironments" ItemsSource="{Binding AvailableEnvironments}" SelectionMode="Multiple">
+            <ListView x:Name="lstAvailableEnvironments" ItemsSource="{Binding AvailableEnvironments}" SelectionMode="Multiple" behaviors:MultiSelectorBehaviours.SynchronizedSelectedItems="{Binding SelectedEnvironments}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding Name}" />
-                            <ListView Grid.Column="1" ItemsSource="{Binding Snapshots}" />
-                            <TextBlock Grid.Column="2" Text="{Binding Uri}" />
+                            <CheckBox Grid.Column="0" IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Path=IsSelected}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Name}" />
+                            <ListView Grid.Column="2" ItemsSource="{Binding Snapshots}" />
+                            <TextBlock Grid.Column="3" Text="{Binding Uri}" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -73,7 +78,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ListBox ItemsSource="{Binding AvailableTestSuites}" SelectedItem="{Binding SelectedTestSuites}" SelectionMode="Multiple" Grid.Row="0" Grid.Column="1">
+                <ListBox ItemsSource="{Binding AvailableTestSuites}"  behaviors:MultiSelectorBehaviours.SynchronizedSelectedItems="{Binding SelectedTestSuites}" SelectionMode="Multiple" Grid.Row="0" Grid.Column="1">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Title}"/>
@@ -87,7 +92,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ListBox ItemsSource="{Binding AvailableTestConfigurations}" SelectedItem="{Binding SelectedTestConfigurations}" SelectionMode="Multiple" Grid.Row="1" Grid.Column="1">
+                <ListBox ItemsSource="{Binding AvailableTestConfigurations}"  behaviors:MultiSelectorBehaviours.SynchronizedSelectedItems="{Binding SelectedTestConfigurations}" SelectionMode="Multiple" Grid.Row="1" Grid.Column="1">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"/>

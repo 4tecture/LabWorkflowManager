@@ -22,7 +22,7 @@ namespace LabWorkflowManager.TFS2012.Tests.Integration
 
             // Act
             tfsbuild.CreateBuildDefinition(new LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails(){
-                LabBuildDefinitionDetails =  new LabWorkflowManager.TFS.Common.WorkflowConfig.LabBuildDefinitionDetails() { Name = name, Description = description, ControllerName = "VSALM", ProcessTemplateFilename = "LabDefaultTemplate.11.xaml" },
+                LabBuildDefinitionDetails =  new LabWorkflowManager.TFS.Common.WorkflowConfig.LabBuildDefinitionDetails() { Name = name, Description = description, ControllerName = "VSALM", ProcessTemplateFilename = "LabDefaultTemplate.11.xaml", ContinuousIntegrationType = TFS.Common.WorkflowConfig.BuildDefinitionContinuousIntegrationType.None },
                 SourceBuildDetails = new LabWorkflowManager.TFS.Common.WorkflowConfig.SourceBuildDetails() { BuildDefinitionUri = "vstfs:///Build/Definition/1" },
                 LabEnvironmentDetails = new LabWorkflowManager.TFS.Common.WorkflowConfig.LabEnvironmentDetails() { LabEnvironmentUri = "vstfs:///LabManagement/LabEnvironment/2" },
                 DeploymentDetails = new LabWorkflowManager.TFS.Common.WorkflowConfig.DeploymentDetails() { Scripts = new ObservableCollection<TFS.Common.WorkflowConfig.DeploymentScript>() { new TFS.Common.WorkflowConfig.DeploymentScript() { Role = "Desktop Client", Script = @"notepad.exe", WorkingDirectory = @"C:\temp" } } },

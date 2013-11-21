@@ -44,7 +44,7 @@ namespace LabWorkflowManager.TFS2012
 
         public IEnumerable<LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition> GetMultiEnvAssociatedBuildDefinitions(Guid multiEnvConfigId)
         {
-            var results = this.QueryBuildDefinitions().Where(o => o.Description.Contains(string.Format("MultiEnvironmentWorkflowDefinition:{0}", multiEnvConfigId.ToString())));
+            var results = this.QueryBuildDefinitions().Where(o => !string.IsNullOrWhiteSpace(o.Description) && o.Description.Contains(string.Format("MultiEnvironmentWorkflowDefinition:{0}", multiEnvConfigId.ToString())));
             foreach(var res in results)
             {
                 yield return ConvertToAssociatedBuildDefinition(res);
@@ -155,7 +155,10 @@ namespace LabWorkflowManager.TFS2012
                 var compileBuildDefinition = this.BuildServer.GetBuildDefinition(new Uri(sourceBuildDetails.BuildDefinitionUri));
                 labWorkflowDetails.BuildDetails.BuildDefinitionUri = compileBuildDefinition.Uri;
                 labWorkflowDetails.BuildDetails.BuildDefinitionName = compileBuildDefinition.Name;
-                labWorkflowDetails.BuildDetails.BuildUri = new Uri(sourceBuildDetails.BuildUri);
+                if (!string.IsNullOrWhiteSpace(sourceBuildDetails.BuildUri))
+                {
+                    labWorkflowDetails.BuildDetails.BuildUri = new Uri(sourceBuildDetails.BuildUri);
+                }
                 labWorkflowDetails.BuildDetails.IsTeamSystemBuild = true;
             }
             else

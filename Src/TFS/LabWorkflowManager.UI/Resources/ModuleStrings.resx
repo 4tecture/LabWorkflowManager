@@ -171,4 +171,7 @@
   <data name="TitleManage" xml:space="preserve">
     <value>Manage</value>
   </data>
+  <data name="BtnGenerateBuildDefnitions" xml:space="preserve">
+    <value>Generate Build Defnitions</value>
+  </data>
 </root>
