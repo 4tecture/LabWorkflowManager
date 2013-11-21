@@ -161,8 +161,7 @@ namespace LabWorkflowManager.UI.ViewModels
         private ObservableCollection<AssociatedLabEnvironment> selectedEnvironments;
         public ObservableCollection<AssociatedLabEnvironment> SelectedEnvironments
         {
-            get { 
-                
+            get {
                 return this.selectedEnvironments;
             }
             set { 
@@ -248,7 +247,6 @@ namespace LabWorkflowManager.UI.ViewModels
         {
             get {
                 return this.selectedTestConfigurations;
-                
             }
             set
             {
