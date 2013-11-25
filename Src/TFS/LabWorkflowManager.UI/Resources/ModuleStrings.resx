@@ -174,4 +174,10 @@
   <data name="BtnGenerateBuildDefnitions" xml:space="preserve">
     <value>Generate Build Defnitions</value>
   </data>
+  <data name="BtnAddDeploymentScript" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="BtnRemoveDeploymentScript" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>

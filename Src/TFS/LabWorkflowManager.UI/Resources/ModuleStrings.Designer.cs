@@ -70,6 +70,15 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string BtnAddDeploymentScript {
+            get {
+                return ResourceManager.GetString("BtnAddDeploymentScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect.
         /// </summary>
         public static string BtnConnect {
@@ -102,6 +111,15 @@ namespace LabWorkflowManager.UI.Resources {
         public static string BtnGenerateBuildDefnitions {
             get {
                 return ResourceManager.GetString("BtnGenerateBuildDefnitions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string BtnRemoveDeploymentScript {
+            get {
+                return ResourceManager.GetString("BtnRemoveDeploymentScript", resourceCulture);
             }
         }
         

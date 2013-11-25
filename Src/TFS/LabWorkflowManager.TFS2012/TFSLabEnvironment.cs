@@ -44,6 +44,7 @@ namespace LabWorkflowManager.TFS2012
             ale.Uri = env.Uri.ToString();
             ale.Name = env.Name;
             ale.Snapshots = env.QueryLabEnvironmentSnapshots().Select(o => o.Name).ToList();
+            ale.Roles = env.LabSystems.Select(ls => ls.Roles).ToList();
 
             return ale;
         }

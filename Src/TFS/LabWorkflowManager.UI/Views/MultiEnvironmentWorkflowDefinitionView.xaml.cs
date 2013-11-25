@@ -24,5 +24,8 @@ namespace LabWorkflowManager.UI.Views
         {
             InitializeComponent();
         }
+
+       
+
     }
 }

@@ -42,7 +42,7 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionEnvironments}" Grid.Row="1" Grid.Column="0">
-            <ListView x:Name="lstAvailableEnvironments" ItemsSource="{Binding AvailableEnvironments}" SelectionMode="Multiple" behaviors:MultiSelectorBehaviours.SynchronizedSelectedItems="{Binding SelectedEnvironments}">
+            <ListView x:Name="lstAvailableEnvironments" ItemsSource="{Binding AvailableEnvironments}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -52,10 +52,10 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <CheckBox Grid.Column="0" IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Path=IsSelected}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Name}" />
-                            <ListView Grid.Column="2" ItemsSource="{Binding Snapshots}" />
-                            <TextBlock Grid.Column="3" Text="{Binding Uri}" />
+                            <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Item.Name}" />
+                            <ListView Grid.Column="2" ItemsSource="{Binding Item.Snapshots}" />
+                            <TextBlock Grid.Column="3" Text="{Binding Item.Uri}" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -78,10 +78,13 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ListBox ItemsSource="{Binding AvailableTestSuites}"  behaviors:MultiSelectorBehaviours.SynchronizedSelectedItems="{Binding SelectedTestSuites}" SelectionMode="Multiple" Grid.Row="0" Grid.Column="1">
+                <ListBox ItemsSource="{Binding AvailableTestSuites}"  Grid.Row="0" Grid.Column="1">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Title}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsSelected}"/>
+                                <TextBlock Text="{Binding Item.Title}"/>
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -92,17 +95,42 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ListBox ItemsSource="{Binding AvailableTestConfigurations}"  behaviors:MultiSelectorBehaviours.SynchronizedSelectedItems="{Binding SelectedTestConfigurations}" SelectionMode="Multiple" Grid.Row="1" Grid.Column="1">
+                <ListBox ItemsSource="{Binding AvailableTestConfigurations}" Grid.Row="1" Grid.Column="1">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsSelected}"/>
+                                <TextBlock Text="{Binding Item.Name}"/>
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
         </GroupBox>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionDeployment}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="{x:Static appres:ModuleStrings.BtnAddDeploymentScript}" Command="{Binding AddDeploymentScriptCommand}" />                    
+                </StackPanel>
+                <ListBox ItemsSource="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.AvailableEnvironmentRoles}" SelectedItem="{Binding Role}" Grid.Column="0" />
+                                <TextBox Text="{Binding Script}" Grid.Column="1"  />
+                                <TextBox Text="{Binding WorkingDirectory}" Grid.Column="2" />
+                                <Button Content="{x:Static appres:ModuleStrings.BtnRemoveDeploymentScript}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.RemoveDeploymentScriptCommand}" CommandParameter="{Binding}" Grid.Column="3"  />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
         </GroupBox>
     </Grid>
 </UserControl>

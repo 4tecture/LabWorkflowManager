@@ -1,4 +1,5 @@
-﻿using LabWorkflowManager.TFS.Common;
+﻿using _4tecture.UI.Common.Helper;
+using LabWorkflowManager.TFS.Common;
 using LabWorkflowManager.TFS.Common.WorkflowConfig;
 using LabWorkflowManager.UI.Resources;
 using Microsoft.Practices.Prism.Commands;
@@ -7,6 +8,7 @@ using Microsoft.Practices.Prism.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,114 +35,156 @@ namespace LabWorkflowManager.UI.ViewModels
 
             this.Item.PropertyChanged += (sender, args) => { if (args.PropertyName.Equals("Name")) this.RaisePropertyChanged(() => this.HeaderInfo); };
 
-            this.SelectedEnvironments = new ObservableCollection<AssociatedLabEnvironment>();
-            this.SelectedTestSuites = new ObservableCollection<AssociatedTestSuite>();
-            this.SelectedTestConfigurations = new ObservableCollection<AssociatedTestConfiguration>();
+
+            InitTestSuitesSelection();
+            InitEnvironmentsSelection();
+            //InitTestSettingsSelection();
+            InitTestConfigurationSelection();
 
             this.GenerateBuildDefinitionsCommand = new DelegateCommand(GenerateBuildDefinitions);
-            
-            this.selectedEnvironments.CollectionChanged += SelectedEnvironmentsChangedSyncToItemEnvironments;
-            this.Item.Environments.CollectionChanged += ItemEnvironmentsChangedSyncToSelectedEnvironments;
-            this.selectedTestSuites.CollectionChanged += SelectedTestSuitesChangedSyncToItemTestSuites;
-            this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.CollectionChanged += ItemTestSuitesChangedSyncToSelectedTestSuites;
-            this.selectedTestConfigurations.CollectionChanged += SelectedTestConfigurationsChangedSyncToItemTestConfigurations;
-
-            ItemEnvironmentsChangedSyncToSelectedEnvironments(null, null);
-            ItemTestConfigurationsChangedSyncToSelectedTestConfigurations(null, null);
-            ItemTestSuitesChangedSyncToSelectedTestSuites(null, null);
+            this.AddDeploymentScriptCommand = new DelegateCommand(AddDeploymentScript);
+            this.RemoveDeploymentScriptCommand = new DelegateCommand<DeploymentScript>(RemoveDeploymentScript);
         }
 
-       
-
-        void SelectedEnvironmentsChangedSyncToItemEnvironments(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void RemoveDeploymentScript(DeploymentScript obj)
         {
-            this.Item.Environments.CollectionChanged -= ItemEnvironmentsChangedSyncToSelectedEnvironments;
+            this.Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts.Remove(obj);
+        }
+
+        private void AddDeploymentScript()
+        {
+            this.Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts.Add(new DeploymentScript());
+        }
+
+        private void InitTestSuitesSelection()
+        {
+            this.availableTestSuites = new SelectableCollection<AssociatedTestSuite>();
+            this.availableTestSuites.SelectionChanged += TestSuitesSelectionChanged;
+            this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.CollectionChanged += TestSuitesCollectionChanged;
+            this.TestSuitesCollectionChanged(null, null);
+        }
+
+        private void InitEnvironmentsSelection()
+        {
+            this.availableEnvironments = new SelectableCollection<AssociatedLabEnvironment>();
+            foreach (var env in this.tfsLabEnvironment.GetAssociatedLabEnvironments())
+            {
+                this.availableEnvironments.Add(env);
+            }
+            this.availableEnvironments.SelectionChanged += EnvironmentsSelectionChanged;
+            this.Item.Environments.CollectionChanged += EnvironmentsCollectionChanged;
+            this.EnvironmentsCollectionChanged(null, null);
+        }
+
+        //private void InitTestSettingsSelection()
+        //{
+        //    this.availableTestSettings = new SelectableCollection<AssociatedTestSettings>();
+        //    foreach (var ts in this.tfsTest.GetAssociatedTestSettings())
+        //    {
+        //        this.availableTestSettings.Add(ts);
+        //    }
+        //    this.availableTestSettings.SelectionChanged += TestSettingsSelectionChanged;
+        //    this.Item.MainLabWorkflowDefinition.TestDetails.PropertyChanged += TestSettingsPropertyChanged;
+        //    this.TestSettingsPropertyChanged(null, new PropertyChangedEventArgs("TestSettingsId"));
+        //}
+
+        private void InitTestConfigurationSelection()
+        {
+            this.availableTestConfigurations = new SelectableCollection<AssociatedTestConfiguration>();
+            foreach (var tc in this.tfsTest.GetAssociatedTestConfigurations())
+            {
+                this.availableTestConfigurations.Add(tc);
+            }
+            this.availableTestConfigurations.SelectionChanged += TestConfigurationsSelectionChanged;
+            this.Item.Environments.CollectionChanged += TestConfigurationsCollectionChanged;
+            this.TestConfigurationsCollectionChanged(null, null);
+        }
+
+        private void TestConfigurationsSelectionChanged(object sender, EventArgs e)
+        {
+            SyncTestConfigurationsWithEnvironments(this.availableTestConfigurations.SelectedItems);
+        }
+
+        private void TestConfigurationsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.availableTestConfigurations.SelectionChanged -= TestConfigurationsSelectionChanged;
+            
+            if (this.Item.Environments.Count > 0)
+            {
+                var selectedTestConfigurationsTmp = this.AvailableTestConfigurations.Where(o => this.Item.Environments.First().TestConfigurationIds.Contains(o.Item.Id)).Select(o => o.Item).ToList();
+                this.availableTestConfigurations.SelectedItems = selectedTestConfigurationsTmp;
+            }
+            
+            this.availableTestConfigurations.SelectionChanged += TestConfigurationsSelectionChanged;
+        }
+
+        //private void TestSettingsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    if (e.PropertyName.Equals("TestSettingsId"))
+        //    {
+        //        this.availableTestSettings.SelectionChanged -= TestSettingsSelectionChanged;
+        //        this.availableTestSettings.SelectedItems = this.availableTestSettings.Where(o => o.Item.Id == this.Item.MainLabWorkflowDefinition.TestDetails.TestSettingsId).Select(o => o.Item);
+        //        this.availableTestSettings.SelectionChanged += TestSettingsSelectionChanged;
+        //    }
+        //}
+
+        //private void TestSettingsSelectionChanged(object sender, EventArgs e)
+        //{
+        //    this.Item.MainLabWorkflowDefinition.TestDetails.PropertyChanged -= TestSettingsPropertyChanged;
+        //    this.Item.MainLabWorkflowDefinition.TestDetails.TestSettingsId = this.availableTestSettings.SelectedItems.Where(o => o.Id == this.Item.MainLabWorkflowDefinition.TestDetails.TestSettingsId).Select(o => o.Id).FirstOrDefault();
+        //    this.Item.MainLabWorkflowDefinition.TestDetails.PropertyChanged += TestSettingsPropertyChanged;
+        //}
+
+        private void EnvironmentsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.availableEnvironments.SelectionChanged -= EnvironmentsSelectionChanged;
+            var selectedEnvironmentsTmp = this.AvailableEnvironments.Where(o => this.Item.Environments.Select(en => en.EnvironmentUri).Contains(o.Item.Uri)).Select(o => o.Item).ToList();
+
+            this.availableEnvironments.SelectedItems = selectedEnvironmentsTmp;
+
+            this.availableEnvironments.SelectionChanged += EnvironmentsSelectionChanged;
+        }
+
+        private void EnvironmentsSelectionChanged(object sender, EventArgs e)
+        {
+            this.Item.Environments.CollectionChanged -= EnvironmentsCollectionChanged;
             this.Item.Environments.Clear();
-            foreach (var selectedEnv in this.selectedEnvironments)
+            foreach (var selectedEnv in this.availableEnvironments.SelectedItems)
             {
                 this.Item.Environments.Add(new MultiEnvironmentWorkflowEnvironment() { EnvironmentName = selectedEnv.Name, EnvironmentUri = selectedEnv.Uri });
             }
-            SyncTestConfigurationsWithEnvironments(this.SelectedTestConfigurations);
-            this.RaisePropertyChanged(() => this.SelectedEnvironments);
-            this.Item.Environments.CollectionChanged += ItemEnvironmentsChangedSyncToSelectedEnvironments;
+            SyncTestConfigurationsWithEnvironments(this.availableTestConfigurations.SelectedItems);
+            this.Item.Environments.CollectionChanged += EnvironmentsCollectionChanged;
         }
 
-        void ItemEnvironmentsChangedSyncToSelectedEnvironments(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        void TestSuitesSelectionChanged(object sender, EventArgs e)
         {
-            this.selectedEnvironments.CollectionChanged -= SelectedEnvironmentsChangedSyncToItemEnvironments;
-            var selectedEnvironmentsTmp = this.AvailableEnvironments.Where(o => this.Item.Environments.Select(en => en.EnvironmentUri).Contains(o.Uri)).ToList();
-
-            this.selectedEnvironments.Clear();
-            if (selectedEnvironmentsTmp.Count > 0)
-            {
-                foreach (var env in selectedEnvironmentsTmp)
-                {
-                    this.selectedEnvironments.Add(env);
-                }
-            }
-            this.selectedEnvironments.CollectionChanged += SelectedEnvironmentsChangedSyncToItemEnvironments;
-        }
-
-        void SelectedTestSuitesChangedSyncToItemTestSuites(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.CollectionChanged -= ItemTestSuitesChangedSyncToSelectedTestSuites;
+            this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.CollectionChanged -= TestSuitesCollectionChanged;
             this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.Clear();
-            foreach (var selectedSuite in this.selectedTestSuites)
+            foreach (var selectedSuite in this.availableTestSuites.SelectedItems)
             {
                 this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.Add(selectedSuite.Id);
             }
-            
-            this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.CollectionChanged += ItemTestSuitesChangedSyncToSelectedTestSuites;
+            this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.CollectionChanged += TestSuitesCollectionChanged;
         }
 
-        void ItemTestSuitesChangedSyncToSelectedTestSuites(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        void TestSuitesCollectionChanged(object sender, EventArgs e)
         {
-            this.selectedTestSuites.CollectionChanged -= SelectedTestSuitesChangedSyncToItemTestSuites;
-            var selectedSuitesTmp = this.AvailableTestSuites.Where(o => this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.Contains(o.Id)).ToList();
+            this.availableTestSuites.SelectionChanged -= TestSuitesSelectionChanged;
+            var selectedSuitesTmp = this.AvailableTestSuites.Where(o => this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.Contains(o.Item.Id)).Select(o => o.Item).ToList();
 
-            this.selectedTestSuites.Clear();
             if (selectedSuitesTmp.Count > 0)
             {
-                foreach (var env in selectedSuitesTmp)
-                {
-                    this.selectedTestSuites.Add(env);
-                }
+                this.availableTestSuites.SelectedItems = selectedSuitesTmp;
             }
-            this.selectedTestSuites.CollectionChanged += SelectedTestSuitesChangedSyncToItemTestSuites;
+            this.availableTestSuites.SelectionChanged += TestSuitesSelectionChanged;
         }
-        
-        void SelectedTestConfigurationsChangedSyncToItemTestConfigurations(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            //this.selectedTestConfigurations.CollectionChanged -= ItemTestConfigurationsChangedSyncToSelectedTestConfigurations;
-            SyncTestConfigurationsWithEnvironments(this.selectedTestConfigurations);
-            //this.Item.Environments.CollectionChanged += ItemTestConfigurationsChangedSyncToSelectedTestConfigurations;
-        }
-
-        void ItemTestConfigurationsChangedSyncToSelectedTestConfigurations(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            this.selectedTestConfigurations.CollectionChanged -= SelectedTestConfigurationsChangedSyncToItemTestConfigurations;
-            var selectedEnvironmentsTmp = this.AvailableEnvironments.Where(o => this.Item.Environments.Select(en => en.EnvironmentUri).Contains(o.Uri)).ToList();
-
-            this.selectedTestConfigurations.Clear();
-            if (this.Item.Environments.Count > 0)
-            {
-                var selectedTestConfigurationsTmp = this.AvailableTestConfigurations.Where(o => this.Item.Environments.First().TestConfigurationIds.Contains(o.Id));
-                foreach (var env in selectedTestConfigurationsTmp)
-                {
-                    this.selectedTestConfigurations.Add(env);
-                }
-            }
-            this.selectedTestConfigurations.CollectionChanged += SelectedTestConfigurationsChangedSyncToItemTestConfigurations;
-
-        }
-
-        
-
-
 
         public MultiEnvironmentWorkflowDefinition Item { get; set; }
 
         public ICommand GenerateBuildDefinitionsCommand { get; private set; }
+        public ICommand AddDeploymentScriptCommand { get; set; }
+        public ICommand RemoveDeploymentScriptCommand { get; set; }
 
         public string HeaderInfo
         {
@@ -150,26 +194,14 @@ namespace LabWorkflowManager.UI.ViewModels
             }
         }
 
-        public IEnumerable<AssociatedLabEnvironment> AvailableEnvironments
+        private SelectableCollection<AssociatedLabEnvironment> availableEnvironments;
+        public SelectableCollection<AssociatedLabEnvironment> AvailableEnvironments
         {
             get
             {
-                return this.tfsLabEnvironment.GetAssociatedLabEnvironments();
+                return this.availableEnvironments;
             }
         }
-
-        private ObservableCollection<AssociatedLabEnvironment> selectedEnvironments;
-        public ObservableCollection<AssociatedLabEnvironment> SelectedEnvironments
-        {
-            get {
-                return this.selectedEnvironments;
-            }
-            set { 
-                
-                this.selectedEnvironments = value;
-            }
-        }
-
 
         public IEnumerable<AssociatedTestPlan> AvailableTestPlans
         {
@@ -190,28 +222,25 @@ namespace LabWorkflowManager.UI.ViewModels
             }
         }
 
-        public IEnumerable<AssociatedTestSuite> AvailableTestSuites
+        private AssociatedTestPlan lastSelectedTestPlan;
+        private SelectableCollection<AssociatedTestSuite> availableTestSuites;
+        public SelectableCollection<AssociatedTestSuite> AvailableTestSuites
         {
             get
             {
-                if (this.SelectedTestPlan != null)
+                if (lastSelectedTestPlan == null || !lastSelectedTestPlan.Equals(this.SelectedTestPlan))
                 {
-                    return this.tfsTest.GetAssociatedTestSuites(this.SelectedTestPlan.Id);
+                    lastSelectedTestPlan = this.SelectedTestPlan;
+                    this.availableTestSuites.Clear();
+                    if (this.SelectedTestPlan != null)
+                    {
+                        foreach (var ts in this.tfsTest.GetAssociatedTestSuites(this.SelectedTestPlan.Id))
+                        {
+                            this.availableTestSuites.Add(ts);
+                        }
+                    }
                 }
-                return new List<AssociatedTestSuite>();
-            }
-        }
-
-        private ObservableCollection<AssociatedTestSuite> selectedTestSuites;
-        public ObservableCollection<AssociatedTestSuite> SelectedTestSuites
-        {
-            get {
-                return this.selectedTestSuites;
-            }
-            set
-            {
-                this.selectedTestSuites = value;
-                this.RaisePropertyChanged(() => this.SelectedTestSuites);
+                return this.availableTestSuites;
             }
         }
 
@@ -225,8 +254,10 @@ namespace LabWorkflowManager.UI.ViewModels
 
         public AssociatedTestSettings SelectedTestSettings
         {
-            get { 
-                return this.AvailableTestSettings.Where(o => o.Id == this.Item.MainLabWorkflowDefinition.TestDetails.TestSettingsId).FirstOrDefault(); }
+            get
+            {
+                return this.AvailableTestSettings.Where(o => o.Id == this.Item.MainLabWorkflowDefinition.TestDetails.TestSettingsId).FirstOrDefault();
+            }
             set
             {
                 this.Item.MainLabWorkflowDefinition.TestDetails.TestSettingsId = value.Id;
@@ -234,40 +265,44 @@ namespace LabWorkflowManager.UI.ViewModels
             }
         }
 
-        public IEnumerable<AssociatedTestConfiguration> AvailableTestConfigurations
+
+        private SelectableCollection<AssociatedTestConfiguration> availableTestConfigurations;
+        public SelectableCollection<AssociatedTestConfiguration> AvailableTestConfigurations
         {
             get
             {
-                return this.tfsTest.GetAssociatedTestConfigurations();
+                return this.availableTestConfigurations;
             }
         }
 
-        private ObservableCollection<AssociatedTestConfiguration> selectedTestConfigurations;
-        public ObservableCollection<AssociatedTestConfiguration> SelectedTestConfigurations
-        {
-            get {
-                return this.selectedTestConfigurations;
-            }
-            set
-            {
-                this.selectedTestConfigurations = value;
-                this.RaisePropertyChanged(() => this.SelectedTestConfigurations);
-            }
-        }
-
-        private void SyncTestConfigurationsWithEnvironments(ObservableCollection<AssociatedTestConfiguration> configurations)
+        private void SyncTestConfigurationsWithEnvironments(IEnumerable<AssociatedTestConfiguration> configurations)
         {
             foreach (var env in this.Item.Environments)
             {
                 env.TestConfigurationIds.Clear();
-                if (configurations != null && configurations.Count > 0)
+                if (configurations != null && configurations.Count() > 0)
                 {
                     foreach (var tcid in configurations.Select(o => o.Id))
                     {
                         env.TestConfigurationIds.Add(tcid);
                     }
                 }
-                this.RaisePropertyChanged(() => this.SelectedTestConfigurations);
+            }
+        }
+
+        public IEnumerable<string> AvailableEnvironmentRoles
+        {
+            get
+            {
+                var env = this.AvailableEnvironments.SelectedItems.FirstOrDefault();
+                if(env != null)
+                {
+                    return env.Roles;
+                }
+                else
+                {
+                    return new List<string>();
+                }
             }
         }
 
@@ -293,5 +328,6 @@ namespace LabWorkflowManager.UI.ViewModels
                 this.tfsBuild.CreateBuildDefinitionFromDefinition(generatedDefinitions);
             }
         }
+
     }
 }

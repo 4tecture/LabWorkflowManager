@@ -71,6 +71,7 @@
     <Compile Include="Events\ShowMessageEvent.cs" />
     <Compile Include="Helper\DataTemplateHelper.cs" />
     <Compile Include="Helper\RegionNames.cs" />
+    <Compile Include="Helper\SelectableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
