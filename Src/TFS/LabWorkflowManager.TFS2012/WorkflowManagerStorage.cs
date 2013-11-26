@@ -26,7 +26,7 @@ namespace LabWorkflowManager.TFS2012
                     textReader.Close();
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 this.Definitions = new ObservableCollection<MultiEnvironmentWorkflowDefinition>();
             }

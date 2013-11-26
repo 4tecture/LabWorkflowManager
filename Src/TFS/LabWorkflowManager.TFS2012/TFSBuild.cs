@@ -177,6 +177,7 @@ namespace LabWorkflowManager.TFS2012
             {
                 var schedule = buildDefinition.AddSchedule();
                 schedule.DaysToBuild = (ScheduleDays)buildDefinitionDetails.ScheduledDays;
+                schedule.StartTime = buildDefinitionDetails.StartTime;
             }
             else if (buildDefinition.ContinuousIntegrationType == ContinuousIntegrationType.Batch)
             {
@@ -186,6 +187,16 @@ namespace LabWorkflowManager.TFS2012
 
             var buildDefinitionProcessTemplate = this.BuildServer.QueryProcessTemplates(this.connectivity.TeamProjects.First().Name).Where(t => t.ServerPath.Contains(buildDefinitionDetails.ProcessTemplateFilename)).First();
             buildDefinition.Process = buildDefinitionProcessTemplate;
+        }
+
+        public IEnumerable<string> GetProcessTemplateFiles()
+        {
+            return this.BuildServer.QueryProcessTemplates(this.connectivity.TeamProjects.First().Name).Select(o => o.ServerPath.Substring(o.ServerPath.LastIndexOf("/")+1));
+        }
+
+        public IEnumerable<string> GetBuildControllers()
+        {
+            return this.BuildServer.QueryBuildControllers().Select(o => o.Name);
         }
     }
 }

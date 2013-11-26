@@ -32,9 +32,9 @@ namespace LabWorkflowManager.UI.ViewModels
             this.tfsLabEnvironment = tfsLabEnvironment;
             this.tfsTest = tfsTest;
             this.regionManager = regionManager;
+            this.buildScheduleViewModel = new BuildScheduleViewModel(this.Item);
 
             this.Item.PropertyChanged += (sender, args) => { if (args.PropertyName.Equals("Name")) this.RaisePropertyChanged(() => this.HeaderInfo); };
-
 
             InitTestSuitesSelection();
             InitEnvironmentsSelection();
@@ -108,13 +108,13 @@ namespace LabWorkflowManager.UI.ViewModels
         private void TestConfigurationsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             this.availableTestConfigurations.SelectionChanged -= TestConfigurationsSelectionChanged;
-            
+
             if (this.Item.Environments.Count > 0)
             {
                 var selectedTestConfigurationsTmp = this.AvailableTestConfigurations.Where(o => this.Item.Environments.First().TestConfigurationIds.Contains(o.Item.Id)).Select(o => o.Item).ToList();
                 this.availableTestConfigurations.SelectedItems = selectedTestConfigurationsTmp;
             }
-            
+
             this.availableTestConfigurations.SelectionChanged += TestConfigurationsSelectionChanged;
         }
 
@@ -295,7 +295,7 @@ namespace LabWorkflowManager.UI.ViewModels
             get
             {
                 var env = this.AvailableEnvironments.SelectedItems.FirstOrDefault();
-                if(env != null)
+                if (env != null)
                 {
                     return env.Roles;
                 }
@@ -306,12 +306,29 @@ namespace LabWorkflowManager.UI.ViewModels
             }
         }
 
+        public IEnumerable<string> AvailableLabProcessTemplates
+        {
+            get
+            {
+                return this.tfsBuild.GetProcessTemplateFiles();
+            }
+        }
+
+        public IEnumerable<string> AvailableBuildControllers
+        {
+            get
+            {
+                return this.tfsBuild.GetBuildControllers();
+            }
+        }
+
+        private BuildScheduleViewModel buildScheduleViewModel;
+        public BuildScheduleViewModel BuildScheduleViewModel { get { return this.buildScheduleViewModel; } }
+
+
+
         private void GenerateBuildDefinitions()
         {
-            this.Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ControllerName = "VSALM";
-            this.Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ProcessTemplateFilename = "LabDefaultTemplate.11.xaml";
-            this.Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ContinuousIntegrationType = TFS.Common.WorkflowConfig.BuildDefinitionContinuousIntegrationType.None;
-
             this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildDefinitionUri = "vstfs:///Build/Definition/1";
 
             this.Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts = new ObservableCollection<TFS.Common.WorkflowConfig.DeploymentScript>() { new TFS.Common.WorkflowConfig.DeploymentScript() { Role = "Desktop Client", Script = @"notepad.exe", WorkingDirectory = @"C:\temp" } };

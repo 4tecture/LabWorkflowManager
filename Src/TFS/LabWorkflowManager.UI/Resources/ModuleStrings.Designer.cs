@@ -151,6 +151,15 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build.
+        /// </summary>
+        public static string GrpDefinitionBuild {
+            get {
+                return ResourceManager.GetString("GrpDefinitionBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deployment.
         /// </summary>
         public static string GrpDefinitionDeployment {
@@ -196,6 +205,33 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build Controller:.
+        /// </summary>
+        public static string LblBuildController {
+            get {
+                return ResourceManager.GetString("LblBuildController", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build Trigger Type:.
+        /// </summary>
+        public static string LblContinuousIntegrationType {
+            get {
+                return ResourceManager.GetString("LblContinuousIntegrationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build Trigger Type Details:.
+        /// </summary>
+        public static string LblContinuousIntegrationTypeDetails {
+            get {
+                return ResourceManager.GetString("LblContinuousIntegrationTypeDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description:.
         /// </summary>
         public static string LblDefinitionDescription {
@@ -219,6 +255,78 @@ namespace LabWorkflowManager.UI.Resources {
         public static string LblDefinitionName {
             get {
                 return ResourceManager.GetString("LblDefinitionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lab Process Template:.
+        /// </summary>
+        public static string LblLabProcesstemplate {
+            get {
+                return ResourceManager.GetString("LblLabProcesstemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to F:.
+        /// </summary>
+        public static string LblScheduledDayFriday {
+            get {
+                return ResourceManager.GetString("LblScheduledDayFriday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M:.
+        /// </summary>
+        public static string LblScheduledDayMonday {
+            get {
+                return ResourceManager.GetString("LblScheduledDayMonday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to S:.
+        /// </summary>
+        public static string LblScheduledDaySaturday {
+            get {
+                return ResourceManager.GetString("LblScheduledDaySaturday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to S:.
+        /// </summary>
+        public static string LblScheduledDaySunday {
+            get {
+                return ResourceManager.GetString("LblScheduledDaySunday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to T:.
+        /// </summary>
+        public static string LblScheduledDayThursday {
+            get {
+                return ResourceManager.GetString("LblScheduledDayThursday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to T:.
+        /// </summary>
+        public static string LblScheduledDayTuesday {
+            get {
+                return ResourceManager.GetString("LblScheduledDayTuesday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to W:.
+        /// </summary>
+        public static string LblScheduledDayWednesday {
+            get {
+                return ResourceManager.GetString("LblScheduledDayWednesday", resourceCulture);
             }
         }
         

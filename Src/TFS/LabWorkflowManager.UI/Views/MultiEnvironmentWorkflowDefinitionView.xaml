@@ -5,8 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:appres="clr-namespace:LabWorkflowManager.UI.Resources"
              xmlns:behaviors="clr-namespace:_4tecture.UI.Common.Behaviors;assembly=4tecture.UI.Common"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:WorkflowConfig="clr-namespace:LabWorkflowManager.TFS.Common.WorkflowConfig;assembly=LabWorkflowManager.TFS.Common"
+             xmlns:Converters="clr-namespace:_4tecture.UI.Common.Converters;assembly=4tecture.UI.Common"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="BuildDefinitionContinuousIntegrationTypeEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="WorkflowConfig:BuildDefinitionContinuousIntegrationType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <Converters:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -16,8 +28,9 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionGeneral}" Grid.Row="0" Grid.Column="0">
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionGeneral}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -27,6 +40,10 @@
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="85" />
                 </Grid.RowDefinitions>
                 <Label Content="{x:Static appres:ModuleStrings.LblDefinitionName}" Grid.Column="0" Grid.Row="0" />
                 <TextBox Text="{Binding Item.Name}" Grid.Column="1" Grid.Row="0" />
@@ -34,6 +51,33 @@
                 <TextBox Text="{Binding Item.Description}" Grid.Column="1" Grid.Row="1" />
                 <Label Content="{x:Static appres:ModuleStrings.LblDefinitionId}" Grid.Column="0" Grid.Row="2" />
                 <TextBlock Text="{Binding Item.Id}" Grid.Column="1" Grid.Row="2" />
+                <Label Content="{x:Static appres:ModuleStrings.LblLabProcesstemplate}" Grid.Column="0" Grid.Row="3" />
+                <ComboBox ItemsSource="{Binding AvailableLabProcessTemplates}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ProcessTemplateFilename}" Grid.Column="1" Grid.Row="3" />
+                <Label Content="{x:Static appres:ModuleStrings.LblBuildController}" Grid.Column="0" Grid.Row="4" />
+                <ComboBox ItemsSource="{Binding AvailableBuildControllers}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ControllerName}" Grid.Column="1" Grid.Row="4" />
+                <Label Content="{x:Static appres:ModuleStrings.LblContinuousIntegrationType}" Grid.Column="0" Grid.Row="5" />
+                <ComboBox ItemsSource="{Binding Source={StaticResource BuildDefinitionContinuousIntegrationTypeEnum}}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ContinuousIntegrationType}" Grid.Column="1" Grid.Row="5" />
+                <Label Content="{x:Static appres:ModuleStrings.LblContinuousIntegrationTypeDetails}" Grid.Column="0" Grid.Row="6" />
+                <StackPanel Grid.Column="1" Grid.Row="6">
+                    <TextBox Text="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.QuietPeriod}" Visibility="{Binding BuildScheduleViewModel.QuietPeriodVisible, Converter={StaticResource BoolToHiddenConverter}}" />
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding BuildScheduleViewModel.ScheduledDaysVisible, Converter={StaticResource BoolToHiddenConverter}}">
+                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayMonday}"/>
+                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayMonday}" />
+                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayTuesday}"/>
+                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayTuesday}" />
+                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayWednesday}"/>
+                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayWednesday}" />
+                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayThursday}"/>
+                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayThursday}" />
+                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayFriday}"/>
+                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayFriday}" />
+                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDaySaturday}"/>
+                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDaySaturday}" />
+                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDaySunday}"/>
+                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDaySunday}" />
+                    </StackPanel>
+                    <TextBox Text="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.StartTime}" Visibility="{Binding BuildScheduleViewModel.ScheduledDaysVisible, Converter={StaticResource BoolToHiddenConverter}}" />
+                </StackPanel>
             </Grid>
         </GroupBox>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionActions}" Grid.Row="0" Grid.Column="1">
@@ -41,7 +85,9 @@
                 <Button Content="{x:Static appres:ModuleStrings.BtnGenerateBuildDefnitions}" Command="{Binding GenerateBuildDefinitionsCommand}" Grid.Column="2"/>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionEnvironments}" Grid.Row="1" Grid.Column="0">
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionBuild}" Grid.Row="1" Grid.Column="2">
+        </GroupBox>
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionEnvironments}" Grid.Row="2" Grid.Column="0">
             <ListView x:Name="lstAvailableEnvironments" ItemsSource="{Binding AvailableEnvironments}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -61,7 +107,7 @@
                 </ListView.ItemTemplate>
             </ListView>
         </GroupBox>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionTests}" Grid.Row="1" Grid.Column="1">
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionTests}" Grid.Row="2" Grid.Column="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -107,7 +153,7 @@
                 </ListBox>
             </Grid>
         </GroupBox>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionDeployment}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionDeployment}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <Button Content="{x:Static appres:ModuleStrings.BtnAddDeploymentScript}" Command="{Binding AddDeploymentScriptCommand}" />                    

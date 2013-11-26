@@ -65,6 +65,7 @@
     <Compile Include="Behaviors\IListItemConverter.cs" />
     <Compile Include="Behaviors\MultiSelectorBehaviours.cs" />
     <Compile Include="Behaviors\TwoListSynchronizer.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="DependencyInjection\IDependencyContainer.cs" />
     <Compile Include="DependencyInjection\LifetimeManager.cs" />
     <Compile Include="Events\ConfigurationChangedEvent.cs" />

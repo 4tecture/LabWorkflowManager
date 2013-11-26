@@ -81,6 +81,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModuleStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BuildScheduleViewModel.cs" />
     <Compile Include="ViewModels\MultiEnvironmentWorkflowDefinitionViewModel.cs" />
     <Compile Include="ViewModels\MultiEnvironmentWorkflowsViewModel.cs" />
     <Compile Include="Views\MultiEnvironmentWorkflowDefinitionView.xaml.cs">
