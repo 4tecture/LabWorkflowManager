@@ -36,6 +36,8 @@ namespace LabWorkflowManager.UI.ViewModels
 
             this.Item.PropertyChanged += (sender, args) => { if (args.PropertyName.Equals("Name")) this.RaisePropertyChanged(() => this.HeaderInfo); };
 
+            this.Item.MainLabWorkflowDefinition.SourceBuildDetails.PropertyChanged += (sender, args) => { if (args.PropertyName.Equals("QueueNewBuild")) { if (this.Item.MainLabWorkflowDefinition.SourceBuildDetails.QueueNewBuild) { this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildUri = null; this.RaisePropertyChanged(() => this.SelectedBuildtoUse); } } };
+
             InitTestSuitesSelection();
             InitEnvironmentsSelection();
             //InitTestSettingsSelection();
@@ -325,15 +327,56 @@ namespace LabWorkflowManager.UI.ViewModels
         private BuildScheduleViewModel buildScheduleViewModel;
         public BuildScheduleViewModel BuildScheduleViewModel { get { return this.buildScheduleViewModel; } }
 
+        public IEnumerable<AssociatedBuildDefinition> AvailableSourceBuildDefinitions
+        {
+            get
+            {
+                return this.tfsBuild.GetAssociatedDefinitions();
+            }
+        }
 
+        public AssociatedBuildDefinition SelectedSourceBuildDefinition
+        {
+            get
+            {
+                return this.AvailableSourceBuildDefinitions.Where(o => o.Uri.Equals(this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildDefinitionUri)).FirstOrDefault();
+            }
+            set
+            {
+                this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildDefinitionUri = value.Uri;
+                this.RaisePropertyChanged(() => this.SelectedSourceBuildDefinition);
+                this.RaisePropertyChanged(() => this.AvailableBuildsToUse);
+                this.RaisePropertyChanged(() => this.SelectedBuildtoUse);
+            }
+        }
+
+        public IEnumerable<AssociatedBuildDetail> AvailableBuildsToUse
+        {
+            get
+            {
+                if (this.SelectedSourceBuildDefinition != null)
+                {
+                    return new List<AssociatedBuildDetail>() { new AssociatedBuildDetail() { LabelName = "<LATEST>", Uri = string.Empty } }.Concat(this.SelectedSourceBuildDefinition.Builds);
+                }
+                return new List<AssociatedBuildDetail>();
+            }
+        }
+
+        public AssociatedBuildDetail SelectedBuildtoUse
+        {
+            get
+            {
+                return this.AvailableBuildsToUse.Where(o => (o.Uri != null && o.Uri.Equals(this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildUri)) || (o.LabelName.Equals("<LATEST>") && this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildUri == null)).FirstOrDefault();
+            }
+            set
+            {
+                this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildUri = value.Uri;
+                this.RaisePropertyChanged(() => this.SelectedBuildtoUse);
+            }
+        }
 
         private void GenerateBuildDefinitions()
         {
-            this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildDefinitionUri = "vstfs:///Build/Definition/1";
-
-            this.Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts = new ObservableCollection<TFS.Common.WorkflowConfig.DeploymentScript>() { new TFS.Common.WorkflowConfig.DeploymentScript() { Role = "Desktop Client", Script = @"notepad.exe", WorkingDirectory = @"C:\temp" } };
-
-
             var existingBuildDefinitions = this.tfsBuild.GetMultiEnvAssociatedBuildDefinitions(this.Item.Id).ToList();
             if (existingBuildDefinitions != null && existingBuildDefinitions.Count > 0)
             {

@@ -331,6 +331,33 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Queue New Build:.
+        /// </summary>
+        public static string LblSourceBuildDefinitionQueueNewBuild {
+            get {
+                return ResourceManager.GetString("LblSourceBuildDefinitionQueueNewBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build Definition:.
+        /// </summary>
+        public static string LblSourceBuildDefinitionToUse {
+            get {
+                return ResourceManager.GetString("LblSourceBuildDefinitionToUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build to use:.
+        /// </summary>
+        public static string LblSourceBuildToUse {
+            get {
+                return ResourceManager.GetString("LblSourceBuildToUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [New Definition].
         /// </summary>
         public static string NewDefinitionname {

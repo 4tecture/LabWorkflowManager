@@ -63,6 +63,7 @@ namespace LabWorkflowManager.TFS2012
         private static TFS.Common.WorkflowConfig.AssociatedBuildDefinition ConvertToAssociatedBuildDefinition(IBuildDefinition res)
         {
             var abd = new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition();
+            abd.Name = res.Name;
             abd.BuildControllerName = res.BuildController.Name;
             abd.BuildControllerUri = res.BuildControllerUri != null ? res.BuildControllerUri.ToString() : string.Empty;
             abd.ContinuousIntegrationQuietPeriod = res.ContinuousIntegrationQuietPeriod;
@@ -155,6 +156,7 @@ namespace LabWorkflowManager.TFS2012
                 var compileBuildDefinition = this.BuildServer.GetBuildDefinition(new Uri(sourceBuildDetails.BuildDefinitionUri));
                 labWorkflowDetails.BuildDetails.BuildDefinitionUri = compileBuildDefinition.Uri;
                 labWorkflowDetails.BuildDetails.BuildDefinitionName = compileBuildDefinition.Name;
+                labWorkflowDetails.BuildDetails.QueueNewBuild = sourceBuildDetails.QueueNewBuild;
                 if (!string.IsNullOrWhiteSpace(sourceBuildDetails.BuildUri))
                 {
                     labWorkflowDetails.BuildDetails.BuildUri = new Uri(sourceBuildDetails.BuildUri);

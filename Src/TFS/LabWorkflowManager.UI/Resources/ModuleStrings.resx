@@ -216,4 +216,13 @@
   <data name="LblScheduledDayWednesday" xml:space="preserve">
     <value>W:</value>
   </data>
+  <data name="LblSourceBuildDefinitionQueueNewBuild" xml:space="preserve">
+    <value>Queue New Build:</value>
+  </data>
+  <data name="LblSourceBuildDefinitionToUse" xml:space="preserve">
+    <value>Build Definition:</value>
+  </data>
+  <data name="LblSourceBuildToUse" xml:space="preserve">
+    <value>Build to use:</value>
+  </data>
 </root>

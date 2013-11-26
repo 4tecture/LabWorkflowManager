@@ -18,6 +18,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <Converters:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
+        <Converters:BoolInverterConverter x:Key="BoolInverterConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -86,6 +87,23 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionBuild}" Grid.Row="1" Grid.Column="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Label Content="{x:Static appres:ModuleStrings.LblSourceBuildDefinitionToUse}" Grid.Column="0" Grid.Row="0" />
+                <ComboBox ItemsSource="{Binding AvailableSourceBuildDefinitions}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSourceBuildDefinition}" Grid.Column="1" Grid.Row="0"/>
+                <Label Content="{x:Static appres:ModuleStrings.LblSourceBuildDefinitionQueueNewBuild}" Grid.Column="0" Grid.Row="1" />
+                <CheckBox IsChecked="{Binding Item.MainLabWorkflowDefinition.SourceBuildDetails.QueueNewBuild}" Grid.Column="1" Grid.Row="1" />
+                <Label Content="{x:Static appres:ModuleStrings.LblSourceBuildToUse}" Grid.Column="0" Grid.Row="2" />
+                <ComboBox ItemsSource="{Binding AvailableBuildsToUse}" DisplayMemberPath="LabelName" SelectedItem="{Binding SelectedBuildtoUse}" IsEnabled="{Binding Item.MainLabWorkflowDefinition.SourceBuildDetails.QueueNewBuild, Converter={StaticResource BoolInverterConverter}}" Grid.Column="1" Grid.Row="2"/>
+            </Grid>
         </GroupBox>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionEnvironments}" Grid.Row="2" Grid.Column="0">
             <ListView x:Name="lstAvailableEnvironments" ItemsSource="{Binding AvailableEnvironments}">
