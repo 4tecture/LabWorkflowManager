@@ -64,7 +64,7 @@ namespace LabWorkflowManager.TFS2012
         {
             var abd = new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition();
             abd.Name = res.Name;
-            abd.BuildControllerName = res.BuildController.Name;
+            abd.BuildControllerName = res.BuildController != null ? res.BuildController.Name : string.Empty;
             abd.BuildControllerUri = res.BuildControllerUri != null ? res.BuildControllerUri.ToString() : string.Empty;
             abd.ContinuousIntegrationQuietPeriod = res.ContinuousIntegrationQuietPeriod;
             abd.ContinuousIntegrationType = (LabWorkflowManager.TFS.Common.WorkflowConfig.BuildDefinitionContinuousIntegrationType)res.ContinuousIntegrationType;
@@ -74,8 +74,8 @@ namespace LabWorkflowManager.TFS2012
             abd.LastBuildUri = res.LastBuildUri != null ? res.LastBuildUri.ToString() : string.Empty;
             abd.LastGoodBuildLabel = res.LastGoodBuildLabel;
             abd.LastGoodBuildUri = res.LastGoodBuildUri != null ? res.LastGoodBuildUri.ToString() : string.Empty;
-            abd.Builds = res.QueryBuilds().Select(o => new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDetail() { Uri = o.Uri.ToString(), LabelName = o.LabelName }).ToList();
-            abd.Uri = res.Uri.ToString();
+				abd.Builds = res.QueryBuilds().Select(o => new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDetail() { Uri = o.Uri.ToString(), LabelName = o.LabelName }).ToList();
+			abd.Uri = res.Uri.ToString();
             return abd;
         }
 
@@ -148,7 +148,7 @@ namespace LabWorkflowManager.TFS2012
                 labWorkflowDetails.EnvironmentDetails.RevertToSnapshot = true;
             }
 
-            labWorkflowDetails.EnvironmentDetails.RevertToSnapshot = labEnvironmentDetails.RevertToSnapthot;
+            labWorkflowDetails.EnvironmentDetails.RevertToSnapshot = labEnvironmentDetails.RevertToSnapshot;
         }
 
         private LabWorkflowDetails ConfigLabBuildSettings(LabWorkflowManager.TFS.Common.WorkflowConfig.SourceBuildDetails sourceBuildDetails, LabWorkflowDetails labWorkflowDetails)

@@ -8,6 +8,10 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
 {
     public class AssociatedBuildDefinition
     {
+		public AssociatedBuildDefinition()
+		{
+			this.Builds = new List<AssociatedBuildDetail>();
+		}
         public String BuildControllerName { get; set; }
 
         public string BuildControllerUri { get; set; }

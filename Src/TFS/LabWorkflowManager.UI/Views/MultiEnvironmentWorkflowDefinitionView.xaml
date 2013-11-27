@@ -21,6 +21,7 @@
         <Converters:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
         <Converters:BoolInverterConverter x:Key="BoolInverterConverter" />
     </UserControl.Resources>
+	<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -113,7 +114,7 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
+                    <RowDefinition Height="200" />
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
@@ -137,7 +138,7 @@
                 </ListView>-->
                 <DataGrid ItemsSource="{Binding AvailableEnvironments}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="true" CanUserResizeRows="False" CanUserSortColumns="False" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="{x:Static appres:ModuleStrings.GridColSelection}" Binding="{Binding IsSelected}" Width="30"/>
+                        <DataGridCheckBoxColumn Header="{x:Static appres:ModuleStrings.GridColSelection}" Binding="{Binding IsSelected, Mode=TwoWay}" Width="30"/>
                         <DataGridTextColumn Header="{x:Static appres:ModuleStrings.GridColEnvName}" Binding="{Binding Item.Name}" IsReadOnly="True" Width="3*"/>
                         <!--<DataGridTextColumn Binding="{Binding Item.SnapshotList}" IsReadOnly="True" />-->
                         <DataGridTextColumn Header="{x:Static appres:ModuleStrings.GridColEnvUri}" Binding="{Binding Item.Uri}" IsReadOnly="True" Width="*"/>
@@ -145,13 +146,13 @@
                 </DataGrid>
                 <Label Content="{x:Static appres:ModuleStrings.LblRevertToSnapshot}" Grid.Column="0" Grid.Row="1" />
                 <StackPanel Orientation="Horizontal"  Grid.Column="1" Grid.Row="1">
-                    <CheckBox x:Name="cbRevertToSnapshop" IsChecked="{Binding Item.MainLabWorkflowDefinition.LabEnvironmentDetails.RevertToSnapshot}"/>
-                    <ComboBox ItemsSource="{Binding AvailableSnapshotsToRevert}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabEnvironmentDetails.SnapshotName}" IsEnabled="{Binding ElementName=cbRevertToSnapshop, Path=IsChecked}"/>
+						<CheckBox x:Name="cbRevertToSnapshot" IsChecked="{Binding Item.MainLabWorkflowDefinition.LabEnvironmentDetails.RevertToSnapshot}"/>
+						<ComboBox ItemsSource="{Binding AvailableSnapshotsToRevert}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabEnvironmentDetails.SnapshotName}" IsEnabled="{Binding ElementName=cbRevertToSnapshot, Path=IsChecked}" MinWidth="200"/>
                 </StackPanel>
                 <Label Content="{x:Static appres:ModuleStrings.LblTakePostDeploymentSnapshot}" Grid.Column="0" Grid.Row="2" />
                 <StackPanel Orientation="Horizontal"  Grid.Column="1" Grid.Row="2">
-                    <CheckBox x:Name="cbTakePostDeploymentSnapshot" IsChecked="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.TakePostDeloymentSnapshot}"/>
-                    <TextBox Text="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.SnapshotName}"  IsEnabled="{Binding ElementName=cbTakePostDeploymentSnapshot, Path=IsChecked}" />
+						<CheckBox x:Name="cbTakePostDeploymentSnapshot" IsChecked="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.TakePostDeploymentSnapshot}"/>
+                    <TextBox Text="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.SnapshotName}"  IsEnabled="{Binding ElementName=cbTakePostDeploymentSnapshot, Path=IsChecked}" MinWidth="200" />
                 </StackPanel>
             </Grid>
         </GroupBox>
@@ -162,17 +163,21 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <ComboBox ItemsSource="{Binding AvailableTestPlans}" SelectedItem="{Binding SelectedTestPlan}" Grid.Row="0" Grid.Column="0">
+                    <RowDefinition Height="30" />
+					<RowDefinition Height="100" />
+					<RowDefinition Height="30" />
+					<RowDefinition Height="100" />
+				</Grid.RowDefinitions>
+				<Label Content="{x:Static appres:ModuleStrings.LblTestPlan}" Grid.Column="0" Grid.Row="0" />
+                <ComboBox ItemsSource="{Binding AvailableTestPlans}" SelectedItem="{Binding SelectedTestPlan}" Grid.Row="0" Grid.Column="1">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ListBox ItemsSource="{Binding AvailableTestSuites}"  Grid.Row="0" Grid.Column="1">
+				<Label Content="{x:Static appres:ModuleStrings.LblTestSuites}" Grid.Column="0" Grid.Row="1" />
+				<ListBox ItemsSource="{Binding AvailableTestSuites}"  Grid.Row="1" Grid.Column="1">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -182,14 +187,16 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <ComboBox ItemsSource="{Binding AvailableTestSettings}" SelectedItem="{Binding SelectedTestSettings}" Grid.Row="1" Grid.Column="0">
+				<Label Content="{x:Static appres:ModuleStrings.LblTestSettings}" Grid.Column="0" Grid.Row="2" />
+                <ComboBox ItemsSource="{Binding AvailableTestSettings}" SelectedItem="{Binding SelectedTestSettings}" Grid.Row="2" Grid.Column="1">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ListBox ItemsSource="{Binding AvailableTestConfigurations}" Grid.Row="1" Grid.Column="1">
+				<Label Content="{x:Static appres:ModuleStrings.LblTestConfigurations}" Grid.Column="0" Grid.Row="3" />
+                <ListBox ItemsSource="{Binding AvailableTestConfigurations}" Grid.Row="3" Grid.Column="1">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -202,8 +209,12 @@
             </Grid>
         </GroupBox>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionDeployment}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
-            <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal">
+            <Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="30"/>
+						<RowDefinition MinHeight="200" Height="*"/>
+					</Grid.RowDefinitions>
+						<StackPanel Orientation="Horizontal" Grid.Row="0">
                     <Button Content="{x:Static appres:ModuleStrings.BtnAddDeploymentScript}" Command="{Binding AddDeploymentScriptCommand}" />
                 </StackPanel>
                 <!--<ListBox ItemsSource="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts}">
@@ -224,7 +235,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>-->
-                <DataGrid ItemsSource="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts}" AutoGenerateColumns="False" CanUserAddRows="False"  CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="true" CanUserResizeRows="False" CanUserSortColumns="False">
+                <DataGrid ItemsSource="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts}" AutoGenerateColumns="False" CanUserAddRows="False"  CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="true" CanUserResizeRows="False" CanUserSortColumns="False" Grid.Row="1">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="{x:Static appres:ModuleStrings.GridColRoles}" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
@@ -249,7 +260,8 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-            </StackPanel>
+            </Grid>
         </GroupBox>
     </Grid>
+	</ScrollViewer>
 </UserControl>

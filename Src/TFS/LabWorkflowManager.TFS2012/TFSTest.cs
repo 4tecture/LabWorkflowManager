@@ -60,13 +60,13 @@ namespace LabWorkflowManager.TFS2012
 
         private IEnumerable<ITestSuiteEntry> GetTestSuite(IEnumerable<ITestSuiteEntry> suites)
         {
-            foreach(var suite in suites)
+			foreach (var suite in suites.Where(o => o.EntryType == TestSuiteEntryType.DynamicTestSuite || o.EntryType == TestSuiteEntryType.RequirementTestSuite || o.EntryType == TestSuiteEntryType.StaticTestSuite))
             {
                 yield return suite;
                 IStaticTestSuite staticSuite = suite.TestSuite as IStaticTestSuite;
                 if (staticSuite != null)
                  {
-                     foreach(var childSuite in GetTestSuite(staticSuite.Entries))
+                     foreach(var childSuite in GetTestSuite(staticSuite.Entries.Where(o => o.EntryType == TestSuiteEntryType.DynamicTestSuite || o.EntryType == TestSuiteEntryType.RequirementTestSuite || o.EntryType == TestSuiteEntryType.StaticTestSuite)))
                      {
                          yield return childSuite;
                      }

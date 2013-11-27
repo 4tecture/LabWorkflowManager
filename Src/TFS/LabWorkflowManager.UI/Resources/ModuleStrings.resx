@@ -258,4 +258,16 @@
   <data name="LblTakePostDeploymentSnapshot" xml:space="preserve">
     <value>Post Deployment Snapshot:</value>
   </data>
+  <data name="LblTestConfigurations" xml:space="preserve">
+    <value>Test Configurations:</value>
+  </data>
+  <data name="LblTestPlan" xml:space="preserve">
+    <value>Test Plan:</value>
+  </data>
+  <data name="LblTestSettings" xml:space="preserve">
+    <value>Test Settings:</value>
+  </data>
+  <data name="LblTestSuites" xml:space="preserve">
+    <value>Test Suites:</value>
+  </data>
 </root>

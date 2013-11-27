@@ -15,8 +15,10 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
         public string SnapshotName { get { return this.snapshotName; } set { this.snapshotName = value; this.RaisePropertyChanged(() => this.SnapshotName); } }
 
         private bool revertToSnapshot;
-        public bool RevertToSnapthot { get { return this.revertToSnapshot; } 
-            set { this.revertToSnapshot = value; this.RaisePropertyChanged(() => this.RevertToSnapthot); } }
+        public bool RevertToSnapshot { 
+			get { return this.revertToSnapshot; }
+			set { this.revertToSnapshot = value; this.RaisePropertyChanged(() => this.RevertToSnapshot); }
+		}
 
         internal LabEnvironmentDetails Clone()
         {
@@ -24,7 +26,7 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
 
             clone.LabEnvironmentUri = this.LabEnvironmentUri;
             clone.SnapshotName = this.SnapshotName;
-            clone.RevertToSnapthot = this.RevertToSnapthot;
+			clone.RevertToSnapshot = this.RevertToSnapshot;
 
             return clone;
         }
