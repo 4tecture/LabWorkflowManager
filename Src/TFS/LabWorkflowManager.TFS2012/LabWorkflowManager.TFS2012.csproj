@@ -51,13 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.TeamFoundation.Lab.Client\11.0.0.0__b03f5f7f11d50a3a\Microsoft.TeamFoundation.Lab.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Lab.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.TeamFoundation.Lab.Common\11.0.0.0__b03f5f7f11d50a3a\Microsoft.TeamFoundation.Lab.Common.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.TeamFoundation.Lab.Workflow.Activities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\Microsoft.TeamFoundation.Lab.Workflow.Activities\v4.0_10.0.0.0__b03f5f7f11d50a3a\Microsoft.TeamFoundation.Lab.Workflow.Activities.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\PrivateAssemblies\Microsoft.TeamFoundation.Lab.Workflow.Activities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.TestManagement.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.TeamFoundation.TestManagement.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
