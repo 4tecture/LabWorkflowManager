@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LabWorkflowManager.TFS.Common.WorkflowConfig
+{
+    public class AssociatedTestSuite
+    {
+        public string Title { get; set; }
+
+        public int Id { get; set; }
+
+        public int ParentId { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as AssociatedTestSuite;
+            if (other == null)
+            {
+                return false;
+            }
+            return this.Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
+    }
+}
