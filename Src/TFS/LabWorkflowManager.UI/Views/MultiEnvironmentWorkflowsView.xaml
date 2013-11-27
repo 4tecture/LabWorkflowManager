@@ -33,7 +33,7 @@
                     <Button Content="{x:Static appres:ModuleStrings.BtnDelete}" Command="{Binding DeleteDefinitionCommand}" CommandParameter="{Binding ElementName=lstDefinitions, Path=SelectedItem}" />
                     <Button Content="{x:Static appres:ModuleStrings.BtnSave}" Command="{Binding SaveCommand}" />
                 </StackPanel>
-                <ListView x:Name="lstDefinitions" ItemsSource="{Binding Definitions}" SelectedItem="{Binding CurrentDefinition}">
+                <!--<ListView x:Name="lstDefinitions" ItemsSource="{Binding Definitions}" SelectedItem="{Binding CurrentDefinition}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -48,7 +48,20 @@
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                </ListView>
+                </ListView>-->
+                <DataGrid x:Name="lstDefinitions" ItemsSource="{Binding Definitions}" SelectedItem="{Binding CurrentDefinition}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="true" CanUserResizeRows="False" CanUserSortColumns="False" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{x:Static appres:ModuleStrings.GridColMultiEnvDefName}" Binding="{Binding Name}" IsReadOnly="true" Width="*"/>
+                        <DataGridTextColumn Header="{x:Static appres:ModuleStrings.GridColMultiEnvDefDesc}" Binding="{Binding Description}" IsReadOnly="true" Width="2*"/>
+                        <DataGridTemplateColumn Header="{x:Static appres:ModuleStrings.GridColActions}" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="{x:Static appres:ModuleStrings.BtnEdit}" Command="{Binding DataContext.EditDefinitionCommand, ElementName=lstDefinitions}" CommandParameter="{Binding}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
         </GroupBox>
     </Grid>

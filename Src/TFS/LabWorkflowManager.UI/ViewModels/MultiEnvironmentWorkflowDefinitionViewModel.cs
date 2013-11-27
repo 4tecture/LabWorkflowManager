@@ -193,7 +193,8 @@ namespace LabWorkflowManager.UI.ViewModels
         {
             get
             {
-                return ModuleStrings.TitleEdit + " " + Item.Name;
+                //return ModuleStrings.TitleEdit + " " + Item.Name;
+                return "[" + Item.Name +"]";
             }
         }
 

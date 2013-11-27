@@ -133,6 +133,87 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string GridColActions {
+            get {
+                return ResourceManager.GetString("GridColActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Environment Name.
+        /// </summary>
+        public static string GridColEnvName {
+            get {
+                return ResourceManager.GetString("GridColEnvName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Environment Uri.
+        /// </summary>
+        public static string GridColEnvUri {
+            get {
+                return ResourceManager.GetString("GridColEnvUri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string GridColMultiEnvDefDesc {
+            get {
+                return ResourceManager.GetString("GridColMultiEnvDefDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Definition Name.
+        /// </summary>
+        public static string GridColMultiEnvDefName {
+            get {
+                return ResourceManager.GetString("GridColMultiEnvDefName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role.
+        /// </summary>
+        public static string GridColRoles {
+            get {
+                return ResourceManager.GetString("GridColRoles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script.
+        /// </summary>
+        public static string GridColScript {
+            get {
+                return ResourceManager.GetString("GridColScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [].
+        /// </summary>
+        public static string GridColSelection {
+            get {
+                return ResourceManager.GetString("GridColSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Working Directory.
+        /// </summary>
+        public static string GridColWorkingDirectory {
+            get {
+                return ResourceManager.GetString("GridColWorkingDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TFS Connection.
         /// </summary>
         public static string GrpConnection {

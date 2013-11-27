@@ -225,6 +225,33 @@
   <data name="LblSourceBuildToUse" xml:space="preserve">
     <value>Build to use:</value>
   </data>
+  <data name="GridColActions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="GridColEnvName" xml:space="preserve">
+    <value>Environment Name</value>
+  </data>
+  <data name="GridColEnvUri" xml:space="preserve">
+    <value>Environment Uri</value>
+  </data>
+  <data name="GridColMultiEnvDefDesc" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="GridColMultiEnvDefName" xml:space="preserve">
+    <value>Definition Name</value>
+  </data>
+  <data name="GridColRoles" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="GridColScript" xml:space="preserve">
+    <value>Script</value>
+  </data>
+  <data name="GridColSelection" xml:space="preserve">
+    <value>[]</value>
+  </data>
+  <data name="GridColWorkingDirectory" xml:space="preserve">
+    <value>Working Directory</value>
+  </data>
   <data name="LblRevertToSnapshot" xml:space="preserve">
     <value>Revert to Snapshot:</value>
   </data>
