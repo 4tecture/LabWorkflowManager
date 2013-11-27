@@ -129,7 +129,7 @@ namespace LabWorkflowManager.TFS2012
         {
             labWorkflowDetails.DeploymentDetails.DeploymentNeeded = true;
             labWorkflowDetails.DeploymentDetails.UseRoleForDeployment = true;
-            labWorkflowDetails.DeploymentDetails.TakePostDeploymentSnapshot = true;
+            labWorkflowDetails.DeploymentDetails.TakePostDeploymentSnapshot = deploymentDetails.TakePostDeploymentSnapshot;
             labWorkflowDetails.DeploymentDetails.PostDeploymentSnapshotName = deploymentDetails.SnapshotName;
             labWorkflowDetails.DeploymentDetails.UseRoleForDeployment = true;
             labWorkflowDetails.DeploymentDetails.Scripts = new Microsoft.TeamFoundation.Build.Workflow.Activities.StringList();
@@ -147,6 +147,8 @@ namespace LabWorkflowManager.TFS2012
                 labWorkflowDetails.EnvironmentDetails.SnapshotName = labEnvironmentDetails.SnapshotName;
                 labWorkflowDetails.EnvironmentDetails.RevertToSnapshot = true;
             }
+
+            labWorkflowDetails.EnvironmentDetails.RevertToSnapshot = labEnvironmentDetails.RevertToSnapthot;
         }
 
         private LabWorkflowDetails ConfigLabBuildSettings(LabWorkflowManager.TFS.Common.WorkflowConfig.SourceBuildDetails sourceBuildDetails, LabWorkflowDetails labWorkflowDetails)

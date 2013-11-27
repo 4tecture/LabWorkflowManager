@@ -268,6 +268,15 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Revert to Snapshot:.
+        /// </summary>
+        public static string LblRevertToSnapshot {
+            get {
+                return ResourceManager.GetString("LblRevertToSnapshot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to F:.
         /// </summary>
         public static string LblScheduledDayFriday {
@@ -354,6 +363,15 @@ namespace LabWorkflowManager.UI.Resources {
         public static string LblSourceBuildToUse {
             get {
                 return ResourceManager.GetString("LblSourceBuildToUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post Deployment Snapshot:.
+        /// </summary>
+        public static string LblTakePostDeploymentSnapshot {
+            get {
+                return ResourceManager.GetString("LblTakePostDeploymentSnapshot", resourceCulture);
             }
         }
         

@@ -9,7 +9,7 @@
              xmlns:WorkflowConfig="clr-namespace:LabWorkflowManager.TFS.Common.WorkflowConfig;assembly=LabWorkflowManager.TFS.Common"
              xmlns:Converters="clr-namespace:_4tecture.UI.Common.Converters;assembly=4tecture.UI.Common"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="768" d:DesignWidth="1024">
     <UserControl.Resources>
         <ObjectDataProvider x:Key="BuildDefinitionContinuousIntegrationTypeEnum" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
@@ -106,7 +106,17 @@
             </Grid>
         </GroupBox>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionEnvironments}" Grid.Row="2" Grid.Column="0">
-            <ListView x:Name="lstAvailableEnvironments" ItemsSource="{Binding AvailableEnvironments}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <ListView x:Name="lstAvailableEnvironments" ItemsSource="{Binding AvailableEnvironments}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -124,6 +134,17 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+                <Label Content="{x:Static appres:ModuleStrings.LblRevertToSnapshot}" Grid.Column="0" Grid.Row="1" />
+                <StackPanel Orientation="Horizontal"  Grid.Column="1" Grid.Row="1">
+                    <CheckBox x:Name="cbRevertToSnapshop" IsChecked="{Binding Item.MainLabWorkflowDefinition.LabEnvironmentDetails.RevertToSnapshot}"/>
+                    <ComboBox ItemsSource="{Binding AvailableSnapshotsToRevert}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabEnvironmentDetails.SnapshotName}" IsEnabled="{Binding ElementName=cbRevertToSnapshop, Path=IsChecked}"/>
+                </StackPanel>
+                <Label Content="{x:Static appres:ModuleStrings.LblTakePostDeploymentSnapshot}" Grid.Column="0" Grid.Row="2" />
+                <StackPanel Orientation="Horizontal"  Grid.Column="1" Grid.Row="2">
+                    <CheckBox x:Name="cbTakePostDeploymentSnapshot" IsChecked="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.TakePostDeloymentSnapshot}"/>
+                    <TextBox Text="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.SnapshotName}"  IsEnabled="{Binding ElementName=cbTakePostDeploymentSnapshot, Path=IsChecked}" />
+                </StackPanel>                
+            </Grid>
         </GroupBox>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionTests}" Grid.Row="2" Grid.Column="1">
             <Grid>

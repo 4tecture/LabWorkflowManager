@@ -4,7 +4,7 @@
         xmlns:prism="http://www.codeplex.com/prism"
         xmlns:appres="clr-namespace:LabWorkflowManager.Resources"
         xmlns:MetroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="{x:Static appres:ApplicationStrings.Title}" MinHeight="600" MinWidth="800">
+        Title="{x:Static appres:ApplicationStrings.Title}" MinHeight="786" MinWidth="1024">
 
     <Window.Resources>
         <ResourceDictionary>

@@ -225,4 +225,10 @@
   <data name="LblSourceBuildToUse" xml:space="preserve">
     <value>Build to use:</value>
   </data>
+  <data name="LblRevertToSnapshot" xml:space="preserve">
+    <value>Revert to Snapshot:</value>
+  </data>
+  <data name="LblTakePostDeploymentSnapshot" xml:space="preserve">
+    <value>Post Deployment Snapshot:</value>
+  </data>
 </root>

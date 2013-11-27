@@ -156,6 +156,7 @@ namespace LabWorkflowManager.UI.ViewModels
                 this.Item.Environments.Add(new MultiEnvironmentWorkflowEnvironment() { EnvironmentName = selectedEnv.Name, EnvironmentUri = selectedEnv.Uri });
             }
             SyncTestConfigurationsWithEnvironments(this.availableTestConfigurations.SelectedItems);
+            this.RaisePropertyChanged(() => this.AvailableSnapshotsToRevert);
             this.Item.Environments.CollectionChanged += EnvironmentsCollectionChanged;
         }
 
@@ -372,6 +373,22 @@ namespace LabWorkflowManager.UI.ViewModels
             {
                 this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildUri = value.Uri;
                 this.RaisePropertyChanged(() => this.SelectedBuildtoUse);
+            }
+        }
+
+        public IEnumerable<object> AvailableSnapshotsToRevert
+        {
+            get
+            {
+                var env = this.AvailableEnvironments.SelectedItems.FirstOrDefault();
+                if (env != null)
+                {
+                    return env.Snapshots;
+                }
+                else
+                {
+                    return new List<string>();
+                }
             }
         }
 
