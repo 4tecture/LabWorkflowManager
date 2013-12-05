@@ -11,6 +11,11 @@ namespace LabWorkflowManager.TFS2012
 {
     public class TFSConnectivity : ITFSConnectivity
     {
+        private IWorkflowManagerStorage workflowManagerStorage;
+        public TFSConnectivity(IWorkflowManagerStorage storage)
+        {
+            this.workflowManagerStorage = storage;
+        }
         public void ConnectUI()
         {
             TeamProjectPicker tpp = new TeamProjectPicker(TeamProjectPickerMode.SingleProject, false);
@@ -20,6 +25,7 @@ namespace LabWorkflowManager.TFS2012
                 Tpc = tpp.SelectedTeamProjectCollection;
                 Tpc.EnsureAuthenticated();
                 TeamProjects = tpp.SelectedProjects;
+                this.workflowManagerStorage.LastTFSConnection = new TFSConnectionDetails() { Uri = Tpc.Uri.ToString(), Project = TeamProjects.First().Name };
             }
         }
 
@@ -31,6 +37,7 @@ namespace LabWorkflowManager.TFS2012
                 Tpc = tpc;
                 Tpc.EnsureAuthenticated();
                 TeamProjects = tpc.GetService<ICommonStructureService>().ListAllProjects().Where(p => p.Name.Contains(projectName)).Take(1);
+                this.workflowManagerStorage.LastTFSConnection = new TFSConnectionDetails() { Uri = Tpc.Uri.ToString(), Project = TeamProjects.First().Name };
             }
         }
 

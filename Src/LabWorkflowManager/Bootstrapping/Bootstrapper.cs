@@ -1,8 +1,11 @@
 ﻿using _4tecture.UI.Common.DependencyInjection;
 using _4tecture.UI.Common.Helper;
+using _4tecture.UI.Common.Services;
 using LabWorkflowManager.Handlers;
+using LabWorkflowManager.Services;
 using LabWorkflowManager.Views;
 using Microsoft.Practices.Prism.Modularity;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
 using System;
@@ -39,9 +42,12 @@ namespace LabWorkflowManager.Bootstrapping
             
             //DataTemplateHelper.RegisterAndCreateTemplate<LabWorkflowManager.ViewModels.ConfigurationViewModel, LabWorkflowManager.Views.ConfigurationView>(this.Container.Resolve<IDependencyContainer>(), RegionNames.MainRegion);
 
-            var msgBoxHandler = this.Container.Resolve<MsgBoxHandler>();
-            this.Container.RegisterInstance(msgBoxHandler);
+            this.Container.RegisterInstance(this.Container.Resolve<MsgBoxHandler>());
+            this.Container.RegisterInstance<IFileDialogService>(this.Container.Resolve<FileDialogService>());
 
+            var rm = this.Container.Resolve<IRegionManager>();
+            rm.Regions[RegionNames.MainRegion].Views.CollectionChanged += (source, args) => { if (args.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add) { rm.Regions[RegionNames.MainRegion].Activate(args.NewItems[0]); } };
+            
             base.InitializeModules();
 
         }

@@ -4,11 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:appres="clr-namespace:LabWorkflowManager.UI.Resources"
+             xmlns:Converters="clr-namespace:_4tecture.UI.Common.Converters;assembly=4tecture.UI.Common"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Converters:BoolToColorBrushConverter x:Key="GreenLightConverter" TrueColor="Green" FalseColor="Transparent" />
+        <Converters:BoolToColorBrushConverter x:Key="RedLightConverter" TrueColor="Red" FalseColor="Transparent" InvertValue="true" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80px"/>
+            <RowDefinition Height="120px"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpConnection}" Grid.Row="0">
@@ -20,10 +25,23 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30px"/>
+                    <RowDefinition Height="30px"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{Binding TeamProjectCollectionUri}" Grid.Column="0" />
-                <TextBlock Text="{Binding TeamProjectName}" Grid.Column="1"/>
-                <Button Content="{x:Static appres:ModuleStrings.BtnConnect}" Command="{Binding ConnectToTfsCommand}" Grid.Column="2"/>
+                <TextBlock Text="{Binding TeamProjectCollectionUri}" Grid.Column="0" Grid.Row="0" />
+                <TextBlock Text="{Binding TeamProjectName}" Grid.Column="1" Grid.Row="0"/>
+                <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right">
+                    <Ellipse Width="20" Height="20" Fill="{Binding IsConnectedToTfs, Converter={StaticResource GreenLightConverter}}" Stroke="Green" />
+                    <Ellipse Width="20" Height="20" Fill="{Binding IsConnectedToTfs, Converter={StaticResource RedLightConverter}}" Stroke="Red"/>
+                    <Button Content="{x:Static appres:ModuleStrings.BtnConnect}" Command="{Binding ConnectToTfsCommand}"/>
+                </StackPanel>
+
+                <TextBlock Text="{Binding CurrentWorkflowDefinitionFile}" Grid.Column="0"  Grid.Row="1"/>
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Right">
+                    <Button Content="{x:Static appres:ModuleStrings.BtnNewFile}" Command="{Binding NewCommand}" />
+                    <Button Content="{x:Static appres:ModuleStrings.BtnLoadFile}" Command="{Binding LoadCommand}" />
+                    <Button Content="{x:Static appres:ModuleStrings.BtnSaveFile}" Command="{Binding SaveCommand}" />
+                    <Button Content="{x:Static appres:ModuleStrings.BtnSaveAsFile}" Command="{Binding SaveAsCommand}" />
+                </StackPanel>
             </Grid>
         </GroupBox>
         <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitions}" Grid.Row="1">
@@ -31,7 +49,6 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="{x:Static appres:ModuleStrings.BtnAdd}" Command="{Binding AddNewDefinitionCommand}" />
                     <Button Content="{x:Static appres:ModuleStrings.BtnDelete}" Command="{Binding DeleteDefinitionCommand}" CommandParameter="{Binding ElementName=lstDefinitions, Path=SelectedItem}" />
-                    <Button Content="{x:Static appres:ModuleStrings.BtnSave}" Command="{Binding SaveCommand}" />
                 </StackPanel>
                 <!--<ListView x:Name="lstDefinitions" ItemsSource="{Binding Definitions}" SelectedItem="{Binding CurrentDefinition}">
                     <ListView.ItemTemplate>

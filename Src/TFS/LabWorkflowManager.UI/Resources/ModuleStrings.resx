@@ -129,9 +129,6 @@
   <data name="BtnEdit" xml:space="preserve">
     <value>Edit Definition</value>
   </data>
-  <data name="BtnSave" xml:space="preserve">
-    <value>Save all</value>
-  </data>
   <data name="GrpConnection" xml:space="preserve">
     <value>TFS Connection</value>
   </data>
@@ -269,5 +266,17 @@
   </data>
   <data name="LblTestSuites" xml:space="preserve">
     <value>Test Suites:</value>
+  </data>
+  <data name="BtnLoadFile" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="BtnNewFile" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="BtnSaveAsFile" xml:space="preserve">
+    <value>Save As</value>
+  </data>
+  <data name="BtnSaveFile" xml:space="preserve">
+    <value>Save</value>
   </data>
 </root>

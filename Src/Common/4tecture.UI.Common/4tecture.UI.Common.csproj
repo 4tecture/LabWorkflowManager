@@ -66,6 +66,7 @@
     <Compile Include="Behaviors\MultiSelectorBehaviours.cs" />
     <Compile Include="Behaviors\TwoListSynchronizer.cs" />
     <Compile Include="Converters\BoolInverterConverter.cs" />
+    <Compile Include="Converters\BoolToColorBrushConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="DependencyInjection\IDependencyContainer.cs" />
     <Compile Include="DependencyInjection\LifetimeManager.cs" />
@@ -87,6 +88,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Services\IFileDialogService.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -14,7 +14,7 @@ namespace LabWorkflowManager.TFS2012.Tests.Integration
         public void CreateBDTWorkflowFromScratch()
         {
             // Arrange
-            var tfsbuild = new TFSBuild(new TFSConnectivity());
+            var tfsbuild = new TFSBuild(new TFSConnectivity(new WorkflowManagerStorage()));
             tfsbuild.Connectivity.Connect("http://vsalm:8080/tfs/FabrikamFiberCollection", "FabrikamFiber");
 
             var name = string.Format("Test BDT Integration {0}", DateTime.Now.Ticks);

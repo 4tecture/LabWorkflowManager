@@ -103,6 +103,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ApplicationStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\FileDialogService.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
