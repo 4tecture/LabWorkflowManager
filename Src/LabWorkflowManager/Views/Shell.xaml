@@ -4,8 +4,8 @@
         xmlns:prism="http://www.codeplex.com/prism"
         xmlns:appres="clr-namespace:LabWorkflowManager.Resources"
         xmlns:MetroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:Converters="clr-namespace:_4tecture.UI.Common.Converters;assembly=4tecture.UI.Common"
         Title="{x:Static appres:ApplicationStrings.Title}" MinHeight="786" MinWidth="1024">
-
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,6 +19,7 @@
                 <ResourceDictionary Source="pack://application:,,,/LabWorkflowManager;component/Resources/Accent4tecture.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/LabWorkflowManager;component/Resources/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Converters:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
         </ResourceDictionary>
     </Window.Resources>
     <DockPanel>
@@ -30,14 +31,22 @@
             </StackPanel>
         </DockPanel>
         <Grid DockPanel.Dock="Bottom">
-            <Label Content="{Binding ApplicationInformation}" HorizontalAlignment="Right"/>
+            <Label Content="{Binding ApplicationInformation}" HorizontalAlignment="Right" Margin="0,0,5,0"/>
         </Grid>
         <TabControl x:Name="MainRegion" prism:RegionManager.RegionName="MainRegion">
-            <TabControl.ItemContainerStyle>
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding HeaderInfo}"/>
+                        <Button Content="X" BorderBrush="Transparent" Background="Transparent" Command="{Binding CloseViewCommand}" Visibility="{Binding IsViewClosable, Converter={StaticResource BoolToHiddenConverter}, FallbackValue=Hidden}" FontSize="20" Margin="2,-5,0,0" Padding="0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <!--<TabControl.ItemContainerStyle>
                 <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
-                    <Setter Property="Header" Value="{Binding HeaderInfo}" />
+                    --><!--<Setter Property="Header" Value="{Binding HeaderInfo}" />--><!--
                 </Style>
-            </TabControl.ItemContainerStyle>
+            </TabControl.ItemContainerStyle>-->
         </TabControl>
     </DockPanel>
 

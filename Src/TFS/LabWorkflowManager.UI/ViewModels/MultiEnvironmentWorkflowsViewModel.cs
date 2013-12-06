@@ -136,7 +136,26 @@ namespace LabWorkflowManager.UI.ViewModels
 
         private void EditDefinition(MultiEnvironmentWorkflowDefinition item)
         {
-            this.regionManager.AddToRegion(RegionNames.MainRegion, new MultiEnvironmentWorkflowDefinitionViewModel(item, this.tfsConnectivity, this.tfsBuild, this.tfsLabEnvironment, this.tfsTest, this.regionManager));
+            var existingViewModel = this.regionManager.Regions[RegionNames.MainRegion].Views.Where(v =>
+            {
+                var mewdvm = v as MultiEnvironmentWorkflowDefinitionViewModel;
+                if (mewdvm != null)
+                {
+                    return mewdvm.Item.Equals(item);
+                }
+                return false;
+            }).FirstOrDefault();
+            
+            if(existingViewModel != null)
+            {
+                this.regionManager.Regions[RegionNames.MainRegion].Activate(existingViewModel);
+            }
+            else
+            {
+                var vm = new MultiEnvironmentWorkflowDefinitionViewModel(item, this.tfsConnectivity, this.tfsBuild, this.tfsLabEnvironment, this.tfsTest, this.regionManager);
+                vm.CloseViewCommand = new DelegateCommand(() => { this.regionManager.Regions[RegionNames.MainRegion].Remove(vm); });
+                this.regionManager.AddToRegion(RegionNames.MainRegion, vm);
+            }
         }
 
         private void DeleteDefinition(MultiEnvironmentWorkflowDefinition item)

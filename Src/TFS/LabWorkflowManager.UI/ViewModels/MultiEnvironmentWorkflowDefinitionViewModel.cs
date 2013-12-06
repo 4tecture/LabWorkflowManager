@@ -186,15 +186,18 @@ namespace LabWorkflowManager.UI.ViewModels
 		public MultiEnvironmentWorkflowDefinition Item { get; set; }
 
 		public ICommand GenerateBuildDefinitionsCommand { get; private set; }
-		public ICommand AddDeploymentScriptCommand { get; set; }
-		public ICommand RemoveDeploymentScriptCommand { get; set; }
+        public ICommand AddDeploymentScriptCommand { get; private set; }
+        public ICommand RemoveDeploymentScriptCommand { get; private set; }
+
+        public ICommand CloseViewCommand { get; internal set; }
+        public bool IsViewClosable { get { return true; } }
 
 		public string HeaderInfo
 		{
 			get
 			{
 				//return ModuleStrings.TitleEdit + " " + Item.Name;
-				return "[" + Item.Name + "]";
+				return Item.Name;
 			}
 		}
 
