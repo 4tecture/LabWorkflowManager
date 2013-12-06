@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Modularity\LabWorkflowManagerUIModule.cs" />
+    <Compile Include="Modularity\ModuleStringsHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Microsoft.TeamFoundation.Build.Client;
 using System.Linq;
 using System.Collections.ObjectModel;
+using Moq;
+using Microsoft.Practices.Prism.Events;
 
 namespace LabWorkflowManager.TFS2012.Tests.Integration
 {
@@ -14,7 +16,8 @@ namespace LabWorkflowManager.TFS2012.Tests.Integration
         public void CreateBDTWorkflowFromScratch()
         {
             // Arrange
-            var tfsbuild = new TFSBuild(new TFSConnectivity(new WorkflowManagerStorage()));
+            var eventAggregatorMock = new Mock<IEventAggregator>();
+            var tfsbuild = new TFSBuild(new TFSConnectivity(new WorkflowManagerStorage(eventAggregatorMock.Object), eventAggregatorMock.Object));
             tfsbuild.Connectivity.Connect("http://vsalm:8080/tfs/FabrikamFiberCollection", "FabrikamFiber");
 
             var name = string.Format("Test BDT Integration {0}", DateTime.Now.Ticks);

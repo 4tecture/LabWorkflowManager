@@ -520,6 +520,33 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TFS Server cannot be connected!.
+        /// </summary>
+        public static string MsgCannotConnectTFS {
+            get {
+                return ResourceManager.GetString("MsgCannotConnectTFS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Definitions could not be loaded from file!.
+        /// </summary>
+        public static string MsgCannotLoadDefinitions {
+            get {
+                return ResourceManager.GetString("MsgCannotLoadDefinitions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Definitions could not be saved!.
+        /// </summary>
+        public static string MsgCannotSaveDefinitions {
+            get {
+                return ResourceManager.GetString("MsgCannotSaveDefinitions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [New Definition].
         /// </summary>
         public static string NewDefinitionname {

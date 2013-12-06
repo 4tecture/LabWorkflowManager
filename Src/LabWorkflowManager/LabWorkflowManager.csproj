@@ -117,6 +117,10 @@
     <Compile Include="Bootstrapping\EnterpriseLibraryLoggerAdapter.cs" />
     <Compile Include="Config\CustomSettingsBase.cs" />
     <Compile Include="Config\LabWorkflowManagerSettings.cs" />
+    <Page Include="Resources\Accent4tecture.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Controls.Datagrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

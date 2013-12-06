@@ -279,4 +279,13 @@
   <data name="BtnSaveFile" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="MsgCannotConnectTFS" xml:space="preserve">
+    <value>TFS Server cannot be connected!</value>
+  </data>
+  <data name="MsgCannotLoadDefinitions" xml:space="preserve">
+    <value>Definitions could not be loaded from file!</value>
+  </data>
+  <data name="MsgCannotSaveDefinitions" xml:space="preserve">
+    <value>Definitions could not be saved!</value>
+  </data>
 </root>

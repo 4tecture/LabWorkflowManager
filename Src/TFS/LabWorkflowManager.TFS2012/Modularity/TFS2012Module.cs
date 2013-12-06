@@ -21,7 +21,7 @@ namespace LabWorkflowManager.TFS2012.Modularity
 
         public void Initialize()
         {
-            this.container.RegisterInstance<IWorkflowManagerStorage>(new WorkflowManagerStorage());
+            this.container.RegisterInstance<IWorkflowManagerStorage>(this.container.TryResolve<WorkflowManagerStorage>());
             this.container.RegisterInstance<ITFSConnectivity>(this.container.TryResolve<TFSConnectivity>());
             this.container.RegisterType<ITFSBuild, TFSBuild>();
             this.container.RegisterType<ITFSLabEnvironment, TFSLabEnvironment>();

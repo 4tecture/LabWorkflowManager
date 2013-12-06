@@ -15,7 +15,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/LabWorkflowManager;component/Resources/Controls.Datagrid.xaml" />
-                <!--Todo remove when ready in package-->
+                <!--Custom stlyes-->
+                <ResourceDictionary Source="pack://application:,,,/LabWorkflowManager;component/Resources/Accent4tecture.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/LabWorkflowManager;component/Resources/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

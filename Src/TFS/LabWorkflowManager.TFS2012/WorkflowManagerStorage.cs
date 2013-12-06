@@ -1,5 +1,7 @@
-﻿using LabWorkflowManager.TFS.Common;
+﻿using _4tecture.UI.Common.Events;
+using LabWorkflowManager.TFS.Common;
 using LabWorkflowManager.TFS.Common.WorkflowConfig;
+using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 using Microsoft.Win32;
 using System;
@@ -15,12 +17,25 @@ namespace LabWorkflowManager.TFS2012
 {
     public class WorkflowManagerStorage : NotificationObject, IWorkflowManagerStorage
     {
-        public ObservableCollection<MultiEnvironmentWorkflowDefinition> Definitions { get; set; }
+        private IEventAggregator eventAggregator;
+
+        public WorkflowManagerStorage(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         private object currentDefinitionFileLockObj = new object();
         private string currentDefinitionFile = null;
         private const string registryKeySettings = @"Software\4tecture\LabWorkflowManager\Settings";
         private const string recentFileRegistryName = @"RecentFile";
+
+        private ObservableCollection<MultiEnvironmentWorkflowDefinition> definitions;
+        public ObservableCollection<MultiEnvironmentWorkflowDefinition> Definitions
+        {
+            get { return this.definitions; }
+            set { this.definitions = value; this.RaisePropertyChanged(() => this.Definitions); }
+        }
+
         public string CurrentDefinitionFile
         {
             get
@@ -112,8 +127,8 @@ namespace LabWorkflowManager.TFS2012
             }
             catch (Exception)
             {
-                this.Definitions = new ObservableCollection<MultiEnvironmentWorkflowDefinition>();
-                throw new Exception("Could not load file!");
+                this.Definitions = null;
+                this.eventAggregator.GetEvent<ShowMessageEvent>().Publish("#MsgCannotLoadDefinitions");
             }
         }
 
@@ -138,7 +153,7 @@ namespace LabWorkflowManager.TFS2012
             }
             catch (Exception)
             {
-                throw new Exception("Could not save file!");
+                this.eventAggregator.GetEvent<ShowMessageEvent>().Publish("#MsgCannotSaveDefinitions");
             }
         }
 

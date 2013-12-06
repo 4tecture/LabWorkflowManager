@@ -12,9 +12,26 @@ namespace LabWorkflowManager.Handlers
 {
     public class MsgBoxHandler
     {
+        private IEventAggregator eventaggregator;
         public MsgBoxHandler(IEventAggregator eventaggregator)
         {
-            eventaggregator.GetEvent<ShowMessageEvent>().Subscribe(msg => MessageBox.Show(msg, ApplicationStrings.MsgBoxTitle));
+            this.eventaggregator = eventaggregator;
+            this.eventaggregator.GetEvent<ShowMessageEvent>().Subscribe(ShowMessage);
+        }
+
+        private void ShowMessage(string msg)
+        {
+            if (msg != null && msg.StartsWith("#"))
+            {
+                var args = new LocalizedStringEventArgs() { Key = msg.Substring(1) };
+                eventaggregator.GetEvent<GetLocalizedStringEvent>().Publish(args);
+                msg = args.Values.FirstOrDefault();
+            }
+
+            if (!string.IsNullOrWhiteSpace(msg))
+            {
+                MessageBox.Show(msg, ApplicationStrings.MsgBoxTitle);
+            }
         }
     }
 }

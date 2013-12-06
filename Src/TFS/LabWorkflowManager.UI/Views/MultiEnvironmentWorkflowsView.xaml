@@ -21,7 +21,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="100px" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30px"/>
@@ -36,7 +36,7 @@
                 </StackPanel>
 
                 <TextBlock Text="{Binding CurrentWorkflowDefinitionFile}" Grid.Column="0"  Grid.Row="1"/>
-                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right">
                     <Button Content="{x:Static appres:ModuleStrings.BtnNewFile}" Command="{Binding NewCommand}" />
                     <Button Content="{x:Static appres:ModuleStrings.BtnLoadFile}" Command="{Binding LoadCommand}" />
                     <Button Content="{x:Static appres:ModuleStrings.BtnSaveFile}" Command="{Binding SaveCommand}" />
@@ -44,7 +44,7 @@
                 </StackPanel>
             </Grid>
         </GroupBox>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitions}" Grid.Row="1">
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitions}" Grid.Row="1" >
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="{x:Static appres:ModuleStrings.BtnAdd}" Command="{Binding AddNewDefinitionCommand}" />
