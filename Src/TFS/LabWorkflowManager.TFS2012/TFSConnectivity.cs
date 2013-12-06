@@ -1,6 +1,7 @@
 ﻿using _4tecture.UI.Common.Events;
 using LabWorkflowManager.TFS.Common;
 using Microsoft.Practices.Prism.Events;
+using Microsoft.Practices.Prism.ViewModel;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Server;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LabWorkflowManager.TFS2012
 {
-    public class TFSConnectivity : ITFSConnectivity
+    public class TFSConnectivity : NotificationObject, ITFSConnectivity
     {
         private IWorkflowManagerStorage workflowManagerStorage;
         private IEventAggregator eventAggregator;
@@ -20,42 +21,55 @@ namespace LabWorkflowManager.TFS2012
             this.workflowManagerStorage = storage;
             this.eventAggregator = eventAggregator;
         }
-        public void ConnectUI()
+        public async void ConnectUI()
         {
-            try
+            await Task.Run(() =>
             {
-                TeamProjectPicker tpp = new TeamProjectPicker(TeamProjectPickerMode.SingleProject, false);
-                tpp.ShowDialog();
-                if (tpp.SelectedTeamProjectCollection != null)
+                this.IsConnecting = true;
+                try
                 {
-                    Tpc = tpp.SelectedTeamProjectCollection;
-                    Tpc.EnsureAuthenticated();
-                    TeamProjects = tpp.SelectedProjects;
-                    this.workflowManagerStorage.LastTFSConnection = new TFSConnectionDetails() { Uri = Tpc.Uri.ToString(), Project = TeamProjects.First().Name };
+                    TeamProjectPicker tpp = new TeamProjectPicker(TeamProjectPickerMode.SingleProject, false);
+                    tpp.ShowDialog();
+                    if (tpp.SelectedTeamProjectCollection != null)
+                    {
+                        Tpc = tpp.SelectedTeamProjectCollection;
+                        Tpc.EnsureAuthenticated();
+                        TeamProjects = tpp.SelectedProjects;
+                        this.workflowManagerStorage.LastTFSConnection = new TFSConnectionDetails() { Uri = Tpc.Uri.ToString(), Project = TeamProjects.First().Name };
+                        this.RaisePropertyChanged(() => this.IsConnected);
+                    }
                 }
-            }
-            catch(Exception ex)
-            {
-                this.eventAggregator.GetEvent<ShowMessageEvent>().Publish("#MsgCannotConnectTFS");
-            }
+                catch (Exception ex)
+                {
+                    this.eventAggregator.GetEvent<ShowMessageEvent>().Publish("#MsgCannotConnectTFS");
+                }
+                this.IsConnecting = false;
+            });
         }
 
-        public void Connect(string tfsUri, string projectName)
+        public async void Connect(string tfsUri, string projectName)
         {
-            try { 
-            var tpc = new TfsTeamProjectCollection(new Uri(tfsUri));
-            if (tpc != null)
+            await Task.Run(() =>
             {
-                Tpc = tpc;
-                Tpc.EnsureAuthenticated();
-                TeamProjects = tpc.GetService<ICommonStructureService>().ListAllProjects().Where(p => p.Name.Contains(projectName)).Take(1);
-                this.workflowManagerStorage.LastTFSConnection = new TFSConnectionDetails() { Uri = Tpc.Uri.ToString(), Project = TeamProjects.First().Name };
-            }
-            }
-            catch (Exception ex)
-            {
-                this.eventAggregator.GetEvent<ShowMessageEvent>().Publish("#MsgCannotConnectTFS");
-            }
+                this.IsConnecting = true;
+                try
+                {
+                    var tpc = new TfsTeamProjectCollection(new Uri(tfsUri));
+                    if (tpc != null)
+                    {
+                        Tpc = tpc;
+                        Tpc.EnsureAuthenticated();
+                        TeamProjects = tpc.GetService<ICommonStructureService>().ListAllProjects().Where(p => p.Name.Contains(projectName)).Take(1);
+                        this.workflowManagerStorage.LastTFSConnection = new TFSConnectionDetails() { Uri = Tpc.Uri.ToString(), Project = TeamProjects.First().Name };
+                        this.RaisePropertyChanged(() => this.IsConnected);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.eventAggregator.GetEvent<ShowMessageEvent>().Publish("#MsgCannotConnectTFS");
+                }
+                this.IsConnecting = false;
+            });
         }
 
         public string TfsUri { get { return this.Tpc != null ? this.Tpc.Uri.ToString() : string.Empty; } }
@@ -72,5 +86,14 @@ namespace LabWorkflowManager.TFS2012
                 return this.Tpc != null && this.TeamProjects != null && this.TeamProjects.Count() > 0;
             }
         }
+
+        private bool isConnecting;
+
+        public bool IsConnecting
+        {
+            get { return isConnecting; }
+            set { isConnecting = value; this.RaisePropertyChanged(() => this.IsConnecting); }
+        }
+
     }
 }

@@ -36,6 +36,13 @@ namespace LabWorkflowManager.UI.ViewModels
             this.regionManager = regionManager;
             this.fileDialogService = fileDialogService;
 
+            this.tfsConnectivity.PropertyChanged += (source, args) => { if (args.PropertyName.Equals("IsConnected")) { this.RaisePropertyChanged(() => this.IsConnectedToTfs); this.RaisePropertyChanged(() => this.CanEditDefinitions); } };
+            this.tfsConnectivity.PropertyChanged += (source, args) => { if (args.PropertyName.Equals("TfsUri")) { this.RaisePropertyChanged(() => this.TeamProjectCollectionUri); } };
+            this.tfsConnectivity.PropertyChanged += (source, args) => { if (args.PropertyName.Equals("TeamProjectName")) { this.RaisePropertyChanged(() => this.TeamProjectName); } };
+
+            this.workflowManagerStorage.PropertyChanged += (source, args) => { if (args.PropertyName.Equals("Definitions")) { this.RaisePropertyChanged(() => this.Definitions); this.RaisePropertyChanged(() => this.CanEditDefinitions); } };
+            this.workflowManagerStorage.PropertyChanged += (source, args) => { if (args.PropertyName.Equals("CurrentDefinitionFile")) { this.RaisePropertyChanged(() => this.CurrentWorkflowDefinitionFile); } };
+
             if (!string.IsNullOrWhiteSpace(this.CurrentWorkflowDefinitionFile))
             {
                 this.workflowManagerStorage.Load(this.CurrentWorkflowDefinitionFile);
@@ -45,12 +52,11 @@ namespace LabWorkflowManager.UI.ViewModels
             if (this.workflowManagerStorage.LastTFSConnection != null)
             {
                 this.tfsConnectivity.Connect(this.workflowManagerStorage.LastTFSConnection.Uri, this.workflowManagerStorage.LastTFSConnection.Project);
-                this.RaisePropertyChanged(() => this.TeamProjectCollectionUri);
-                this.RaisePropertyChanged(() => this.TeamProjectName);
-                this.RaisePropertyChanged(() => this.IsConnectedToTfs);
             }
 
-            this.ConnectToTfsCommand = new DelegateCommand(ConnectToTfs);
+            this.ConnectToTfsCommand = new DelegateCommand(ConnectToTfs, () => !this.tfsConnectivity.IsConnecting);
+            this.tfsConnectivity.PropertyChanged += (source, args) => { if (args.PropertyName.Equals("IsConnecting")) { ((DelegateCommand)this.ConnectToTfsCommand).RaiseCanExecuteChanged(); } };
+
             this.AddNewDefinitionCommand = new DelegateCommand(AddNewDefinition);
             this.EditDefinitionCommand = new DelegateCommand<MultiEnvironmentWorkflowDefinition>(EditDefinition);
             this.NewCommand = new DelegateCommand(() => { string filepath; if (this.fileDialogService.SaveFile(out filepath)) { this.workflowManagerStorage.New(filepath); this.RaisePropertyChanged(()=>this.CurrentWorkflowDefinitionFile); } });
@@ -94,6 +100,14 @@ namespace LabWorkflowManager.UI.ViewModels
             set { this.currentDefinition = value; this.RaisePropertyChanged(() => this.CurrentDefinition); }
         }
 
+        public bool CanEditDefinitions
+        {
+            get
+            {
+                return this.IsConnectedToTfs && this.Definitions != null;
+            }
+        }
+
         public ICommand ConnectToTfsCommand { get; private set; }
         public ICommand AddNewDefinitionCommand { get; private set; }
         public ICommand EditDefinitionCommand { get; private set; }
@@ -111,9 +125,6 @@ namespace LabWorkflowManager.UI.ViewModels
         private void ConnectToTfs()
         {
             this.tfsConnectivity.ConnectUI();
-            this.RaisePropertyChanged(() => this.TeamProjectCollectionUri);
-            this.RaisePropertyChanged(() => this.TeamProjectName);
-            this.RaisePropertyChanged(() => this.IsConnectedToTfs);
         }
 
         private void AddNewDefinition()

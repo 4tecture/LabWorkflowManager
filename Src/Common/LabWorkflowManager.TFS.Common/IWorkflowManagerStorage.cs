@@ -1,7 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 namespace LabWorkflowManager.TFS.Common
 {
-    public interface IWorkflowManagerStorage
+    public interface IWorkflowManagerStorage : INotifyPropertyChanged
     {
         System.Collections.ObjectModel.ObservableCollection<LabWorkflowManager.TFS.Common.WorkflowConfig.MultiEnvironmentWorkflowDefinition> Definitions { get; set; }
         string CurrentDefinitionFile { get; }

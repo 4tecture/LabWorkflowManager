@@ -44,7 +44,7 @@
                 </StackPanel>
             </Grid>
         </GroupBox>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitions}" Grid.Row="1" >
+        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitions}" Grid.Row="1" IsEnabled="{Binding CanEditDefinitions}" >
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="{x:Static appres:ModuleStrings.BtnAdd}" Command="{Binding AddNewDefinitionCommand}" />
