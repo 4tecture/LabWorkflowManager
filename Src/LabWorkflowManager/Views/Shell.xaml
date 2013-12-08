@@ -5,7 +5,7 @@
         xmlns:appres="clr-namespace:LabWorkflowManager.Resources"
         xmlns:MetroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:Converters="clr-namespace:_4tecture.UI.Common.Converters;assembly=4tecture.UI.Common"
-        Title="{x:Static appres:ApplicationStrings.Title}" MinHeight="786" MinWidth="1024">
+        Title="{x:Static appres:ApplicationStrings.Title}" MinHeight="786" MinWidth="1024" Icon="/LabWorkflowManager;component/Resources/4tecturefavicon.png">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
