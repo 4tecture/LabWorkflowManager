@@ -1,4 +1,5 @@
 ﻿using _4tecture.UI.Common.Helper;
+using _4tecture.UI.Common.Extensions;
 using LabWorkflowManager.TFS.Common;
 using LabWorkflowManager.TFS.Common.WorkflowConfig;
 using LabWorkflowManager.UI.Resources;
@@ -250,6 +251,14 @@ namespace LabWorkflowManager.UI.ViewModels
 				return this.availableTestSuites;
 			}
 		}
+
+        public IEnumerable<HierarchyNode<SelectableItem<AssociatedTestSuite>>> AvailableTestSuitesHierarchy
+        {
+            get
+            {
+                return this.AvailableTestSuites.AsHierarchy(o => o.Item.Id, o => o.Item.ParentId);
+            }
+        }
 
 		public IEnumerable<AssociatedTestSettings> AvailableTestSettings
 		{

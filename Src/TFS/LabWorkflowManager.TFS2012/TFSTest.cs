@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _4tecture.UI.Common.Extensions;
 
 namespace LabWorkflowManager.TFS2012
 {
@@ -50,12 +51,14 @@ namespace LabWorkflowManager.TFS2012
 
         public IEnumerable<ITestSuiteEntry> QueryTestSuites(int testplanid)
         {
-            return this.GetTestSuite(this.QueryTestPlans().Where(o => o.Id == testplanid).First().RootSuite.Entries);
+            var rootSuite = this.QueryTestPlans().Where(o => o.Id == testplanid).Select(o => o.RootSuite.TestSuiteEntry);
+
+            return this.GetTestSuite(rootSuite);
         }
 
         public IEnumerable<LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedTestSuite> GetAssociatedTestSuites(int testplanId)
         {
-            return this.QueryTestSuites(testplanId).Select(o => new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedTestSuite() { Title = o.Title, Id = o.Id, ParentId = o.ParentTestSuite.Id });
+            return this.QueryTestSuites(testplanId).Select(o => new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedTestSuite() { Title = o.Title, Id = o.Id, ParentId = o.ParentTestSuite != null ? o.ParentTestSuite.Id : default(int) });
         }
 
         private IEnumerable<ITestSuiteEntry> GetTestSuite(IEnumerable<ITestSuiteEntry> suites)

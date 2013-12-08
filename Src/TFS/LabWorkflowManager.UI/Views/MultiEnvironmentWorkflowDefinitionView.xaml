@@ -177,16 +177,21 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 				<Label Content="{x:Static appres:ModuleStrings.LblTestSuites}" Grid.Column="0" Grid.Row="1" />
-				<ListBox ItemsSource="{Binding AvailableTestSuites}"  Grid.Row="1" Grid.Column="1">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
+                    <TreeView ItemsSource="{Binding AvailableTestSuitesHierarchy}"  Grid.Row="1" Grid.Column="1">
+                        <TreeView.Resources>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="IsExpanded" Value="True" />
+                            </Style>
+                        </TreeView.Resources>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="{Binding IsSelected}"/>
-                                <TextBlock Text="{Binding Item.Title}"/>
+                                <CheckBox IsChecked="{Binding Entity.IsSelected}"/>
+                                <TextBlock Text="{Binding Entity.Item.Title}"/>
                             </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
 				<Label Content="{x:Static appres:ModuleStrings.LblTestSettings}" Grid.Column="0" Grid.Row="2" />
                 <ComboBox ItemsSource="{Binding AvailableTestSettings}" SelectedItem="{Binding SelectedTestSettings}" Grid.Row="2" Grid.Column="1">
                     <ComboBox.ItemTemplate>
