@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="appfiles" Guid="{AB3BC8A1-7CCB-4EC2-8AE3-756F56427372}">
+        <File Id="AppExecutable" Source="$(var.LabWorkflowManager.TargetDir)\LabWorkflowManager.exe" />
+        <File Id="AppConfig" Source="$(var.LabWorkflowManager.TargetDir)\LabWorkflowManager.exe.config" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\4tecture.UI.Common.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\LabWorkflowManager.TFS.Common.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\LabWorkflowManager.TFS2012.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\LabWorkflowManager.UI.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\MahApps.Metro.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Expression.Interactions.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.EnterpriseLibrary.Logging.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.Prism.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.Prism.Interactivity.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.Prism.UnityExtensions.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.ServiceLocation.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.Unity.Configuration.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.Unity.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.TeamFoundation.Build.Workflow.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.TeamFoundation.Lab.Workflow.Activities.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.WITDataStore.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Newtonsoft.Json.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\System.Windows.Interactivity.dll" />
+      </Component>
+      <!--<Directory Id="de" Name="de">
+        <Component Id="appfilesde">
+          <CreateFolder />
+          <File Source="$(var.LabWorkflowManager.TargetDir)\de\LabWorkflowManager.resources.dll" />
+        </Component>
+      </Directory>-->
+    </DirectoryRef>
+  </Fragment>
+  <Fragment>
+    <ComponentGroup Id="CG.AppFiles">
+      <ComponentRef Id="appfiles" />
+      <!--<ComponentRef Id="appfilesde"/>-->
+    </ComponentGroup>
+  </Fragment>
+</Wix>
