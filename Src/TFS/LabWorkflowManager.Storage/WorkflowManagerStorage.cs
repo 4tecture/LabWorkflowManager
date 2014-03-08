@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace LabWorkflowManager.TFS2012
+namespace LabWorkflowManager.Storage
 {
     public class WorkflowManagerStorage : NotificationObject, IWorkflowManagerStorage
     {

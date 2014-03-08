@@ -4,6 +4,7 @@ using Microsoft.TeamFoundation.Build.Workflow;
 using Microsoft.TeamFoundation.Lab.Workflow.Activities;
 using Moq;
 using Microsoft.Practices.Prism.Events;
+using LabWorkflowManager.Storage;
 
 namespace LabWorkflowManager.TFS2012.Tests.Integration
 {
@@ -14,7 +15,7 @@ namespace LabWorkflowManager.TFS2012.Tests.Integration
         public void TestMethod1()
         {
             var eventAggregatorMock = new Mock<IEventAggregator>();
-            var tfsbuild = new TFSBuild(new TFSConnectivity(new WorkflowManagerStorage(eventAggregatorMock.Object), eventAggregatorMock.Object));
+            var tfsbuild = new TFSBuild(new TFSConnectivity(new WorkflowManagerStorage(eventAggregatorMock.Object), eventAggregatorMock.Object)); // todo mock storage?
             tfsbuild.Connectivity.Connect("http://vsalm:8080/tfs/FabrikamFiberCollection", "FabrikamFiber");
 
             var buildDefinitions = tfsbuild.QueryBuildDefinitions();

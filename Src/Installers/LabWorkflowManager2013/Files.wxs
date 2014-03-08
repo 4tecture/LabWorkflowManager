@@ -8,7 +8,7 @@
         <File Source="$(var.LabWorkflowManager.TargetDir)\4tecture.UI.Common.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\LabWorkflowManager.TFS.Common.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\LabWorkflowManager.Storage.dll" />
-        <File Source="$(var.LabWorkflowManager.TargetDir)\LabWorkflowManager.TFS2012.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\LabWorkflowManager.TFS2013.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\LabWorkflowManager.UI.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\MahApps.Metro.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Expression.Interactions.dll" />

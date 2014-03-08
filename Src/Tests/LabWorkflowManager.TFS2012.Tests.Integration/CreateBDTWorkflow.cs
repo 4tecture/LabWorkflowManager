@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using Moq;
 using Microsoft.Practices.Prism.Events;
+using LabWorkflowManager.Storage;
 
 namespace LabWorkflowManager.TFS2012.Tests.Integration
 {
