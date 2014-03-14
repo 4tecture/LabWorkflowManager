@@ -22,6 +22,7 @@
         <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.ServiceLocation.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.Unity.Configuration.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.Practices.Unity.dll" />
+        <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.ServiceBus.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.TeamFoundation.Build.Workflow.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.TeamFoundation.Lab.Workflow.Activities.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll" />

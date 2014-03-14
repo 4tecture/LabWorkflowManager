@@ -182,6 +182,10 @@
       <Project>{f7045fc2-2a97-4630-92c2-bd504777766d}</Project>
       <Name>LabWorkflowManager.Storage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TFS\LabWorkflowManager.TFS2012\LabWorkflowManager.TFS2012.csproj">
+      <Project>{a28091bd-73ed-4d5c-8cfa-0d3490036c04}</Project>
+      <Name>LabWorkflowManager.TFS2012</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TFS\LabWorkflowManager.TFS2013\LabWorkflowManager.TFS2013.csproj">
       <Project>{196764c2-058b-477f-ba10-d61e668a6784}</Project>
       <Name>LabWorkflowManager.TFS2013</Name>
