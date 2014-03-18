@@ -46,6 +46,7 @@ namespace LabWorkflowManager.Storage
                     {
                         if (this.currentDefinitionFile == null)
                         {
+                            Registry.CurrentUser.CreateSubKey(registryKeySettings);
                             RegistryKey settings = Registry.CurrentUser.OpenSubKey(registryKeySettings, false);
                             if (settings != null)
                             {

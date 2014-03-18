@@ -60,7 +60,7 @@ namespace LabWorkflowManager.UI.ViewModels
             this.AddNewDefinitionCommand = new DelegateCommand(AddNewDefinition);
             this.EditDefinitionCommand = new DelegateCommand<MultiEnvironmentWorkflowDefinition>(EditDefinition);
             this.NewCommand = new DelegateCommand(() => { string filepath; if (this.fileDialogService.SaveFile(out filepath)) { this.workflowManagerStorage.New(filepath); this.RaisePropertyChanged(()=>this.CurrentWorkflowDefinitionFile); } });
-            this.LoadCommand = new DelegateCommand(() => { string filepath; if (this.fileDialogService.SaveFile(out filepath)) { this.workflowManagerStorage.Load(filepath); this.RaisePropertyChanged(() => this.CurrentWorkflowDefinitionFile); } });
+            this.LoadCommand = new DelegateCommand(() => { string filepath; if (this.fileDialogService.OpenFile(out filepath)) { this.workflowManagerStorage.Load(filepath); this.RaisePropertyChanged(() => this.CurrentWorkflowDefinitionFile); } });
             this.SaveCommand = new DelegateCommand(() => this.workflowManagerStorage.Save(this.CurrentWorkflowDefinitionFile), () => !string.IsNullOrWhiteSpace(this.CurrentWorkflowDefinitionFile));
             this.SaveAsCommand = new DelegateCommand(() => { string filepath; if (this.fileDialogService.SaveFile(out filepath)) { this.workflowManagerStorage.Save(filepath); this.RaisePropertyChanged(() => this.CurrentWorkflowDefinitionFile); } }, () => !string.IsNullOrWhiteSpace(this.CurrentWorkflowDefinitionFile));
             this.DeleteDefinitionCommand = new DelegateCommand<MultiEnvironmentWorkflowDefinition>(DeleteDefinition);

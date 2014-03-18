@@ -16,7 +16,7 @@ namespace LabWorkflowManager.Services
             var dlg = new OpenFileDialog();
             dlg.FileName = "MyLabWorkflowDefinition";
             dlg.DefaultExt = ".lwfdef";
-            dlg.Filter ="Lab Workflow Definition (.lwfdef)|.lwfdef";
+            dlg.Filter ="Lab Workflow Definition (.lwfdef)|*.lwfdef";
 
             Nullable<bool> result = dlg.ShowDialog();
             if(result == true)
@@ -33,7 +33,7 @@ namespace LabWorkflowManager.Services
             var dlg = new SaveFileDialog();
             dlg.FileName = "MyLabWorkflowDefinition";
             dlg.DefaultExt = ".lwfdef";
-            dlg.Filter = "Lab Workflow Definition (.lwfdef)|.lwfdef";
+            dlg.Filter = "Lab Workflow Definition (.lwfdef)|*.lwfdef";
 
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
