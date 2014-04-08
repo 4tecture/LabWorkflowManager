@@ -1,13 +1,15 @@
-﻿using Microsoft.Practices.Prism.ViewModel;
+﻿using LabWorkflowManager.TFS.Common.Resources;
+using Microsoft.Practices.Prism.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _4tecture.UI.Common.ViewModels;
 
 namespace LabWorkflowManager.TFS.Common.WorkflowConfig
 {
-    public class LabBuildDefinitionDetails : NotificationObject
+    public class LabBuildDefinitionDetails : NotificationObjectWithValidation
     {
         private string name;
         private string description;
@@ -18,13 +20,13 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
         private int quietPeriod;
         private int startTime;
 
-        public string Name { get { return this.name; } set { this.name = value; this.RaisePropertyChanged(() => this.Name); } }
+        public string Name { get { return this.name; } set { this.name = value; VerifyStringNotEmpty(this.name, "Name", CommonStrings.ErrorLabBuildDefinitionDetailsName); this.RaisePropertyChanged(() => this.Name); } }
 
         public string Description { get { return this.description; } set { this.description = value; this.RaisePropertyChanged(() => this.Description); } }
 
-        public string ControllerName { get { return this.controllerName; } set { this.controllerName = value; this.RaisePropertyChanged(() => this.ControllerName); } }
+        public string ControllerName { get { return this.controllerName; } set { this.controllerName = value;VerifyStringNotEmpty(this.controllerName, "ControllerName", CommonStrings.ErrorLabBuildDefinitionDetailsControllerName); this.RaisePropertyChanged(() => this.ControllerName); } }
 
-        public string ProcessTemplateFilename { get { return this.processTemplateFilename; } set { this.processTemplateFilename = value; this.RaisePropertyChanged(() => this.ProcessTemplateFilename); } }
+        public string ProcessTemplateFilename { get { return this.processTemplateFilename; } set { this.processTemplateFilename = value;VerifyStringNotEmpty(this.processTemplateFilename, "ProcessTemplateFilename", CommonStrings.ErrorLabBuildDefinitionDetailsProcessTemplateFilename); this.RaisePropertyChanged(() => this.ProcessTemplateFilename); } }
 
         public BuildDefinitionContinuousIntegrationType ContinuousIntegrationType { get { return this.continuousIntegrationType; } set { this.continuousIntegrationType = value; this.RaisePropertyChanged(() => this.ContinuousIntegrationType); } }
 

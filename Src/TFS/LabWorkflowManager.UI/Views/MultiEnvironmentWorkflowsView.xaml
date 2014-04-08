@@ -10,6 +10,7 @@
     <UserControl.Resources>
         <Converters:BoolToColorBrushConverter x:Key="GreenLightConverter" TrueColor="Green" FalseColor="Transparent" />
         <Converters:BoolToColorBrushConverter x:Key="RedLightConverter" TrueColor="Red" FalseColor="Transparent" InvertValue="true" />
+        <Converters:BoolToVisibilityConverter x:Key="BoolToVisibleConverter" TrueValue="Visible" FalseValue="Hidden" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -29,11 +30,14 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding TeamProjectCollectionUri}" Grid.Column="0" Grid.Row="0" />
                 <TextBlock Text="{Binding TeamProjectName}" Grid.Column="1" Grid.Row="0"/>
-                <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right">
-                    <Ellipse Width="20" Height="20" Fill="{Binding IsConnectedToTfs, Converter={StaticResource GreenLightConverter}}" Stroke="Green" />
-                    <Ellipse Width="20" Height="20" Fill="{Binding IsConnectedToTfs, Converter={StaticResource RedLightConverter}}" Stroke="Red"/>
-                    <Button Content="{x:Static appres:ModuleStrings.BtnConnect}" Command="{Binding ConnectToTfsCommand}"/>
-                </StackPanel>
+                <Grid Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="20" Height="20" Fill="{Binding IsConnectedToTfs, Converter={StaticResource GreenLightConverter}}" Stroke="Green" />
+                        <Ellipse Width="20" Height="20" Fill="{Binding IsConnectedToTfs, Converter={StaticResource RedLightConverter}}" Stroke="Red"/>
+                        <Button Content="{x:Static appres:ModuleStrings.BtnConnect}" Command="{Binding ConnectToTfsCommand}"/>
+                    </StackPanel>
+                    <ProgressBar Height="30" Minimum="0" Maximum="100" IsIndeterminate="true" Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibleConverter}}" />
+                </Grid>
 
                 <TextBlock Text="{Binding CurrentWorkflowDefinitionFile}" Grid.Column="0"  Grid.Row="1"/>
                 <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right">

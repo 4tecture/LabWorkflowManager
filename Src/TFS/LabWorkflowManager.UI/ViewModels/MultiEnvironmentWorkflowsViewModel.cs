@@ -13,10 +13,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using _4tecture.UI.Common.ViewModels;
 
 namespace LabWorkflowManager.UI.ViewModels
 {
-    public class MultiEnvironmentWorkflowsViewModel : NotificationObject
+    public class MultiEnvironmentWorkflowsViewModel : NotificationObjectWithValidation
     {
         private ITFSConnectivity tfsConnectivity;
         private ITFSBuild tfsBuild;
@@ -49,21 +50,34 @@ namespace LabWorkflowManager.UI.ViewModels
                 this.RaisePropertyChanged(() => this.CurrentWorkflowDefinitionFile);
             }
 
-            if (this.workflowManagerStorage.LastTFSConnection != null)
-            {
-                this.tfsConnectivity.Connect(this.workflowManagerStorage.LastTFSConnection.Uri, this.workflowManagerStorage.LastTFSConnection.Project);
-            }
-
             this.ConnectToTfsCommand = new DelegateCommand(ConnectToTfs, () => !this.tfsConnectivity.IsConnecting);
-            this.tfsConnectivity.PropertyChanged += (source, args) => { if (args.PropertyName.Equals("IsConnecting")) { ((DelegateCommand)this.ConnectToTfsCommand).RaiseCanExecuteChanged(); } };
-
             this.AddNewDefinitionCommand = new DelegateCommand(AddNewDefinition);
             this.EditDefinitionCommand = new DelegateCommand<MultiEnvironmentWorkflowDefinition>(EditDefinition);
-            this.NewCommand = new DelegateCommand(() => { string filepath; if (this.fileDialogService.SaveFile(out filepath)) { this.workflowManagerStorage.New(filepath); this.RaisePropertyChanged(()=>this.CurrentWorkflowDefinitionFile); } });
+            this.NewCommand = new DelegateCommand(() => { string filepath; if (this.fileDialogService.SaveFile(out filepath)) { this.workflowManagerStorage.New(filepath); this.RaisePropertyChanged(() => this.CurrentWorkflowDefinitionFile); } });
             this.LoadCommand = new DelegateCommand(() => { string filepath; if (this.fileDialogService.OpenFile(out filepath)) { this.workflowManagerStorage.Load(filepath); this.RaisePropertyChanged(() => this.CurrentWorkflowDefinitionFile); } });
             this.SaveCommand = new DelegateCommand(() => this.workflowManagerStorage.Save(this.CurrentWorkflowDefinitionFile), () => !string.IsNullOrWhiteSpace(this.CurrentWorkflowDefinitionFile));
             this.SaveAsCommand = new DelegateCommand(() => { string filepath; if (this.fileDialogService.SaveFile(out filepath)) { this.workflowManagerStorage.Save(filepath); this.RaisePropertyChanged(() => this.CurrentWorkflowDefinitionFile); } }, () => !string.IsNullOrWhiteSpace(this.CurrentWorkflowDefinitionFile));
             this.DeleteDefinitionCommand = new DelegateCommand<MultiEnvironmentWorkflowDefinition>(DeleteDefinition);
+
+            this.tfsConnectivity.PropertyChanged += (source, args) =>
+            {
+                if (args.PropertyName.Equals("IsConnecting"))
+                {
+                    ((DelegateCommand)this.ConnectToTfsCommand).RaiseCanExecuteChanged();
+                    this.RaisePropertyChanged(() => this.IsConnecting);
+                }
+                else if (args.PropertyName.Equals("IsConnected"))
+                {
+                    this.RaisePropertyChanged(() => this.IsConnectedToTfs);
+                    this.RaisePropertyChanged(() => this.TeamProjectCollectionUri);
+                    this.RaisePropertyChanged(() => this.TeamProjectName);
+                }
+            };
+
+            if (this.workflowManagerStorage.LastTFSConnection != null)
+            {
+                this.tfsConnectivity.Connect(this.workflowManagerStorage.LastTFSConnection.Uri, this.workflowManagerStorage.LastTFSConnection.Project);
+            }
         }
 
         public string HeaderInfo
@@ -81,10 +95,12 @@ namespace LabWorkflowManager.UI.ViewModels
 
         public bool IsConnectedToTfs
         {
-            get
-            {
-                return this.tfsConnectivity.IsConnected;
-            }
+            get { return this.tfsConnectivity.IsConnected; }
+        }
+
+        public bool IsConnecting
+        {
+            get { return this.tfsConnectivity.IsConnecting; }
         }
 
         public ObservableCollection<MultiEnvironmentWorkflowDefinition> Definitions
@@ -145,8 +161,8 @@ namespace LabWorkflowManager.UI.ViewModels
                 }
                 return false;
             }).FirstOrDefault();
-            
-            if(existingViewModel != null)
+
+            if (existingViewModel != null)
             {
                 this.regionManager.Regions[RegionNames.MainRegion].Activate(existingViewModel);
             }

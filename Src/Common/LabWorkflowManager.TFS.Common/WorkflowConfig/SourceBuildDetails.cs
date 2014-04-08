@@ -1,4 +1,6 @@
-﻿using Microsoft.Practices.Prism.ViewModel;
+﻿using LabWorkflowManager.TFS.Common.Resources;
+using _4tecture.UI.Common.ViewModels;
+using Microsoft.Practices.Prism.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace LabWorkflowManager.TFS.Common.WorkflowConfig
 {
-    public class SourceBuildDetails:NotificationObject
+    public class SourceBuildDetails:NotificationObjectWithValidation
     {
         private string buildDefinitionUri;
 
         public string BuildDefinitionUri
         {
             get { return buildDefinitionUri; }
-            set { buildDefinitionUri = value; this.customBuildPath = null; this.RaisePropertyChanged(() => this.BuildDefinitionUri); this.RaisePropertyChanged(() => this.CustomBuildPath); }
+            set { buildDefinitionUri = value; this.customBuildPath = null; VerifyBuildDefinitionSettings(); this.RaisePropertyChanged(() => this.BuildDefinitionUri); this.RaisePropertyChanged(() => this.CustomBuildPath); }
         }
-
+        
         private string buildUri;
 
         public string BuildUri
@@ -53,6 +55,20 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
             clone.customBuildPath = this.customBuildPath;
 
             return clone;
+        }
+
+        private void VerifyBuildDefinitionSettings()
+        {
+            if (string.IsNullOrWhiteSpace(this.BuildDefinitionUri) && string.IsNullOrWhiteSpace(this.CustomBuildPath))
+            {
+                this.AddError("BuildDefinitionUri", CommonStrings.ErrorSourcebuildDetailsBuildDefinitionOrCustomBuildPathNotSet);
+                this.AddError("CustomBuildPath", CommonStrings.ErrorSourcebuildDetailsBuildDefinitionOrCustomBuildPathNotSet);
+            }
+            else
+            {
+                this.RemoveError("BuildDefinitionUri", CommonStrings.ErrorSourcebuildDetailsBuildDefinitionOrCustomBuildPathNotSet);
+                this.RemoveError("CustomBuildPath", CommonStrings.ErrorSourcebuildDetailsBuildDefinitionOrCustomBuildPathNotSet);
+            }
         }
     }
 }

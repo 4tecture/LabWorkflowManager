@@ -5,10 +5,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _4tecture.UI.Common.ViewModels;
 
 namespace LabWorkflowManager.TFS.Common.WorkflowConfig
 {
-    public class DeploymentDetails : NotificationObject
+    public class DeploymentDetails : NotificationObjectWithValidation
     {
         private string snapshotName;
         private ObservableCollection<DeploymentScript> scripts;

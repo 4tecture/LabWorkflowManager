@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.ViewModel;
+﻿using _4tecture.UI.Common.ViewModels;
+using Microsoft.Practices.Prism.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LabWorkflowManager.TFS.Common.WorkflowConfig
 {
-    public class LabWorkflowDefinitionDetails: NotificationObject
+    public class LabWorkflowDefinitionDetails: NotificationObjectWithValidation
     {
         private LabBuildDefinitionDetails labBuildDefinitionDetails;
         public LabBuildDefinitionDetails LabBuildDefinitionDetails { get { return this.labBuildDefinitionDetails; } set { this.labBuildDefinitionDetails = value; this.RaisePropertyChanged(() => this.LabBuildDefinitionDetails); } }
@@ -35,6 +36,19 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
             clone.TestDetails = this.TestDetails.Clone();
 
             return clone;
+        }
+
+        public override bool HasErrors
+        {
+            get
+            {
+                return this.HasErrorsInternal ||
+                    this.LabBuildDefinitionDetails.HasErrors ||
+                       this.SourceBuildDetails.HasErrors ||
+                       this.LabEnvironmentDetails.HasErrors ||
+                       this.DeploymentDetails.HasErrors ||
+                       this.TestDetails.HasErrors;
+            }
         }
     }
 }

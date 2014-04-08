@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _4tecture.UI.Common.ViewModels;
 
 namespace LabWorkflowManager.TFS.Common.WorkflowConfig
 {
-    public class LabEnvironmentDetails : NotificationObject
+    public class LabEnvironmentDetails : NotificationObjectWithValidation
     {
         private string labEnvironmentUri;
         private string snapshotName;

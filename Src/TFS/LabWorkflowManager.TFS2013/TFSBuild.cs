@@ -1,4 +1,5 @@
-﻿using LabWorkflowManager.TFS.Common;
+﻿using System.Runtime.Remoting.Messaging;
+using LabWorkflowManager.TFS.Common;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Build.Workflow;
 using Microsoft.TeamFoundation.Lab.Client;
@@ -45,7 +46,7 @@ namespace LabWorkflowManager.TFS2013
         public IEnumerable<LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition> GetMultiEnvAssociatedBuildDefinitions(Guid multiEnvConfigId)
         {
             var results = this.QueryBuildDefinitions().Where(o => !string.IsNullOrWhiteSpace(o.Description) && o.Description.Contains(string.Format("MultiEnvironmentWorkflowDefinition:{0}", multiEnvConfigId.ToString())));
-            foreach(var res in results)
+            foreach (var res in results)
             {
                 yield return ConvertToAssociatedBuildDefinition(res);
             }
@@ -74,46 +75,52 @@ namespace LabWorkflowManager.TFS2013
             abd.LastBuildUri = res.LastBuildUri != null ? res.LastBuildUri.ToString() : string.Empty;
             abd.LastGoodBuildLabel = res.LastGoodBuildLabel;
             abd.LastGoodBuildUri = res.LastGoodBuildUri != null ? res.LastGoodBuildUri.ToString() : string.Empty;
-                abd.Builds = res.QueryBuilds().Select(o => new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDetail() { Uri = o.Uri.ToString(), LabelName = o.LabelName }).ToList();
+            abd.Builds = res.QueryBuilds().Select(o => new LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDetail() { Uri = o.Uri.ToString(), LabelName = o.LabelName }).ToList();
             abd.Uri = res.Uri.ToString();
             return abd;
         }
 
-        public LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition CreateBuildDefinitionFromDefinition(LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails labworkflowDefinitionDetails)
+        public async Task<LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition> CreateBuildDefinitionFromDefinition(LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails labworkflowDefinitionDetails)
         {
-            return ConvertToAssociatedBuildDefinition(this.CreateBuildDefinition(labworkflowDefinitionDetails));
+            var def = await Task.Run( () => ConvertToAssociatedBuildDefinition(this.CreateBuildDefinition(labworkflowDefinitionDetails).Result));
+            return await Task.Run(() => def);
         }
 
-        public void DeleteBuildDefinition(params Uri[] uris)
+        public async void DeleteBuildDefinition(params Uri[] uris)
         {
-            this.BuildServer.DeleteBuildDefinitions(uris);
+            await Task.Run(() => this.BuildServer.DeleteBuildDefinitions(uris));
         }
 
-        public IBuildDefinition CreateBuildDefinition(LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails labworkflowDefinitionDetails)
+        public async Task<IBuildDefinition> CreateBuildDefinition(LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails labworkflowDefinitionDetails)
         {
-            if (this.BuildServer != null)
+            return await Task.Run(() =>
             {
-                var buildDefinition = this.BuildServer.CreateBuildDefinition(this.connectivity.TeamProjects.First().Name);
+                if (this.BuildServer != null)
+                {
+                    var buildDefinition =
+                        this.BuildServer.CreateBuildDefinition(this.connectivity.TeamProjects.First().Name);
 
-                ConfigMainBuildDefinitionSettings(labworkflowDefinitionDetails.LabBuildDefinitionDetails, buildDefinition);
+                    ConfigMainBuildDefinitionSettings(labworkflowDefinitionDetails.LabBuildDefinitionDetails,
+                        buildDefinition);
 
-                var processParameters = WorkflowHelpers.DeserializeProcessParameters(buildDefinition.ProcessParameters);
+                    var processParameters =
+                        WorkflowHelpers.DeserializeProcessParameters(buildDefinition.ProcessParameters);
 
-                var labWorkflowDetails = new LabWorkflowDetails();
-                ConfigLabBuildSettings(labworkflowDefinitionDetails.SourceBuildDetails, labWorkflowDetails);
-                ConfigLabEnvironmentSettings(labworkflowDefinitionDetails.LabEnvironmentDetails, labWorkflowDetails);
-                ConfigLabDeploymentSettings(labworkflowDefinitionDetails.DeploymentDetails, labWorkflowDetails);
-                ConfigLabTestSettings(labworkflowDefinitionDetails.TestDetails, labWorkflowDetails);
+                    var labWorkflowDetails = new LabWorkflowDetails();
+                    ConfigLabBuildSettings(labworkflowDefinitionDetails.SourceBuildDetails, labWorkflowDetails);
+                    ConfigLabEnvironmentSettings(labworkflowDefinitionDetails.LabEnvironmentDetails, labWorkflowDetails);
+                    ConfigLabDeploymentSettings(labworkflowDefinitionDetails.DeploymentDetails, labWorkflowDetails);
+                    ConfigLabTestSettings(labworkflowDefinitionDetails.TestDetails, labWorkflowDetails);
 
-                processParameters.Add("LabWorkflowParameters", labWorkflowDetails);
-                buildDefinition.ProcessParameters = WorkflowHelpers.SerializeProcessParameters(processParameters);
-                buildDefinition.Save();
-                return buildDefinition;
-
-            }
-            throw new Exception("No connection to TFS!");
+                    processParameters.Add("LabWorkflowParameters", labWorkflowDetails);
+                    buildDefinition.ProcessParameters = WorkflowHelpers.SerializeProcessParameters(processParameters);
+                    buildDefinition.Save();
+                    return buildDefinition;
+                }
+                throw new Exception("No connection to TFS!");
+            });
         }
-               
+
 
         private void ConfigLabTestSettings(LabWorkflowManager.TFS.Common.WorkflowConfig.TestDetails testDetails, LabWorkflowDetails labWorkflowDetails)
         {
@@ -195,7 +202,7 @@ namespace LabWorkflowManager.TFS2013
 
         public IEnumerable<string> GetProcessTemplateFiles()
         {
-            return this.BuildServer.QueryProcessTemplates(this.connectivity.TeamProjects.First().Name).Select(o => o.ServerPath.Substring(o.ServerPath.LastIndexOf("/")+1));
+            return this.BuildServer.QueryProcessTemplates(this.connectivity.TeamProjects.First().Name).Select(o => o.ServerPath.Substring(o.ServerPath.LastIndexOf("/") + 1));
         }
 
         public IEnumerable<string> GetBuildControllers()

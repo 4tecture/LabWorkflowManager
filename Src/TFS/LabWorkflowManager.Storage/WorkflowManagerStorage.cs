@@ -17,14 +17,14 @@ namespace LabWorkflowManager.Storage
 {
     public class WorkflowManagerStorage : NotificationObject, IWorkflowManagerStorage
     {
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         public WorkflowManagerStorage(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
         }
 
-        private object currentDefinitionFileLockObj = new object();
+        private readonly object currentDefinitionFileLockObj = new object();
         private string currentDefinitionFile = null;
         private const string registryKeySettings = @"Software\4tecture\LabWorkflowManager\Settings";
         private const string recentFileRegistryName = @"RecentFile";
@@ -72,7 +72,7 @@ namespace LabWorkflowManager.Storage
             }
         }
 
-        private object lastTFSConnectionLockObj = new object();
+        private readonly object lastTFSConnectionLockObj = new object();
         private TFSConnectionDetails lastTFSConnection = null;
         private const string recentTfsConnectionRegistryName = @"RecentTfsConnection";
         public TFSConnectionDetails LastTFSConnection
@@ -114,48 +114,58 @@ namespace LabWorkflowManager.Storage
             }
         }
 
-        public void Load(string pathToFile)
+        public async void Load(string pathToFile)
         {
-            try
+            await Task.Run(() =>
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<MultiEnvironmentWorkflowDefinition>));
-                using (TextReader textReader = new StreamReader(pathToFile))
+                try
                 {
-                    this.Definitions = serializer.Deserialize(textReader) as ObservableCollection<MultiEnvironmentWorkflowDefinition>;
-                    textReader.Close();
+                    XmlSerializer serializer =
+                        new XmlSerializer(typeof (ObservableCollection<MultiEnvironmentWorkflowDefinition>));
+                    using (TextReader textReader = new StreamReader(pathToFile))
+                    {
+                        this.Definitions =
+                            serializer.Deserialize(textReader) as
+                                ObservableCollection<MultiEnvironmentWorkflowDefinition>;
+                        textReader.Close();
+                    }
+                    this.CurrentDefinitionFile = pathToFile;
                 }
-                this.CurrentDefinitionFile = pathToFile;
-            }
-            catch (Exception)
-            {
-                this.Definitions = null;
-                this.eventAggregator.GetEvent<ShowMessageEvent>().Publish("#MsgCannotLoadDefinitions");
-            }
+                catch (Exception)
+                {
+                    this.Definitions = null;
+                    this.eventAggregator.GetEvent<ShowMessageEvent>().Publish("#MsgCannotLoadDefinitions");
+                }
+            });
         }
 
 
-        public void New(string pathToFile)
+        public async void New(string pathToFile)
         {
             this.Definitions = new ObservableCollection<MultiEnvironmentWorkflowDefinition>();
             this.Save(pathToFile);
         }
 
-        public void Save(string pathToFile)
+        public async void Save(string pathToFile)
         {
-            try
+            await Task.Run(() =>
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<MultiEnvironmentWorkflowDefinition>));
-                using (TextWriter textWriter = new StreamWriter(pathToFile))
+                try
                 {
-                    serializer.Serialize(textWriter, this.Definitions);
-                    textWriter.Close();
+                    XmlSerializer serializer =
+                        new XmlSerializer(typeof (ObservableCollection<MultiEnvironmentWorkflowDefinition>));
+                    using (TextWriter textWriter = new StreamWriter(pathToFile))
+                    {
+                        serializer.Serialize(textWriter, this.Definitions);
+                        textWriter.Close();
+                    }
+                    this.CurrentDefinitionFile = pathToFile;
                 }
-                this.CurrentDefinitionFile = pathToFile;
-            }
-            catch (Exception)
-            {
-                this.eventAggregator.GetEvent<ShowMessageEvent>().Publish("#MsgCannotSaveDefinitions");
-            }
+                catch (Exception)
+                {
+                    this.eventAggregator.GetEvent<ShowMessageEvent>().Publish("#MsgCannotSaveDefinitions");
+                }
+            });
         }
 
 

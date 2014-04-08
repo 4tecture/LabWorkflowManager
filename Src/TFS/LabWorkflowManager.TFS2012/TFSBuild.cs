@@ -79,39 +79,45 @@ namespace LabWorkflowManager.TFS2012
             return abd;
         }
 
-        public LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition CreateBuildDefinitionFromDefinition(LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails labworkflowDefinitionDetails)
+        public async Task<LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition> CreateBuildDefinitionFromDefinition(LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails labworkflowDefinitionDetails)
         {
-            return ConvertToAssociatedBuildDefinition(this.CreateBuildDefinition(labworkflowDefinitionDetails));
+            var def = await Task.Run(() => ConvertToAssociatedBuildDefinition(this.CreateBuildDefinition(labworkflowDefinitionDetails).Result));
+            return await Task.Run(() => def);
         }
 
-        public void DeleteBuildDefinition(params Uri[] uris)
+        public async void DeleteBuildDefinition(params Uri[] uris)
         {
-            this.BuildServer.DeleteBuildDefinitions(uris);
+            await Task.Run(() => this.BuildServer.DeleteBuildDefinitions(uris));
         }
 
-        public IBuildDefinition CreateBuildDefinition(LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails labworkflowDefinitionDetails)
+        public async Task<IBuildDefinition> CreateBuildDefinition(LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails labworkflowDefinitionDetails)
         {
-            if (this.BuildServer != null)
+            return await Task.Run(() =>
             {
-                var buildDefinition = this.BuildServer.CreateBuildDefinition(this.connectivity.TeamProjects.First().Name);
+                if (this.BuildServer != null)
+                {
+                    var buildDefinition =
+                        this.BuildServer.CreateBuildDefinition(this.connectivity.TeamProjects.First().Name);
 
-                ConfigMainBuildDefinitionSettings(labworkflowDefinitionDetails.LabBuildDefinitionDetails, buildDefinition);
+                    ConfigMainBuildDefinitionSettings(labworkflowDefinitionDetails.LabBuildDefinitionDetails,
+                        buildDefinition);
 
-                var processParameters = WorkflowHelpers.DeserializeProcessParameters(buildDefinition.ProcessParameters);
+                    var processParameters =
+                        WorkflowHelpers.DeserializeProcessParameters(buildDefinition.ProcessParameters);
 
-                var labWorkflowDetails = new LabWorkflowDetails();
-                ConfigLabBuildSettings(labworkflowDefinitionDetails.SourceBuildDetails, labWorkflowDetails);
-                ConfigLabEnvironmentSettings(labworkflowDefinitionDetails.LabEnvironmentDetails, labWorkflowDetails);
-                ConfigLabDeploymentSettings(labworkflowDefinitionDetails.DeploymentDetails, labWorkflowDetails);
-                ConfigLabTestSettings(labworkflowDefinitionDetails.TestDetails, labWorkflowDetails);
+                    var labWorkflowDetails = new LabWorkflowDetails();
+                    ConfigLabBuildSettings(labworkflowDefinitionDetails.SourceBuildDetails, labWorkflowDetails);
+                    ConfigLabEnvironmentSettings(labworkflowDefinitionDetails.LabEnvironmentDetails, labWorkflowDetails);
+                    ConfigLabDeploymentSettings(labworkflowDefinitionDetails.DeploymentDetails, labWorkflowDetails);
+                    ConfigLabTestSettings(labworkflowDefinitionDetails.TestDetails, labWorkflowDetails);
 
-                processParameters.Add("LabWorkflowParameters", labWorkflowDetails);
-                buildDefinition.ProcessParameters = WorkflowHelpers.SerializeProcessParameters(processParameters);
-                buildDefinition.Save();
-                return buildDefinition;
-
-            }
-            throw new Exception("No connection to TFS!");
+                    processParameters.Add("LabWorkflowParameters", labWorkflowDetails);
+                    buildDefinition.ProcessParameters = WorkflowHelpers.SerializeProcessParameters(processParameters);
+                    buildDefinition.Save();
+                    return buildDefinition;
+                }
+                throw new Exception("No connection to TFS!");
+            });
         }
                
 

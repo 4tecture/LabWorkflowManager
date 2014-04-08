@@ -59,19 +59,26 @@ namespace LabWorkflowManager.TFS2013
             return new List<LabEnvironment>();
         }
 
-        public void ChangeEnvironmentOwner(Uri labEnvironmentUri, string newOwner)
+        public async void ChangeEnvironmentOwner(Uri labEnvironmentUri, string newOwner)
         {
-            if (this.LabService != null)
+            await Task.Run(() =>
             {
-                var env = this.LabService.GetLabEnvironment(labEnvironmentUri);
-                var updatePack = new LabEnvironmentUpdatePack();
-                foreach (var labsystem in env.LabSystems)
+                if (this.LabService != null)
                 {
-                    updatePack.ListOfUpdateCommands.Add(new UpdateLabSystemCommand(labsystem) { LabSystemUri = labsystem.Uri, VMOwner = newOwner });
-                }
+                    var env = this.LabService.GetLabEnvironment(labEnvironmentUri);
+                    var updatePack = new LabEnvironmentUpdatePack();
+                    foreach (var labsystem in env.LabSystems)
+                    {
+                        updatePack.ListOfUpdateCommands.Add(new UpdateLabSystemCommand(labsystem)
+                        {
+                            LabSystemUri = labsystem.Uri,
+                            VMOwner = newOwner
+                        });
+                    }
 
-                this.LabService.UpdateLabEnvironment(labEnvironmentUri, updatePack);
-            }
+                    this.LabService.UpdateLabEnvironment(labEnvironmentUri, updatePack);
+                }
+            });
         }
     }
 }

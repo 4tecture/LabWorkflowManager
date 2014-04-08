@@ -58,6 +58,11 @@
     <Compile Include="ITFSLabEnvironment.cs" />
     <Compile Include="ITFSTest.cs" />
     <Compile Include="IWorkflowManagerStorage.cs" />
+    <Compile Include="Resources\CommonStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommonStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="WorkflowConfig\AssociatedBuildDefinition.cs" />
     <Compile Include="WorkflowConfig\AssociatedLabEnvironment.cs" />
     <Compile Include="WorkflowConfig\AssociatedTestConfiguration.cs" />
@@ -82,6 +87,12 @@
       <Project>{67dd2f0b-5fed-4f94-bab2-4debc0b58cb5}</Project>
       <Name>4tecture.UI.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CommonStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CommonStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

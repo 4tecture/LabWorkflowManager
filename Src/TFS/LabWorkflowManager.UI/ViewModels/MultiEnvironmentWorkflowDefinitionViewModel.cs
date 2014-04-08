@@ -14,10 +14,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using _4tecture.UI.Common.ViewModels;
 
 namespace LabWorkflowManager.UI.ViewModels
 {
-    public class MultiEnvironmentWorkflowDefinitionViewModel : NotificationObject
+    public class MultiEnvironmentWorkflowDefinitionViewModel : NotificationObjectWithValidation
     {
         private ITFSConnectivity tfsConnectivity;
         private ITFSBuild tfsBuild;
@@ -44,7 +45,8 @@ namespace LabWorkflowManager.UI.ViewModels
             //InitTestSettingsSelection();
             InitTestConfigurationSelection();
 
-            this.GenerateBuildDefinitionsCommand = new DelegateCommand(GenerateBuildDefinitions);
+            this.GenerateBuildDefinitionsCommand = new DelegateCommand(GenerateBuildDefinitions, () => !HasErrors && !this.IsGeneratingBuildDefinitions);
+            this.DeleteBuildDefinitionsCommand = new DelegateCommand(DeleteExistingBuildDefinitions, () => !this.IsGeneratingBuildDefinitions);
             this.AddDeploymentScriptCommand = new DelegateCommand(AddDeploymentScript);
             this.RemoveDeploymentScriptCommand = new DelegateCommand<DeploymentScript>(RemoveDeploymentScript);
         }
@@ -106,6 +108,14 @@ namespace LabWorkflowManager.UI.ViewModels
         private void TestConfigurationsSelectionChanged(object sender, EventArgs e)
         {
             SyncTestConfigurationsWithEnvironments(this.availableTestConfigurations.SelectedItems);
+            if (this.AvailableTestConfigurations.Any(s => s.IsSelected))
+            {
+                this.RemoveError("AvailableTestConfigurations", ModuleStrings.ErrorNoTestConfigurationSelected);
+            }
+            else
+            {
+                this.AddError("AvailableTestConfigurations", ModuleStrings.ErrorNoTestConfigurationSelected);
+            }
         }
 
         private void TestConfigurationsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -119,6 +129,8 @@ namespace LabWorkflowManager.UI.ViewModels
             }
 
             this.availableTestConfigurations.SelectionChanged += TestConfigurationsSelectionChanged;
+
+            
         }
 
         //private void TestSettingsPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -159,6 +171,15 @@ namespace LabWorkflowManager.UI.ViewModels
             SyncTestConfigurationsWithEnvironments(this.availableTestConfigurations.SelectedItems);
             this.RaisePropertyChanged(() => this.AvailableSnapshotsToRevert);
             this.Item.Environments.CollectionChanged += EnvironmentsCollectionChanged;
+
+            if (this.AvailableEnvironments.Any(s => s.IsSelected))
+            {
+                this.RemoveError("AvailableEnvironments", ModuleStrings.ErrorNoEnvironmentSelected);
+            }
+            else
+            {
+                this.AddError("AvailableEnvironments", ModuleStrings.ErrorNoEnvironmentSelected);
+            }
         }
 
         void TestSuitesSelectionChanged(object sender, EventArgs e)
@@ -170,6 +191,14 @@ namespace LabWorkflowManager.UI.ViewModels
                 this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.Add(selectedSuite.Id);
             }
             this.Item.MainLabWorkflowDefinition.TestDetails.TestSuiteIdList.CollectionChanged += TestSuitesCollectionChanged;
+            if (this.AvailableTestSuites.Any(s => s.IsSelected))
+            {
+                this.RemoveError("AvailableTestSuites", ModuleStrings.ErrorNoTestSuitesSelected);
+            }
+            else
+            {
+                this.AddError("AvailableTestSuites", ModuleStrings.ErrorNoTestSuitesSelected);
+            }
         }
 
         void TestSuitesCollectionChanged(object sender, EventArgs e)
@@ -276,7 +305,15 @@ namespace LabWorkflowManager.UI.ViewModels
             }
             set
             {
-                this.Item.MainLabWorkflowDefinition.TestDetails.TestSettingsId = value.Id;
+                if (value != null)
+                {
+                    this.Item.MainLabWorkflowDefinition.TestDetails.TestSettingsId = value.Id;
+                    this.RemoveError("SelectedTestSettings", ModuleStrings.ErrorNoTestSettingSelected);
+                }
+                else
+                {
+                    this.AddError("SelectedTestSettings", ModuleStrings.ErrorNoTestSettingSelected);
+                }
                 this.RaisePropertyChanged(() => this.SelectedTestSettings);
             }
         }
@@ -343,6 +380,8 @@ namespace LabWorkflowManager.UI.ViewModels
 
         private object availableSourceBuildDefinitionsLock = new object();
         private List<AssociatedBuildDefinition> availableSourceBuildDefinitions;
+        private bool isGeneratingBuildDefinitions;
+        private ICommand deleteBuildDefinitionsCommand;
         public IEnumerable<AssociatedBuildDefinition> AvailableSourceBuildDefinitions
         {
             get
@@ -417,19 +456,76 @@ namespace LabWorkflowManager.UI.ViewModels
             }
         }
 
-        private void GenerateBuildDefinitions()
+        private async void GenerateBuildDefinitions()
         {
-            var existingBuildDefinitions = this.tfsBuild.GetMultiEnvAssociatedBuildDefinitions(this.Item.Id).ToList();
-            if (existingBuildDefinitions != null && existingBuildDefinitions.Count > 0)
+            this.IsGeneratingBuildDefinitions = true;
+
+            await Task.Run(() =>
             {
-                this.tfsBuild.DeleteBuildDefinition(existingBuildDefinitions.Select(o => new Uri(o.Uri)).ToArray());
+                DeleteExistingBuildDefinitions();
+
+                foreach (var generatedDefinitions in this.Item.GetEnvironmentSpecificLabWorkflowDefinitionDetails())
+                {
+                    this.tfsBuild.CreateBuildDefinitionFromDefinition(generatedDefinitions);
+                }
+            });
+
+            this.IsGeneratingBuildDefinitions = true;
+        }
+
+        private async void DeleteExistingBuildDefinitions()
+        {
+            var progressIndicated = this.IsGeneratingBuildDefinitions;
+            if (!progressIndicated)
+            {
+                this.IsGeneratingBuildDefinitions = true;
             }
 
-            foreach (var generatedDefinitions in this.Item.GetEnvironmentSpecificLabWorkflowDefinitionDetails())
+            await Task.Run(() =>
             {
-                this.tfsBuild.CreateBuildDefinitionFromDefinition(generatedDefinitions);
+                var existingBuildDefinitions =
+                    this.tfsBuild.GetMultiEnvAssociatedBuildDefinitions(this.Item.Id).ToList();
+                if (existingBuildDefinitions.Count > 0)
+                {
+                    this.tfsBuild.DeleteBuildDefinition(existingBuildDefinitions.Select(o => new Uri(o.Uri)).ToArray());
+                }
+            });
+
+            if (!progressIndicated)
+            {
+                this.IsGeneratingBuildDefinitions = false;
             }
         }
 
+        public bool IsGeneratingBuildDefinitions
+        {
+            get { return this.isGeneratingBuildDefinitions; }
+            set
+            {
+                this.isGeneratingBuildDefinitions = value;
+                this.RaisePropertyChanged(() => this.IsGeneratingBuildDefinitions);
+                ((DelegateCommand)this.GenerateBuildDefinitionsCommand).RaiseCanExecuteChanged();
+                ((DelegateCommand)this.DeleteBuildDefinitionsCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+
+        public ICommand DeleteBuildDefinitionsCommand
+        {
+            get
+            {
+                return this.deleteBuildDefinitionsCommand;
+            }
+            set
+            {
+                this.deleteBuildDefinitionsCommand = value;
+                this.RaisePropertyChanged(() => this.DeleteBuildDefinitionsCommand);
+            }
+        }
+
+        public override bool HasErrors
+        {
+            get { return this.HasErrorsInternal || this.Item.HasErrors; }
+        }
     }
 }

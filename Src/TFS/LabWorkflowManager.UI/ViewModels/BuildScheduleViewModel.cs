@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _4tecture.UI.Common.ViewModels;
 
 namespace LabWorkflowManager.UI.ViewModels
 {
-    public class BuildScheduleViewModel : NotificationObject
+    public class BuildScheduleViewModel : NotificationObjectWithValidation
     {
         public BuildScheduleViewModel(TFS.Common.WorkflowConfig.MultiEnvironmentWorkflowDefinition multiEnvironmentWorkflowDefinition)
         {

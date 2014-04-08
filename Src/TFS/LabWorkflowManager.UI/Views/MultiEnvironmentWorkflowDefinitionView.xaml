@@ -20,105 +20,110 @@
         </ObjectDataProvider>
         <Converters:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
         <Converters:BoolInverterConverter x:Key="BoolInverterConverter" />
+        <Converters:BoolToVisibilityConverter x:Key="BoolToVisibleConverter" TrueValue="Visible" FalseValue="Hidden" />
     </UserControl.Resources>
-	<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionGeneral}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="85" />
-                </Grid.RowDefinitions>
-                <Label Content="{x:Static appres:ModuleStrings.LblDefinitionName}" Grid.Column="0" Grid.Row="0" />
-                <TextBox Text="{Binding Item.Name}" Grid.Column="1" Grid.Row="0" />
-                <Label Content="{x:Static appres:ModuleStrings.LblDefinitionDescription}" Grid.Column="0" Grid.Row="1" />
-                <TextBox Text="{Binding Item.Description}" Grid.Column="1" Grid.Row="1" />
-                <Label Content="{x:Static appres:ModuleStrings.LblDefinitionId}" Grid.Column="0" Grid.Row="2" />
-                <TextBlock Text="{Binding Item.Id}" Grid.Column="1" Grid.Row="2" />
-                <Label Content="{x:Static appres:ModuleStrings.LblLabProcesstemplate}" Grid.Column="0" Grid.Row="3" />
-                <ComboBox ItemsSource="{Binding AvailableLabProcessTemplates}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ProcessTemplateFilename}" Grid.Column="1" Grid.Row="3" />
-                <Label Content="{x:Static appres:ModuleStrings.LblBuildController}" Grid.Column="0" Grid.Row="4" />
-                <ComboBox ItemsSource="{Binding AvailableBuildControllers}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ControllerName}" Grid.Column="1" Grid.Row="4" />
-                <Label Content="{x:Static appres:ModuleStrings.LblContinuousIntegrationType}" Grid.Column="0" Grid.Row="5" />
-                <ComboBox ItemsSource="{Binding Source={StaticResource BuildDefinitionContinuousIntegrationTypeEnum}}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ContinuousIntegrationType}" Grid.Column="1" Grid.Row="5" />
-                <Label Content="{x:Static appres:ModuleStrings.LblContinuousIntegrationTypeDetails}" Grid.Column="0" Grid.Row="6" />
-                <StackPanel Grid.Column="1" Grid.Row="6">
-                    <TextBox Text="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.QuietPeriod}" Visibility="{Binding BuildScheduleViewModel.QuietPeriodVisible, Converter={StaticResource BoolToHiddenConverter}}" />
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding BuildScheduleViewModel.ScheduledDaysVisible, Converter={StaticResource BoolToHiddenConverter}}">
-                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayMonday}"/>
-                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayMonday}" />
-                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayTuesday}"/>
-                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayTuesday}" />
-                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayWednesday}"/>
-                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayWednesday}" />
-                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayThursday}"/>
-                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayThursday}" />
-                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayFriday}"/>
-                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayFriday}" />
-                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDaySaturday}"/>
-                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDaySaturday}" />
-                        <Label Content="{x:Static appres:ModuleStrings.LblScheduledDaySunday}"/>
-                        <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDaySunday}" />
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionGeneral}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="85" />
+                    </Grid.RowDefinitions>
+                    <Label Content="{x:Static appres:ModuleStrings.LblDefinitionName}" Grid.Column="0" Grid.Row="0" />
+                    <TextBox Text="{Binding Item.Name}" Grid.Column="1" Grid.Row="0" />
+                    <Label Content="{x:Static appres:ModuleStrings.LblDefinitionDescription}" Grid.Column="0" Grid.Row="1" />
+                    <TextBox Text="{Binding Item.Description}" Grid.Column="1" Grid.Row="1" />
+                    <Label Content="{x:Static appres:ModuleStrings.LblDefinitionId}" Grid.Column="0" Grid.Row="2" />
+                    <TextBlock Text="{Binding Item.Id}" Grid.Column="1" Grid.Row="2" />
+                    <Label Content="{x:Static appres:ModuleStrings.LblLabProcesstemplate}" Grid.Column="0" Grid.Row="3" />
+                    <ComboBox ItemsSource="{Binding AvailableLabProcessTemplates}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ProcessTemplateFilename}" Grid.Column="1" Grid.Row="3" />
+                    <Label Content="{x:Static appres:ModuleStrings.LblBuildController}" Grid.Column="0" Grid.Row="4" />
+                    <ComboBox ItemsSource="{Binding AvailableBuildControllers}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ControllerName}" Grid.Column="1" Grid.Row="4" />
+                    <Label Content="{x:Static appres:ModuleStrings.LblContinuousIntegrationType}" Grid.Column="0" Grid.Row="5" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource BuildDefinitionContinuousIntegrationTypeEnum}}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ContinuousIntegrationType}" Grid.Column="1" Grid.Row="5" />
+                    <Label Content="{x:Static appres:ModuleStrings.LblContinuousIntegrationTypeDetails}" Grid.Column="0" Grid.Row="6" />
+                    <StackPanel Grid.Column="1" Grid.Row="6">
+                        <TextBox Text="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.QuietPeriod}" Visibility="{Binding BuildScheduleViewModel.QuietPeriodVisible, Converter={StaticResource BoolToHiddenConverter}}" />
+                        <StackPanel Orientation="Horizontal" Visibility="{Binding BuildScheduleViewModel.ScheduledDaysVisible, Converter={StaticResource BoolToHiddenConverter}}">
+                            <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayMonday}"/>
+                            <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayMonday}" />
+                            <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayTuesday}"/>
+                            <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayTuesday}" />
+                            <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayWednesday}"/>
+                            <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayWednesday}" />
+                            <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayThursday}"/>
+                            <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayThursday}" />
+                            <Label Content="{x:Static appres:ModuleStrings.LblScheduledDayFriday}"/>
+                            <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDayFriday}" />
+                            <Label Content="{x:Static appres:ModuleStrings.LblScheduledDaySaturday}"/>
+                            <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDaySaturday}" />
+                            <Label Content="{x:Static appres:ModuleStrings.LblScheduledDaySunday}"/>
+                            <CheckBox IsChecked="{Binding BuildScheduleViewModel.ScheduledDaySunday}" />
+                        </StackPanel>
+                        <TextBox Text="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.StartTime}" Visibility="{Binding BuildScheduleViewModel.ScheduledDaysVisible, Converter={StaticResource BoolToHiddenConverter}}" />
                     </StackPanel>
-                    <TextBox Text="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.StartTime}" Visibility="{Binding BuildScheduleViewModel.ScheduledDaysVisible, Converter={StaticResource BoolToHiddenConverter}}" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionActions}" Grid.Row="0" Grid.Column="1">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="{x:Static appres:ModuleStrings.BtnGenerateBuildDefnitions}" Command="{Binding GenerateBuildDefinitionsCommand}" Grid.Column="2"/>
+                        <Button Content="{x:Static appres:ModuleStrings.BtnDeleteBuildDefnitions}" Command="{Binding DeleteBuildDefinitionsCommand}" Grid.Column="2"/>
+                    </StackPanel>
+                    <ProgressBar Minimum="0" Maximum="100" IsIndeterminate="true" Height="15" Visibility="{Binding IsGeneratingBuildDefinitions, Converter={StaticResource BoolToVisibleConverter}}" />
                 </StackPanel>
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionActions}" Grid.Row="0" Grid.Column="1">
-            <StackPanel>
-                <Button Content="{x:Static appres:ModuleStrings.BtnGenerateBuildDefnitions}" Command="{Binding GenerateBuildDefinitionsCommand}" Grid.Column="2"/>
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionBuild}" Grid.Row="1" Grid.Column="2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                </Grid.RowDefinitions>
-                <Label Content="{x:Static appres:ModuleStrings.LblSourceBuildDefinitionToUse}" Grid.Column="0" Grid.Row="0" />
-                <ComboBox ItemsSource="{Binding AvailableSourceBuildDefinitions}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSourceBuildDefinition}" Grid.Column="1" Grid.Row="0"/>
-                <Label Content="{x:Static appres:ModuleStrings.LblSourceBuildDefinitionQueueNewBuild}" Grid.Column="0" Grid.Row="1" />
-                <CheckBox IsChecked="{Binding Item.MainLabWorkflowDefinition.SourceBuildDetails.QueueNewBuild}" Grid.Column="1" Grid.Row="1" />
-                <Label Content="{x:Static appres:ModuleStrings.LblSourceBuildToUse}" Grid.Column="0" Grid.Row="2" />
-                <ComboBox ItemsSource="{Binding AvailableBuildsToUse}" DisplayMemberPath="LabelName" SelectedItem="{Binding SelectedBuildtoUse}" IsEnabled="{Binding Item.MainLabWorkflowDefinition.SourceBuildDetails.QueueNewBuild, Converter={StaticResource BoolInverterConverter}}" Grid.Column="1" Grid.Row="2"/>
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionEnvironments}" Grid.Row="2" Grid.Column="0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="200" />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <!--<ListView x:Name="lstAvailableEnvironments" ItemsSource="{Binding AvailableEnvironments}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            </GroupBox>
+            <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionBuild}" Grid.Row="1" Grid.Column="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+                    <Label Content="{x:Static appres:ModuleStrings.LblSourceBuildDefinitionToUse}" Grid.Column="0" Grid.Row="0" />
+                    <ComboBox ItemsSource="{Binding AvailableSourceBuildDefinitions}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedSourceBuildDefinition}" Grid.Column="1" Grid.Row="0"/>
+                    <Label Content="{x:Static appres:ModuleStrings.LblSourceBuildDefinitionQueueNewBuild}" Grid.Column="0" Grid.Row="1" />
+                    <CheckBox IsChecked="{Binding Item.MainLabWorkflowDefinition.SourceBuildDetails.QueueNewBuild}" Grid.Column="1" Grid.Row="1" />
+                    <Label Content="{x:Static appres:ModuleStrings.LblSourceBuildToUse}" Grid.Column="0" Grid.Row="2" />
+                    <ComboBox ItemsSource="{Binding AvailableBuildsToUse}" DisplayMemberPath="LabelName" SelectedItem="{Binding SelectedBuildtoUse}" IsEnabled="{Binding Item.MainLabWorkflowDefinition.SourceBuildDetails.QueueNewBuild, Converter={StaticResource BoolInverterConverter}}" Grid.Column="1" Grid.Row="2"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionEnvironments}" Grid.Row="2" Grid.Column="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200" />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <!--<ListView x:Name="lstAvailableEnvironments" ItemsSource="{Binding AvailableEnvironments}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -136,93 +141,93 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>-->
-                <DataGrid ItemsSource="{Binding AvailableEnvironments}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="true" CanUserResizeRows="False" CanUserSortColumns="False" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged">
-                    <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Header="{x:Static appres:ModuleStrings.GridColSelection}" Binding="{Binding IsSelected, Mode=TwoWay}" Width="30"/>
-                        <DataGridTextColumn Header="{x:Static appres:ModuleStrings.GridColEnvName}" Binding="{Binding Item.Name}" IsReadOnly="True" Width="3*"/>
-                        <!--<DataGridTextColumn Binding="{Binding Item.SnapshotList}" IsReadOnly="True" />-->
-                        <DataGridTextColumn Header="{x:Static appres:ModuleStrings.GridColEnvUri}" Binding="{Binding Item.Uri}" IsReadOnly="True" Width="*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-                <Label Content="{x:Static appres:ModuleStrings.LblRevertToSnapshot}" Grid.Column="0" Grid.Row="1" />
-                <StackPanel Orientation="Horizontal"  Grid.Column="1" Grid.Row="1">
-						<CheckBox x:Name="cbRevertToSnapshot" IsChecked="{Binding Item.MainLabWorkflowDefinition.LabEnvironmentDetails.RevertToSnapshot}"/>
-						<ComboBox ItemsSource="{Binding AvailableSnapshotsToRevert}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabEnvironmentDetails.SnapshotName}" IsEnabled="{Binding ElementName=cbRevertToSnapshot, Path=IsChecked}" MinWidth="200"/>
-                </StackPanel>
-                <Label Content="{x:Static appres:ModuleStrings.LblTakePostDeploymentSnapshot}" Grid.Column="0" Grid.Row="2" />
-                <StackPanel Orientation="Horizontal"  Grid.Column="1" Grid.Row="2">
-						<CheckBox x:Name="cbTakePostDeploymentSnapshot" IsChecked="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.TakePostDeploymentSnapshot}"/>
-                    <TextBox Text="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.SnapshotName}"  IsEnabled="{Binding ElementName=cbTakePostDeploymentSnapshot, Path=IsChecked}" MinWidth="200" />
-                </StackPanel>
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionTests}" Grid.Row="2" Grid.Column="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-					<RowDefinition Height="100" />
-					<RowDefinition Height="30" />
-					<RowDefinition Height="100" />
-				</Grid.RowDefinitions>
-				<Label Content="{x:Static appres:ModuleStrings.LblTestPlan}" Grid.Column="0" Grid.Row="0" />
-                <ComboBox ItemsSource="{Binding AvailableTestPlans}" SelectedItem="{Binding SelectedTestPlan}" Grid.Row="0" Grid.Column="1">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-				<Label Content="{x:Static appres:ModuleStrings.LblTestSuites}" Grid.Column="0" Grid.Row="1" />
+                    <DataGrid ItemsSource="{Binding AvailableEnvironments}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="true" CanUserResizeRows="False" CanUserSortColumns="False" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Header="{x:Static appres:ModuleStrings.GridColSelection}" Binding="{Binding IsSelected, Mode=TwoWay}" Width="30"/>
+                            <DataGridTextColumn Header="{x:Static appres:ModuleStrings.GridColEnvName}" Binding="{Binding Item.Name}" IsReadOnly="True" Width="3*"/>
+                            <!--<DataGridTextColumn Binding="{Binding Item.SnapshotList}" IsReadOnly="True" />-->
+                            <DataGridTextColumn Header="{x:Static appres:ModuleStrings.GridColEnvUri}" Binding="{Binding Item.Uri}" IsReadOnly="True" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Label Content="{x:Static appres:ModuleStrings.LblRevertToSnapshot}" Grid.Column="0" Grid.Row="1" />
+                    <StackPanel Orientation="Horizontal"  Grid.Column="1" Grid.Row="1">
+                        <CheckBox x:Name="cbRevertToSnapshot" IsChecked="{Binding Item.MainLabWorkflowDefinition.LabEnvironmentDetails.RevertToSnapshot}"/>
+                        <ComboBox ItemsSource="{Binding AvailableSnapshotsToRevert}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabEnvironmentDetails.SnapshotName}" IsEnabled="{Binding ElementName=cbRevertToSnapshot, Path=IsChecked}" MinWidth="200"/>
+                    </StackPanel>
+                    <Label Content="{x:Static appres:ModuleStrings.LblTakePostDeploymentSnapshot}" Grid.Column="0" Grid.Row="2" />
+                    <StackPanel Orientation="Horizontal"  Grid.Column="1" Grid.Row="2">
+                        <CheckBox x:Name="cbTakePostDeploymentSnapshot" IsChecked="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.TakePostDeploymentSnapshot}"/>
+                        <TextBox Text="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.SnapshotName}"  IsEnabled="{Binding ElementName=cbTakePostDeploymentSnapshot, Path=IsChecked}" MinWidth="200" />
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionTests}" Grid.Row="2" Grid.Column="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="100" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="100" />
+                    </Grid.RowDefinitions>
+                    <Label Content="{x:Static appres:ModuleStrings.LblTestPlan}" Grid.Column="0" Grid.Row="0" />
+                    <ComboBox ItemsSource="{Binding AvailableTestPlans}" SelectedItem="{Binding SelectedTestPlan}" Grid.Row="0" Grid.Column="1">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Label Content="{x:Static appres:ModuleStrings.LblTestSuites}" Grid.Column="0" Grid.Row="1" />
                     <TreeView ItemsSource="{Binding AvailableTestSuitesHierarchy}"  Grid.Row="1" Grid.Column="1">
                         <TreeView.Resources>
                             <Style TargetType="TreeViewItem">
                                 <Setter Property="IsExpanded" Value="True" />
                             </Style>
                         </TreeView.Resources>
-                    <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
-                            <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="{Binding Entity.IsSelected}"/>
-                                <TextBlock Text="{Binding Entity.Item.Title}"/>
-                            </StackPanel>
-                        </HierarchicalDataTemplate>
-                    </TreeView.ItemTemplate>
-                </TreeView>
-				<Label Content="{x:Static appres:ModuleStrings.LblTestSettings}" Grid.Column="0" Grid.Row="2" />
-                <ComboBox ItemsSource="{Binding AvailableTestSettings}" SelectedItem="{Binding SelectedTestSettings}" Grid.Row="2" Grid.Column="1">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-				<Label Content="{x:Static appres:ModuleStrings.LblTestConfigurations}" Grid.Column="0" Grid.Row="3" />
-                <ListBox ItemsSource="{Binding AvailableTestConfigurations}" Grid.Row="3" Grid.Column="1">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="{Binding IsSelected}"/>
-                                <TextBlock Text="{Binding Item.Name}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionDeployment}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
-            <Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="30"/>
-						<RowDefinition MinHeight="200" Height="*"/>
-					</Grid.RowDefinitions>
-						<StackPanel Orientation="Horizontal" Grid.Row="0">
-                    <Button Content="{x:Static appres:ModuleStrings.BtnAddDeploymentScript}" Command="{Binding AddDeploymentScriptCommand}" />
-                </StackPanel>
-                <!--<ListBox ItemsSource="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts}">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox IsChecked="{Binding Entity.IsSelected}"/>
+                                    <TextBlock Text="{Binding Entity.Item.Title}"/>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                    <Label Content="{x:Static appres:ModuleStrings.LblTestSettings}" Grid.Column="0" Grid.Row="2" />
+                    <ComboBox ItemsSource="{Binding AvailableTestSettings}" SelectedItem="{Binding SelectedTestSettings}" Grid.Row="2" Grid.Column="1">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Label Content="{x:Static appres:ModuleStrings.LblTestConfigurations}" Grid.Column="0" Grid.Row="3" />
+                    <ListBox ItemsSource="{Binding AvailableTestConfigurations}" Grid.Row="3" Grid.Column="1">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox IsChecked="{Binding IsSelected}"/>
+                                    <TextBlock Text="{Binding Item.Name}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="{x:Static appres:ModuleStrings.GrpDefinitionDeployment}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition MinHeight="200" Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <Button Content="{x:Static appres:ModuleStrings.BtnAddDeploymentScript}" Command="{Binding AddDeploymentScriptCommand}" />
+                    </StackPanel>
+                    <!--<ListBox ItemsSource="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -240,33 +245,33 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>-->
-                <DataGrid ItemsSource="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts}" AutoGenerateColumns="False" CanUserAddRows="False"  CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="true" CanUserResizeRows="False" CanUserSortColumns="False" Grid.Row="1">
-                    <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="{x:Static appres:ModuleStrings.GridColRoles}" Width="*">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Role}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                            <DataGridTemplateColumn.CellEditingTemplate>
-                                <DataTemplate>
-                                    <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.AvailableEnvironmentRoles}" SelectedItem="{Binding Role}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellEditingTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Binding="{Binding Script}" Header="{x:Static appres:ModuleStrings.GridColScript}" Width="3*" />
-                        <DataGridTextColumn Binding="{Binding WorkingDirectory}" Header="{x:Static appres:ModuleStrings.GridColWorkingDirectory}" Width="3*" />
-                        <DataGridTemplateColumn Width="100" Header="{x:Static appres:ModuleStrings.GridColActions}">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="{x:Static appres:ModuleStrings.BtnRemoveDeploymentScript}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.RemoveDeploymentScriptCommand}" CommandParameter="{Binding}" Grid.Column="3"  />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-        </GroupBox>
-    </Grid>
-	</ScrollViewer>
+                    <DataGrid ItemsSource="{Binding Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts}" AutoGenerateColumns="False" CanUserAddRows="False"  CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="true" CanUserResizeRows="False" CanUserSortColumns="False" Grid.Row="1">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="{x:Static appres:ModuleStrings.GridColRoles}" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Role}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.AvailableEnvironmentRoles}" SelectedItem="{Binding Role}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding Script}" Header="{x:Static appres:ModuleStrings.GridColScript}" Width="3*" />
+                            <DataGridTextColumn Binding="{Binding WorkingDirectory}" Header="{x:Static appres:ModuleStrings.GridColWorkingDirectory}" Width="3*" />
+                            <DataGridTemplateColumn Width="100" Header="{x:Static appres:ModuleStrings.GridColActions}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="{x:Static appres:ModuleStrings.BtnRemoveDeploymentScript}" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.RemoveDeploymentScriptCommand}" CommandParameter="{Binding}" Grid.Column="3"  />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

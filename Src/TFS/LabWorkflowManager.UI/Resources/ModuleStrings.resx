@@ -121,7 +121,7 @@
     <value>Add new Definition</value>
   </data>
   <data name="BtnConnect" xml:space="preserve">
-    <value>Connect</value>
+    <value>Connect...</value>
   </data>
   <data name="BtnDelete" xml:space="preserve">
     <value>Delete Definition</value>
@@ -287,5 +287,20 @@
   </data>
   <data name="MsgCannotSaveDefinitions" xml:space="preserve">
     <value>Definitions could not be saved!</value>
+  </data>
+  <data name="BtnDeleteBuildDefnitions" xml:space="preserve">
+    <value>Delete Build Definitions</value>
+  </data>
+  <data name="ErrorNoEnvironmentSelected" xml:space="preserve">
+    <value>At least one environment has to be selected.</value>
+  </data>
+  <data name="ErrorNoTestConfigurationSelected" xml:space="preserve">
+    <value>At least one test configuration has to be selected.</value>
+  </data>
+  <data name="ErrorNoTestSettingSelected" xml:space="preserve">
+    <value>A test setting has to be selected.</value>
+  </data>
+  <data name="ErrorNoTestSuitesSelected" xml:space="preserve">
+    <value>At least one test suite has to be selected.</value>
   </data>
 </root>
