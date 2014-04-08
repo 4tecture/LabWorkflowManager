@@ -52,6 +52,18 @@ namespace LabWorkflowManager.TFS2013
             }
         }
 
+        public async Task DeleteMultiEnvAssociatedBuildDefinitions(Guid multiEnvConfigId)
+        {
+            await Task.Run(() =>
+            {
+                var existingBuildDefinitions = this.GetMultiEnvAssociatedBuildDefinitions(multiEnvConfigId).ToList();
+                if (existingBuildDefinitions.Count > 0)
+                {
+                    this.DeleteBuildDefinition(existingBuildDefinitions.Select(o => new Uri(o.Uri)).ToArray());
+                }
+            });
+        }
+
         public IEnumerable<LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition> GetAssociatedDefinitions()
         {
             var results = this.QueryBuildDefinitions();
@@ -88,7 +100,20 @@ namespace LabWorkflowManager.TFS2013
 
         public async void DeleteBuildDefinition(params Uri[] uris)
         {
-            await Task.Run(() => this.BuildServer.DeleteBuildDefinitions(uris));
+            await Task.Run(() =>
+            {
+                foreach (var definitionUri in uris)
+                {
+                    try
+                    {
+                        var buildUris =
+                            this.BuildServer.GetBuildDefinition(uris[0]).QueryBuilds().Select(o => o.Uri).ToArray();
+                        this.BuildServer.DeleteBuilds(buildUris);
+                    }
+                    catch (BuildDefinitionNotFoundForUriException){} // exception if not builds available
+                    this.BuildServer.DeleteBuildDefinitions(new Uri[]{definitionUri});
+                }
+            });
         }
 
         public async Task<IBuildDefinition> CreateBuildDefinition(LabWorkflowManager.TFS.Common.WorkflowConfig.LabWorkflowDefinitionDetails labworkflowDefinitionDetails)
@@ -97,8 +122,11 @@ namespace LabWorkflowManager.TFS2013
             {
                 if (this.BuildServer != null)
                 {
-                    var buildDefinition =
-                        this.BuildServer.CreateBuildDefinition(this.connectivity.TeamProjects.First().Name);
+                    var buildDefinition = this.QueryBuildDefinitions().FirstOrDefault(d => d.Name == labworkflowDefinitionDetails.LabBuildDefinitionDetails.Name);
+                    if (buildDefinition == null)
+                    {
+                        buildDefinition = this.BuildServer.CreateBuildDefinition(this.connectivity.TeamProjects.First().Name);
+                    }
 
                     ConfigMainBuildDefinitionSettings(labworkflowDefinitionDetails.LabBuildDefinitionDetails,
                         buildDefinition);
@@ -112,7 +140,7 @@ namespace LabWorkflowManager.TFS2013
                     ConfigLabDeploymentSettings(labworkflowDefinitionDetails.DeploymentDetails, labWorkflowDetails);
                     ConfigLabTestSettings(labworkflowDefinitionDetails.TestDetails, labWorkflowDetails);
 
-                    processParameters.Add("LabWorkflowParameters", labWorkflowDetails);
+                    processParameters["LabWorkflowParameters"] = labWorkflowDetails;
                     buildDefinition.ProcessParameters = WorkflowHelpers.SerializeProcessParameters(processParameters);
                     buildDefinition.Save();
                     return buildDefinition;

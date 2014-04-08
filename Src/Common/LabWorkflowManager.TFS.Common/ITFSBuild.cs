@@ -10,6 +10,7 @@ namespace LabWorkflowManager.TFS.Common
         Task<AssociatedBuildDefinition> CreateBuildDefinitionFromDefinition(LabWorkflowDefinitionDetails labworkflowDefinitionDetails);
         void DeleteBuildDefinition(params Uri[] uris);
         System.Collections.Generic.IEnumerable<LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition> GetMultiEnvAssociatedBuildDefinitions(Guid multiEnvConfigId);
+        Task DeleteMultiEnvAssociatedBuildDefinitions(Guid multiEnvConfigId);
         IEnumerable<LabWorkflowManager.TFS.Common.WorkflowConfig.AssociatedBuildDefinition> GetAssociatedDefinitions();
         IEnumerable<string> GetProcessTemplateFiles();
         IEnumerable<string> GetBuildControllers();

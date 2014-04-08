@@ -208,5 +208,17 @@ namespace LabWorkflowManager.TFS2012
         {
             return this.BuildServer.QueryBuildControllers().Select(o => o.Name);
         }
+
+        public async Task DeleteMultiEnvAssociatedBuildDefinitions(Guid multiEnvConfigId)
+        {
+            await Task.Run(() =>
+            {
+                var existingBuildDefinitions = this.GetMultiEnvAssociatedBuildDefinitions(multiEnvConfigId).ToList();
+                if (existingBuildDefinitions.Count > 0)
+                {
+                    this.DeleteBuildDefinition(existingBuildDefinitions.Select(o => new Uri(o.Uri)).ToArray());
+                }
+            });
+        }
     }
 }

@@ -462,39 +462,22 @@ namespace LabWorkflowManager.UI.ViewModels
 
             await Task.Run(() =>
             {
-                DeleteExistingBuildDefinitions();
-
                 foreach (var generatedDefinitions in this.Item.GetEnvironmentSpecificLabWorkflowDefinitionDetails())
                 {
                     this.tfsBuild.CreateBuildDefinitionFromDefinition(generatedDefinitions);
                 }
             });
 
-            this.IsGeneratingBuildDefinitions = true;
+            this.IsGeneratingBuildDefinitions = false;
         }
 
         private async void DeleteExistingBuildDefinitions()
         {
-            var progressIndicated = this.IsGeneratingBuildDefinitions;
-            if (!progressIndicated)
-            {
-                this.IsGeneratingBuildDefinitions = true;
-            }
+            this.IsGeneratingBuildDefinitions = true;
 
-            await Task.Run(() =>
-            {
-                var existingBuildDefinitions =
-                    this.tfsBuild.GetMultiEnvAssociatedBuildDefinitions(this.Item.Id).ToList();
-                if (existingBuildDefinitions.Count > 0)
-                {
-                    this.tfsBuild.DeleteBuildDefinition(existingBuildDefinitions.Select(o => new Uri(o.Uri)).ToArray());
-                }
-            });
+            await this.tfsBuild.DeleteMultiEnvAssociatedBuildDefinitions(this.Item.Id);
 
-            if (!progressIndicated)
-            {
-                this.IsGeneratingBuildDefinitions = false;
-            }
+            this.IsGeneratingBuildDefinitions = false;
         }
 
         public bool IsGeneratingBuildDefinitions
