@@ -36,19 +36,17 @@ namespace LabWorkflowManager.UI.ViewModels
             this.regionManager = regionManager;
             this.buildScheduleViewModel = new BuildScheduleViewModel(this.Item);
 
-            this.Item.PropertyChanged += (sender, args) => { if (args.PropertyName.Equals("Name")) this.RaisePropertyChanged(() => this.HeaderInfo); };
-
-            this.Item.MainLabWorkflowDefinition.SourceBuildDetails.PropertyChanged += (sender, args) => { if (args.PropertyName.Equals("QueueNewBuild")) { if (this.Item.MainLabWorkflowDefinition.SourceBuildDetails.QueueNewBuild) { this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildUri = null; this.RaisePropertyChanged(() => this.SelectedBuildtoUse); } } };
-
-            InitTestSuitesSelection();
-            InitEnvironmentsSelection();
-            //InitTestSettingsSelection();
-            InitTestConfigurationSelection();
-
             this.GenerateBuildDefinitionsCommand = new DelegateCommand(GenerateBuildDefinitions, () => !HasErrors && !this.IsGeneratingBuildDefinitions);
             this.DeleteBuildDefinitionsCommand = new DelegateCommand(DeleteExistingBuildDefinitions, () => !this.IsGeneratingBuildDefinitions);
             this.AddDeploymentScriptCommand = new DelegateCommand(AddDeploymentScript);
             this.RemoveDeploymentScriptCommand = new DelegateCommand<DeploymentScript>(RemoveDeploymentScript);
+
+            this.Item.PropertyChanged += (sender, args) => { if (args.PropertyName.Equals("Name")) this.RaisePropertyChanged(() => this.HeaderInfo); };
+            this.Item.MainLabWorkflowDefinition.SourceBuildDetails.PropertyChanged += (sender, args) => { if (args.PropertyName.Equals("QueueNewBuild")) { if (this.Item.MainLabWorkflowDefinition.SourceBuildDetails.QueueNewBuild) { this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildUri = null; this.RaisePropertyChanged(() => this.SelectedBuildtoUse); } } };
+
+            InitTestSuitesSelection();
+            InitEnvironmentsSelection();
+            InitTestConfigurationSelection();
         }
 
         private void RemoveDeploymentScript(DeploymentScript obj)
