@@ -24,6 +24,7 @@
     </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <Grid>
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -56,7 +57,7 @@
                     <Label Content="{x:Static appres:ModuleStrings.LblDefinitionId}" Grid.Column="0" Grid.Row="2" />
                     <TextBlock Text="{Binding Item.Id}" Grid.Column="1" Grid.Row="2" />
                     <Label Content="{x:Static appres:ModuleStrings.LblLabProcesstemplate}" Grid.Column="0" Grid.Row="3" />
-                    <ComboBox ItemsSource="{Binding AvailableLabProcessTemplates}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ProcessTemplateFilename}" Grid.Column="1" Grid.Row="3" />
+                    <ComboBox ItemsSource="{Binding AvailableLabProcessTemplates}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ProcessTemplateFilename, ValidatesOnNotifyDataErrors=True}" Grid.Column="1" Grid.Row="3" />
                     <Label Content="{x:Static appres:ModuleStrings.LblBuildController}" Grid.Column="0" Grid.Row="4" />
                     <ComboBox ItemsSource="{Binding AvailableBuildControllers}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ControllerName}" Grid.Column="1" Grid.Row="4" />
                     <Label Content="{x:Static appres:ModuleStrings.LblContinuousIntegrationType}" Grid.Column="0" Grid.Row="5" />
@@ -272,6 +273,10 @@
                     </DataGrid>
                 </Grid>
             </GroupBox>
+        </Grid>
+            <Border Visibility="{Binding IsInitializing, Converter={StaticResource BoolToVisibleConverter}, FallbackValue=Hidden}" Background="LightGray" Opacity="0.25">
+                <ProgressBar Minimum="0" Maximum="100" IsIndeterminate="true" Height="30" MinWidth="400" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
         </Grid>
     </ScrollViewer>
 </UserControl>
