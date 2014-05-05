@@ -98,7 +98,7 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
     {
         public MultiEnvironmentWorkflowEnvironment()
         {
-            this.Roles = new ObservableCollection<string>();
+            //this.Roles = new ObservableCollection<string>();
             this.TestConfigurationIds = new ObservableCollection<int>();
         }
 
@@ -108,8 +108,8 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
         private string environmentName;
         public string EnvironmentName { get { return this.environmentName; } set { this.environmentName = value; this.RaisePropertyChanged(() => this.EnvironmentName); } }
 
-        private ObservableCollection<string> roles;
-        public ObservableCollection<string> Roles { get { return this.roles; } set { this.roles = value; this.RaisePropertyChanged(() => this.Roles); } }
+        //private ObservableCollection<string> roles;
+        //public ObservableCollection<string> Roles { get { return this.roles; } set { this.roles = value; this.RaisePropertyChanged(() => this.Roles); } }
 
         private ObservableCollection<int> testConfigurationIds;
         public ObservableCollection<int> TestConfigurationIds { get { return this.testConfigurationIds; } set { this.testConfigurationIds = value; this.RaisePropertyChanged(() => this.TestConfigurationIds); } }

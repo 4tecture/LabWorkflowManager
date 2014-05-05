@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace LabWorkflowManager.TFS.Common.WorkflowConfig
 {
     public class AssociatedLabEnvironment
     {
+        
         public string Uri { get; set; }
         public List<string> Snapshots { get; set; }
 
@@ -29,5 +28,7 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
         }
 
         public List<string> Roles { get; set; }
+
+        
     }
 }

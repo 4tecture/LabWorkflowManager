@@ -121,7 +121,7 @@ namespace _4tecture.UI.Common.Helper
 
         public void Init<TTargetItem>(IEnumerable<TItem> sourceItems, ObservableCollection<TTargetItem> selectedItemsCollection, Func<TItem, TTargetItem> convertToTargetItem, Func<TTargetItem, TItem> convertToSourceItem, Action selectionVerificationAction = null)
         {
-            this.RefreshSelectableItems(sourceItems, selectedItemsCollection.Select(convertToSourceItem));
+            this.RefreshSelectableItems(sourceItems, selectedItemsCollection != null ? selectedItemsCollection.Select(convertToSourceItem) : null);
 
             this.SelectionChanged += (sender, eventArgs) =>
             {
@@ -141,24 +141,30 @@ namespace _4tecture.UI.Common.Helper
                     selectedItemsCollectionNotificationPaused = false;
                 }
             };
-            selectedItemsCollection.CollectionChanged += (sender, eventArgs) =>
+            if (selectedItemsCollection != null)
             {
-                if (!selectedItemsCollectionNotificationPaused)
+                selectedItemsCollection.CollectionChanged += (sender, eventArgs) =>
                 {
-                    selectionChangedPaused = true;
-                    var selectedItemsTmp = selectedItemsCollection.Select(convertToSourceItem).Where(o => this.InnerItems.Contains(o)).ToList();
-                    this.SelectedItems = selectedItemsTmp;
-
-                    if (selectionVerificationAction != null)
+                    if (!selectedItemsCollectionNotificationPaused)
                     {
-                        selectionVerificationAction();
+                        selectionChangedPaused = true;
+                        var selectedItemsTmp =
+                            selectedItemsCollection.Select(convertToSourceItem)
+                                .Where(o => this.InnerItems.Contains(o))
+                                .ToList();
+                        this.SelectedItems = selectedItemsTmp;
+
+                        if (selectionVerificationAction != null)
+                        {
+                            selectionVerificationAction();
+                        }
+
+                        selectionChangedPaused = false;
                     }
+                };
+            }
 
-                    selectionChangedPaused = false;
-                }
-            };
 
-            
         }
 
         public void RefreshSelectableItems(IEnumerable<TItem> sourceItems, IEnumerable<TItem> preSelectedElements = null)
@@ -170,11 +176,14 @@ namespace _4tecture.UI.Common.Helper
                 this.Add(item);
             }
 
-            foreach (var selItem in this)
+            if (preSelectedElements != null)
             {
-                if (preSelectedElements.Contains(selItem.Item))
+                foreach (var selItem in this)
                 {
-                    selItem.IsSelected = true;
+                    if (preSelectedElements.Contains(selItem.Item))
+                    {
+                        selItem.IsSelected = true;
+                    }
                 }
             }
         }
@@ -225,10 +234,6 @@ namespace _4tecture.UI.Common.Helper
 
             return selectableCollection;
         }
-
-
-
-        
     }
 
     public class SelectableItem<TItem> : INotifyPropertyChanged where TItem : class

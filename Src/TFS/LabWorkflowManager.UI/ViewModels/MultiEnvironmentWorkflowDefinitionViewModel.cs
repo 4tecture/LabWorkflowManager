@@ -43,7 +43,7 @@ namespace LabWorkflowManager.UI.ViewModels
             this.buildScheduleViewModel = new BuildScheduleViewModel(this.Item);
 
             this.AvailableTestSuites = new SelectableCollection<AssociatedTestSuite>();
-            this.AvailableEnvironments = new SelectableCollection<AssociatedLabEnvironment>();
+            this.AvailableEnvironments = new SelectableCollection<AvailableEnvironmentViewModel>();
             
             this.GenerateBuildDefinitionsCommand = new DelegateCommand(GenerateBuildDefinitions, () => !HasErrors && !this.IsGeneratingBuildDefinitions);
             this.DeleteBuildDefinitionsCommand = new DelegateCommand(DeleteExistingBuildDefinitions, () => !this.IsGeneratingBuildDefinitions);
@@ -87,23 +87,29 @@ namespace LabWorkflowManager.UI.ViewModels
                         this.RaisePropertyChanged(() => this.AvailableTestSuitesHierarchy);
 
 
-                        this.AvailableEnvironments = SelectableCollection<AssociatedLabEnvironment>.InitSelectableUIList(
-                    this.tfsLabEnvironment.GetAssociatedLabEnvironments(),
+                        this.AvailableEnvironments = SelectableCollection<AvailableEnvironmentViewModel>.InitSelectableUIList(
+                    GetAssociatedLabEnvironmentViewModels(),
                     this.Item.Environments,
-                    selectedEnv => new MultiEnvironmentWorkflowEnvironment() { EnvironmentName = selectedEnv.Name, EnvironmentUri = selectedEnv.Uri },
-                    workflowEnv => new AssociatedLabEnvironment() { Uri = workflowEnv.EnvironmentUri },
-                    this.VerifySelectedEnvironments);
+                    selectedEnv => new MultiEnvironmentWorkflowEnvironment() { EnvironmentName = selectedEnv.Name, EnvironmentUri = selectedEnv.Uri, TestConfigurationIds = new ObservableCollection<int>(selectedEnv.AvailableTestConfigurations.SelectedItems.Select(o => o.Id))},
+                    workflowEnv => new AvailableEnvironmentViewModel(new AssociatedLabEnvironment() { Uri = workflowEnv.EnvironmentUri }),
+                    () => { this.VerifySelectedEnvironments();this.VerifySelectedTestConfigurations();});
 
-                        this.AvailableEnvironments.SelectionChanged += (sender, args) => this.RaisePropertyChanged(() => this.AvailableSnapshotsToRevert);
+                        this.AvailableEnvironments.SelectionChanged += (sender, args) =>
+                        {
+                            this.RaisePropertyChanged(() => this.AvailableSnapshotsToRevert);
 
-                    //    this.AvailableTestConfigurations = SelectableCollection<AssociatedTestConfiguration>.InitSelectableUIList(
-                    //this.tfsTest.GetAssociatedTestConfigurations(),
-                    //this.Item.Environments,
-                    //selectedEnv => new MultiEnvironmentWorkflowEnvironment() { EnvironmentName = selectedEnv.Name, EnvironmentUri = selectedEnv.Uri },
-                    //workflowEnv => new AssociatedLabEnvironment() { Uri = workflowEnv.EnvironmentUri },
-                    //this.VerifySelectedEnvironments);
+                            foreach (var env in this.AvailableEnvironments.InnerItems) // todo only added
+                            {
+                                InitSelectableTestConfigurationsForEnvironment(env);
+                            }
+                        };
 
-                        
+
+                        foreach (var env in this.AvailableEnvironments.InnerItems)
+                        {
+                            InitSelectableTestConfigurationsForEnvironment(env);
+                        }
+
 
                         InitAvailableLabProcessTemplates();
                         InitAvailableBuildControllers();
@@ -116,10 +122,38 @@ namespace LabWorkflowManager.UI.ViewModels
                     });
         }
 
+        private IEnumerable<AvailableEnvironmentViewModel> GetAssociatedLabEnvironmentViewModels()
+        {
+            return this.tfsLabEnvironment.GetAssociatedLabEnvironments().Select(o => new AvailableEnvironmentViewModel(o));
+        }
+
+        private void InitSelectableTestConfigurationsForEnvironment(AvailableEnvironmentViewModel env)
+        {
+            env.AvailableTestConfigurations = SelectableCollection<AssociatedTestConfiguration>
+                .InitSelectableUIList(
+                    GetCachedAssociatedTestConfigurations(),
+                    this.Item.Environments.FirstOrDefault(o => o.EnvironmentUri == env.Uri) != null
+                        ? this.Item.Environments.FirstOrDefault(o => o.EnvironmentUri == env.Uri).TestConfigurationIds
+                        : null,
+                    selectedTestConfig => selectedTestConfig.Id,
+                    workflowEnvTestConfig => new AssociatedTestConfiguration() {Id = workflowEnvTestConfig},
+                    this.VerifySelectedTestConfigurations);
+        }
+
+        private IEnumerable<AssociatedTestConfiguration> cachedAssociatedTestConfigurations = null;
+        private IEnumerable<AssociatedTestConfiguration> GetCachedAssociatedTestConfigurations()
+        {
+            if (cachedAssociatedTestConfigurations == null)
+            {
+                cachedAssociatedTestConfigurations = this.tfsTest.GetAssociatedTestConfigurations().ToList();
+            }
+            return cachedAssociatedTestConfigurations;
+        }
+
         private void VerifyAll()
         {
             this.VerifySelectedEnvironments();
-            //this.VerifySelectedTestConfigurations();
+            this.VerifySelectedTestConfigurations();
             this.VerifySelectedTestSuites();
         }
 
@@ -133,19 +167,19 @@ namespace LabWorkflowManager.UI.ViewModels
             this.Item.MainLabWorkflowDefinition.DeploymentDetails.Scripts.Add(new DeploymentScript());
         }
 
-        
 
-        //private void VerifySelectedTestConfigurations()
-        //{
-        //    if (this.AvailableTestConfigurations.Any(s => s.IsSelected))
-        //    {
-        //        this.RemoveError("AvailableTestConfigurations", ModuleStrings.ErrorNoTestConfigurationSelected);
-        //    }
-        //    else
-        //    {
-        //        this.AddError("AvailableTestConfigurations", ModuleStrings.ErrorNoTestConfigurationSelected);
-        //    }
-        //}
+
+        private void VerifySelectedTestConfigurations()
+        {
+            if (this.AvailableEnvironments.SelectedItems.All(env => env.AvailableTestConfigurations.Any(c => c.IsSelected)))
+            {
+                this.RemoveError("AvailableEnvironments", ModuleStrings.ErrorNoTestConfigurationSelected);
+            }
+            else
+            {
+                this.AddError("AvailableEnvironments", ModuleStrings.ErrorNoTestConfigurationSelected);
+            }
+        }
 
         
 
@@ -194,8 +228,8 @@ namespace LabWorkflowManager.UI.ViewModels
             }
         }
 
-        private SelectableCollection<AssociatedLabEnvironment> availableEnvironments;
-        public SelectableCollection<AssociatedLabEnvironment> AvailableEnvironments
+        private SelectableCollection<AvailableEnvironmentViewModel> availableEnvironments;
+        public SelectableCollection<AvailableEnvironmentViewModel> AvailableEnvironments
         {
             get
             {

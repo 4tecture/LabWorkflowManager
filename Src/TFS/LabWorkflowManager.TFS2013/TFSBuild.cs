@@ -214,6 +214,7 @@ namespace LabWorkflowManager.TFS2013
             buildDefinition.ContinuousIntegrationType = (ContinuousIntegrationType)buildDefinitionDetails.ContinuousIntegrationType;
             if (buildDefinition.ContinuousIntegrationType == ContinuousIntegrationType.Schedule || buildDefinition.ContinuousIntegrationType == ContinuousIntegrationType.ScheduleForced)
             {
+                buildDefinition.Schedules.Clear();
                 var schedule = buildDefinition.AddSchedule();
                 schedule.DaysToBuild = (ScheduleDays)buildDefinitionDetails.ScheduledDays;
                 schedule.StartTime = buildDefinitionDetails.StartTime;
