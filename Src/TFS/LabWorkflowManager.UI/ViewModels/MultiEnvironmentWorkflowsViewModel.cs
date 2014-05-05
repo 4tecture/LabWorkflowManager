@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using _4tecture.UI.Common.ViewModels;
+using Microsoft.Practices.Prism.Events;
 
 namespace LabWorkflowManager.UI.ViewModels
 {
@@ -26,8 +27,9 @@ namespace LabWorkflowManager.UI.ViewModels
         private IWorkflowManagerStorage workflowManagerStorage;
         private IRegionManager regionManager;
         private IFileDialogService fileDialogService;
+        private IEventAggregator eventAggregator;
 
-        public MultiEnvironmentWorkflowsViewModel(IWorkflowManagerStorage workflowManagerStorage, ITFSConnectivity tfsConnectivity, ITFSBuild tfsBuild, ITFSLabEnvironment tfsLabEnvironment, ITFSTest tfsTest, IRegionManager regionManager, IFileDialogService fileDialogService)
+        public MultiEnvironmentWorkflowsViewModel(IWorkflowManagerStorage workflowManagerStorage, ITFSConnectivity tfsConnectivity, ITFSBuild tfsBuild, ITFSLabEnvironment tfsLabEnvironment, ITFSTest tfsTest, IRegionManager regionManager, IFileDialogService fileDialogService, IEventAggregator eventAggregator)
         {
             this.workflowManagerStorage = workflowManagerStorage;
             this.tfsConnectivity = tfsConnectivity;
@@ -36,6 +38,7 @@ namespace LabWorkflowManager.UI.ViewModels
             this.tfsTest = tfsTest;
             this.regionManager = regionManager;
             this.fileDialogService = fileDialogService;
+            this.eventAggregator = eventAggregator;
 
             this.tfsConnectivity.PropertyChanged += (source, args) => { if (args.PropertyName.Equals("IsConnected")) { this.RaisePropertyChanged(() => this.IsConnectedToTfs); this.RaisePropertyChanged(() => this.CanEditDefinitions); } };
             this.tfsConnectivity.PropertyChanged += (source, args) => { if (args.PropertyName.Equals("TfsUri")) { this.RaisePropertyChanged(() => this.TeamProjectCollectionUri); } };
@@ -109,6 +112,7 @@ namespace LabWorkflowManager.UI.ViewModels
         }
 
         private MultiEnvironmentWorkflowDefinition currentDefinition;
+        
 
         public MultiEnvironmentWorkflowDefinition CurrentDefinition
         {
@@ -168,7 +172,7 @@ namespace LabWorkflowManager.UI.ViewModels
             }
             else
             {
-                var vm = new MultiEnvironmentWorkflowDefinitionViewModel(item, this.tfsConnectivity, this.tfsBuild, this.tfsLabEnvironment, this.tfsTest, this.regionManager);
+                var vm = new MultiEnvironmentWorkflowDefinitionViewModel(item, this.tfsConnectivity, this.tfsBuild, this.tfsLabEnvironment, this.tfsTest, this.regionManager, this.eventAggregator);
                 vm.CloseViewCommand = new DelegateCommand(() => { this.regionManager.Regions[RegionNames.MainRegion].Remove(vm); });
                 this.regionManager.AddToRegion(RegionNames.MainRegion, vm);
             }

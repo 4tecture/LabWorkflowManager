@@ -592,6 +592,15 @@ namespace LabWorkflowManager.UI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to delete the generated build definitions with all associated data?.
+        /// </summary>
+        public static string MsgDeleteWorkflowDefinitions {
+            get {
+                return ResourceManager.GetString("MsgDeleteWorkflowDefinitions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [New Definition].
         /// </summary>
         public static string NewDefinitionname {

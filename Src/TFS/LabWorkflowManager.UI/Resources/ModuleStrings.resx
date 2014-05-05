@@ -303,4 +303,7 @@
   <data name="ErrorNoTestSuitesSelected" xml:space="preserve">
     <value>At least one test suite has to be selected.</value>
   </data>
+  <data name="MsgDeleteWorkflowDefinitions" xml:space="preserve">
+    <value>Do you want to delete the generated build definitions with all associated data?</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Data;
+using Microsoft.Practices.Prism.Events;
 using _4tecture.UI.Common.Helper;
 using _4tecture.UI.Common.Extensions;
 using LabWorkflowManager.TFS.Common;
@@ -17,6 +18,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using _4tecture.UI.Common.ViewModels;
 using System.Collections;
+using _4tecture.UI.Common.Events;
 
 namespace LabWorkflowManager.UI.ViewModels
 {
@@ -28,11 +30,12 @@ namespace LabWorkflowManager.UI.ViewModels
         private ITFSTest tfsTest;
         private IWorkflowManagerStorage workflowManagerStorage;
         private IRegionManager regionManager;
+        private IEventAggregator eventAggregator;
 
         private object availableEnvironmentsLockObj = new object();
         private object availableTestConfigurationsLockObj = new object();
         private object availableTestSuitesLockObj = new object();
-        public MultiEnvironmentWorkflowDefinitionViewModel(MultiEnvironmentWorkflowDefinition item, ITFSConnectivity tfsConnectivity, ITFSBuild tfsBuild, ITFSLabEnvironment tfsLabEnvironment, ITFSTest tfsTest, IRegionManager regionManager)
+        public MultiEnvironmentWorkflowDefinitionViewModel(MultiEnvironmentWorkflowDefinition item, ITFSConnectivity tfsConnectivity, ITFSBuild tfsBuild, ITFSLabEnvironment tfsLabEnvironment, ITFSTest tfsTest, IRegionManager regionManager, IEventAggregator eventAggregator)
         {
             this.Item = item;
             this.tfsConnectivity = tfsConnectivity;
@@ -40,6 +43,7 @@ namespace LabWorkflowManager.UI.ViewModels
             this.tfsLabEnvironment = tfsLabEnvironment;
             this.tfsTest = tfsTest;
             this.regionManager = regionManager;
+            this.eventAggregator = eventAggregator;
             this.buildScheduleViewModel = new BuildScheduleViewModel(this.Item);
 
             this.AvailableTestSuites = new SelectableCollection<AssociatedTestSuite>();
@@ -489,11 +493,17 @@ namespace LabWorkflowManager.UI.ViewModels
 
         private async void DeleteExistingBuildDefinitions()
         {
-            this.IsGeneratingBuildDefinitions = true;
+            var args = new ShowQuestionMessageArgs() { Msg = "#MsgDeleteWorkflowDefinitions" };
+            this.eventAggregator.GetEvent<ShowQuestionMessageEvent>().Publish(args);
 
-            await this.tfsBuild.DeleteMultiEnvAssociatedBuildDefinitions(this.Item.Id);
+            if (args.Result == MessageResult.Yes)
+            {
+                this.IsGeneratingBuildDefinitions = true;
 
-            this.IsGeneratingBuildDefinitions = false;
+                await this.tfsBuild.DeleteMultiEnvAssociatedBuildDefinitions(this.Item.Id);
+
+                this.IsGeneratingBuildDefinitions = false;
+            }
         }
 
         public bool IsGeneratingBuildDefinitions
@@ -528,6 +538,7 @@ namespace LabWorkflowManager.UI.ViewModels
         }
 
         private bool isInitializing;
+        
 
         public bool IsInitializing
         {

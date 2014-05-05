@@ -107,7 +107,7 @@ namespace LabWorkflowManager.TFS2013
                     try
                     {
                         var buildUris =
-                            this.BuildServer.GetBuildDefinition(uris[0]).QueryBuilds().Select(o => o.Uri).ToArray();
+                            this.BuildServer.GetBuildDefinition(definitionUri).QueryBuilds().Select(o => o.Uri).ToArray();
                         this.BuildServer.DeleteBuilds(buildUris);
                     }
                     catch (BuildDefinitionNotFoundForUriException){} // exception if not builds available

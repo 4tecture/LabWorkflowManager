@@ -75,6 +75,7 @@
     <Compile Include="Events\ConfigurationChangedEvent.cs" />
     <Compile Include="Events\GetLocalizedStringEvent.cs" />
     <Compile Include="Events\ShowMessageEvent.cs" />
+    <Compile Include="Events\ShowQuestionMessageEvent.cs" />
     <Compile Include="Extensions\LinqHierarchyExtension.cs" />
     <Compile Include="Helper\DataTemplateHelper.cs" />
     <Compile Include="Helper\RegionNames.cs" />
