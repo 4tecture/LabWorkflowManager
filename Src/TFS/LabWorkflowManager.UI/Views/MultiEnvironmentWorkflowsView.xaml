@@ -71,6 +71,10 @@
                     </ListView.ItemTemplate>
                 </ListView>-->
                 <DataGrid x:Name="lstDefinitions" ItemsSource="{Binding Definitions}" SelectedItem="{Binding CurrentDefinition}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="true" CanUserResizeRows="False" CanUserSortColumns="False" >
+                    <DataGrid.InputBindings>
+                        <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditDefinitionCommand}" CommandParameter="{Binding SelectedItem, ElementName=lstDefinitions}" />
+                    </DataGrid.InputBindings>
+
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="{x:Static appres:ModuleStrings.GridColMultiEnvDefName}" Binding="{Binding Name}" IsReadOnly="true" Width="*"/>
                         <DataGridTextColumn Header="{x:Static appres:ModuleStrings.GridColMultiEnvDefDesc}" Binding="{Binding Description}" IsReadOnly="true" Width="2*"/>
