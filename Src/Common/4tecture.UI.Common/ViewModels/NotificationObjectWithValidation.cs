@@ -2,11 +2,26 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.Practices.Prism.ViewModel;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
+using System.Collections;
+using System.Collections.Specialized;
 
 namespace _4tecture.UI.Common.ViewModels
 {
     public abstract class NotificationObjectWithValidation : NotificationObject, INotifyDataErrorInfo
     {
+        protected NotificationObjectWithValidation()
+        {
+            this.PropertyChanged += (sender, args) =>
+            {
+                if (!args.PropertyName.Equals("IsDirty"))
+                {
+                    this.IsDirty = true;
+                }
+            };
+        }
+
         #region INotifyDataErrorInfo
 
         private readonly Dictionary<string, List<string>> errors = new Dictionary<string, List<string>>();
@@ -17,7 +32,7 @@ namespace _4tecture.UI.Common.ViewModels
             {
                 this.errors[propertyName] = new List<string>();
             }
-            if(!this.errors[propertyName].Contains(error))
+            if (!this.errors[propertyName].Contains(error))
             {
                 this.errors[propertyName].Add(error);
             }
@@ -89,6 +104,94 @@ namespace _4tecture.UI.Common.ViewModels
             else
             {
                 this.RemoveError(parametername);
+            }
+        }
+
+        #endregion
+
+        #region dirtyflag
+
+        private bool isDirty;
+
+        [IgnoreDataMember]
+        [XmlIgnore]
+        public bool IsDirty { get { return this.isDirty; } private set { this.isDirty = value; this.RaisePropertyChanged(() => this.IsDirty); } }
+
+        public void ResetIsDirty()
+        {
+            this.isDirty = false;
+            foreach (var child in dirtyObservedChildren)
+            {
+                child.IsDirty = false;
+            }
+        }
+
+        private List<NotificationObjectWithValidation> dirtyObservedChildren = new List<NotificationObjectWithValidation>();
+        public void AddIsDirtyObservableChildren(params NotificationObjectWithValidation[] children)
+        {
+            foreach (var child in children)
+            {
+                dirtyObservedChildren.Add(child);
+                child.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName.Equals("IsDirty") && ((NotificationObjectWithValidation)sender).IsDirty)
+                    {
+                       this.IsDirty = true;
+                    }
+                };
+            }
+        }
+
+        public void AddIsDirtyObservableCollection(params IEnumerable[] collections)
+        {
+            foreach (var col in collections)
+            {
+                var oc = col as INotifyCollectionChanged;
+                if (oc != null)
+                {
+                    oc.CollectionChanged += (sender, args) =>
+                    {
+                        if (args.NewItems != null)
+                        {
+                            foreach (var item in args.NewItems)
+                            {
+                                AddChangedHandlerToCollectionitem(item);
+                            }
+                        }
+                        this.IsDirty = true;
+                    };
+                }
+            }
+
+            foreach (var col in collections)
+            {
+                foreach (var item in col)
+                {
+                    AddChangedHandlerToCollectionitem(item);
+                }
+            }
+        }
+
+        private void AddChangedHandlerToCollectionitem(object item)
+        {
+            var no = item as NotificationObjectWithValidation;
+            if (no != null)
+            {
+                no.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName.Equals("IsDirty") && ((NotificationObjectWithValidation)sender).IsDirty)
+                    {
+                        this.IsDirty = true;
+                    }
+                };
+            }
+            else
+            {
+                var ic = item as INotifyPropertyChanged;
+                if (ic != null)
+                {
+                    ic.PropertyChanged += (sender, args) => { this.IsDirty = true; };
+                }
             }
         }
 

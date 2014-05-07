@@ -54,7 +54,11 @@ namespace LabWorkflowManager.UI.ViewModels
             this.AddDeploymentScriptCommand = new DelegateCommand(AddDeploymentScript);
             this.RemoveDeploymentScriptCommand = new DelegateCommand<DeploymentScript>(RemoveDeploymentScript);
 
-            this.Item.PropertyChanged += (sender, args) => { if (args.PropertyName.Equals("Name")) this.RaisePropertyChanged(() => this.HeaderInfo); };
+            this.Item.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName.Equals("Name") || args.PropertyName.Equals("IsDirty")) 
+                    this.RaisePropertyChanged(() => this.HeaderInfo);
+            };
             this.Item.MainLabWorkflowDefinition.SourceBuildDetails.PropertyChanged += (sender, args) => { if (args.PropertyName.Equals("QueueNewBuild")) { if (this.Item.MainLabWorkflowDefinition.SourceBuildDetails.QueueNewBuild) { this.Item.MainLabWorkflowDefinition.SourceBuildDetails.BuildUri = null; this.RaisePropertyChanged(() => this.SelectedBuildtoUse); } } };
 
             InitializeData();
@@ -228,7 +232,7 @@ namespace LabWorkflowManager.UI.ViewModels
         {
             get
             {
-                return Item.Name;
+                return string.Format("{0} {1}",Item.Name, Item.IsDirty ? "*" : "").Trim();
             }
         }
 

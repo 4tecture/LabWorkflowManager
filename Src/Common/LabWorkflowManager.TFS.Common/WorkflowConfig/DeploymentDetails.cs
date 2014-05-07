@@ -16,6 +16,7 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
         public DeploymentDetails()
         {
             this.Scripts = new ObservableCollection<DeploymentScript>();
+            this.AddIsDirtyObservableCollection(this.Scripts);
         }
         public string SnapshotName { get { return this.snapshotName; } set { this.snapshotName = value; this.RaisePropertyChanged(() => this.SnapshotName); } }
 

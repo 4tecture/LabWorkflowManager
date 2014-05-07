@@ -130,6 +130,11 @@ namespace LabWorkflowManager.Storage
                         textReader.Close();
                     }
                     this.CurrentDefinitionFile = pathToFile;
+
+                    foreach (var def in this.Definitions)
+                    {
+                        def.ResetIsDirty();
+                    }
                 }
                 catch (Exception)
                 {
@@ -160,11 +165,18 @@ namespace LabWorkflowManager.Storage
                         textWriter.Close();
                     }
                     this.CurrentDefinitionFile = pathToFile;
+
+                    foreach (var def in this.Definitions)
+                    {
+                        def.ResetIsDirty();
+                    }
                 }
                 catch (Exception)
                 {
                     this.eventAggregator.GetEvent<ShowMessageEvent>().Publish("#MsgCannotSaveDefinitions");
                 }
+
+                
             });
         }
 

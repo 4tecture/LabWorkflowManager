@@ -23,7 +23,11 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
                 TestDetails = new TestDetails()
             };
             this.Environments = new ObservableCollection<MultiEnvironmentWorkflowEnvironment>();
+            
+            this.AddIsDirtyObservableChildren(this.MainLabWorkflowDefinition);
+            this.AddIsDirtyObservableCollection(this.Environments);
         }
+
         private string name;
         public string Name
         {

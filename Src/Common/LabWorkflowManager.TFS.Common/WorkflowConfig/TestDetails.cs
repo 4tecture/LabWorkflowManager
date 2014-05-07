@@ -14,6 +14,7 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
         public TestDetails()
         {
             this.TestSuiteIdList = new ObservableCollection<int>();
+            this.AddIsDirtyObservableCollection(this.TestSuiteIdList);
         }
 
         private int testPlanId;
