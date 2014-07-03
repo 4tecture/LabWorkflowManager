@@ -53,13 +53,12 @@
 	<Target Name="AfterBuild">
 	</Target>
 	-->
-  <Target Name="BeforeBuild">
+  <!--<Target Name="BeforeBuild">
     <GetAssemblyIdentity AssemblyFiles="..\..\LabWorkflowManager\bin\$(Configuration)\LabWorkflowManager.exe">
       <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
     </GetAssemblyIdentity>
     <PropertyGroup>
       <DefineConstants>BuildVersion=%(AssemblyVersion.Version)</DefineConstants>
     </PropertyGroup>
-  </Target>
-
+  </Target>-->
 </Project>

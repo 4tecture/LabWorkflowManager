@@ -3,7 +3,7 @@
   <Product Id="*"
            Name="Lab Workflow Manager 2013"
            Language="1033"
-           Version="$(var.BuildVersion)"
+           Version="!(bind.FileVersion.AppExecutable)"
            Manufacturer="4tecture"
            UpgradeCode="{DCF0C99B-8CD0-49BC-93ED-6A83A52C3727}">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
