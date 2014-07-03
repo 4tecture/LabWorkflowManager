@@ -1,10 +1,13 @@
-﻿using LabWorkflowManager.TFS.Common.Resources;
+﻿using System.ComponentModel;
+using LabWorkflowManager.TFS.Common.Resources;
 using Microsoft.Practices.Prism.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _4tecture.UI.Common.Converters;
+using _4tecture.UI.Common.Helper;
 using _4tecture.UI.Common.ViewModels;
 
 namespace LabWorkflowManager.TFS.Common.WorkflowConfig
@@ -24,11 +27,22 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
 
         public string Description { get { return this.description; } set { this.description = value; this.RaisePropertyChanged(() => this.Description); } }
 
-        public string ControllerName { get { return this.controllerName; } set { this.controllerName = value;VerifyStringNotEmpty(this.controllerName, "ControllerName", CommonStrings.ErrorLabBuildDefinitionDetailsControllerName); this.RaisePropertyChanged(() => this.ControllerName); } }
+        public string ControllerName { get { return this.controllerName; } set { this.controllerName = value; VerifyStringNotEmpty(this.controllerName, "ControllerName", CommonStrings.ErrorLabBuildDefinitionDetailsControllerName); this.RaisePropertyChanged(() => this.ControllerName); } }
 
-        public string ProcessTemplateFilename { get { return this.processTemplateFilename; } set { this.processTemplateFilename = value;VerifyStringNotEmpty(this.processTemplateFilename, "ProcessTemplateFilename", CommonStrings.ErrorLabBuildDefinitionDetailsProcessTemplateFilename); this.RaisePropertyChanged(() => this.ProcessTemplateFilename); } }
+        public string ProcessTemplateFilename { get { return this.processTemplateFilename; } set { this.processTemplateFilename = value; VerifyStringNotEmpty(this.processTemplateFilename, "ProcessTemplateFilename", CommonStrings.ErrorLabBuildDefinitionDetailsProcessTemplateFilename); this.RaisePropertyChanged(() => this.ProcessTemplateFilename); } }
 
-        public BuildDefinitionContinuousIntegrationType ContinuousIntegrationType { get { return this.continuousIntegrationType; } set { this.continuousIntegrationType = value; this.RaisePropertyChanged(() => this.ContinuousIntegrationType); } }
+        public BuildDefinitionContinuousIntegrationType ContinuousIntegrationType
+        {
+            get
+            {
+                return this.continuousIntegrationType;
+            }
+            set
+            {
+                this.continuousIntegrationType = value; 
+                this.RaisePropertyChanged(() => this.ContinuousIntegrationType);
+            }
+        }
 
         public BuildDefinitionScheduledDays ScheduledDays { get { return this.scheduledDays; } set { this.scheduledDays = value; this.RaisePropertyChanged(() => this.ScheduledDays); } }
 
@@ -52,38 +66,45 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
             return clone;
         }
 
-        
+
     }
-    
+
     [Flags]
     public enum BuildDefinitionContinuousIntegrationType
     {
         // Summary:
         //     Continuous integeration not set.
+        [LocalizableDescription("BuildDefinitionContinuousIntegrationType_None", typeof(CommonStrings))]
         None = 1,
         //
         // Summary:
         //     Individual continuous integration.
+        [LocalizableDescription("BuildDefinitionContinuousIntegrationType_Individual", typeof(CommonStrings))]
         Individual = 2,
         //
         // Summary:
         //     Batch continuous integration.
+        [LocalizableDescription("BuildDefinitionContinuousIntegrationType_Batch", typeof(CommonStrings))]
         Batch = 4,
         //
         // Summary:
         //     Scheduled continuous integration only when changes occur.
+        [LocalizableDescription("BuildDefinitionContinuousIntegrationType_Schedule", typeof(CommonStrings))]
         Schedule = 8,
         //
         // Summary:
         //     Scheduled continuous integration even without changes.
+        [LocalizableDescription("BuildDefinitionContinuousIntegrationType_ScheduleForced", typeof(CommonStrings))]
         ScheduleForced = 16,
         //
         // Summary:
         //     Gated continuous integration.
+        [LocalizableDescription("BuildDefinitionContinuousIntegrationType_Gated", typeof(CommonStrings))]
         Gated = 32,
         //
         // Summary:
         //     All continuous integration types.
+        [LocalizableDescription("BuildDefinitionContinuousIntegrationType_All", typeof(CommonStrings))]
         All = 63,
     }
 

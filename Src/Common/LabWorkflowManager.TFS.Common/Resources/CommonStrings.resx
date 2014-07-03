@@ -117,6 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BuildDefinitionContinuousIntegrationType_All" xml:space="preserve">
+    <value>All Triggers Active</value>
+  </data>
+  <data name="BuildDefinitionContinuousIntegrationType_Batch" xml:space="preserve">
+    <value>Rolling Build Continuous Integration</value>
+  </data>
+  <data name="BuildDefinitionContinuousIntegrationType_Gated" xml:space="preserve">
+    <value>Gated Check-In</value>
+  </data>
+  <data name="BuildDefinitionContinuousIntegrationType_Individual" xml:space="preserve">
+    <value>Continuous Integration</value>
+  </data>
+  <data name="BuildDefinitionContinuousIntegrationType_None" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="BuildDefinitionContinuousIntegrationType_Schedule" xml:space="preserve">
+    <value>Scheduled Build</value>
+  </data>
+  <data name="BuildDefinitionContinuousIntegrationType_ScheduleForced" xml:space="preserve">
+    <value>Scheduled Build even without any changes</value>
+  </data>
   <data name="ErrorLabBuildDefinitionDetailsControllerName" xml:space="preserve">
     <value>The controller name cannot be empty.</value>
   </data>

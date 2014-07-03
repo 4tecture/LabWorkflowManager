@@ -8,16 +8,11 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:WorkflowConfig="clr-namespace:LabWorkflowManager.TFS.Common.WorkflowConfig;assembly=LabWorkflowManager.TFS.Common"
              xmlns:Converters="clr-namespace:_4tecture.UI.Common.Converters;assembly=4tecture.UI.Common"
+             xmlns:extensions="clr-namespace:_4tecture.UI.Common.Extensions;assembly=4tecture.UI.Common"
              mc:Ignorable="d" 
              d:DesignHeight="768" d:DesignWidth="1024"
              x:Name="ucMultiEnvironmentWorkflowDefinitionView">
     <UserControl.Resources>
-        <ObjectDataProvider x:Key="BuildDefinitionContinuousIntegrationTypeEnum" MethodName="GetValues"
-                            ObjectType="{x:Type System:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="WorkflowConfig:BuildDefinitionContinuousIntegrationType"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
         <Converters:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
         <Converters:BoolInverterConverter x:Key="BoolInverterConverter" />
         <Converters:BoolToVisibilityConverter x:Key="BoolToVisibleConverter" TrueValue="Visible" FalseValue="Hidden" />
@@ -62,7 +57,7 @@
                     <Label Content="{x:Static appres:ModuleStrings.LblBuildController}" Grid.Column="0" Grid.Row="4" />
                     <ComboBox ItemsSource="{Binding AvailableBuildControllers}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ControllerName}" Grid.Column="1" Grid.Row="4" />
                     <Label Content="{x:Static appres:ModuleStrings.LblContinuousIntegrationType}" Grid.Column="0" Grid.Row="5" />
-                    <ComboBox ItemsSource="{Binding Source={StaticResource BuildDefinitionContinuousIntegrationTypeEnum}}" SelectedItem="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ContinuousIntegrationType}" Grid.Column="1" Grid.Row="5" />
+                    <ComboBox ItemsSource="{Binding Source={extensions:LocalizableEnum {x:Type WorkflowConfig:BuildDefinitionContinuousIntegrationType}}}" SelectedValue="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.ContinuousIntegrationType}" SelectedValuePath="Value" DisplayMemberPath="Description" Grid.Column="1" Grid.Row="5" />
                     <Label Content="{x:Static appres:ModuleStrings.LblContinuousIntegrationTypeDetails}" Grid.Column="0" Grid.Row="6" />
                     <StackPanel Grid.Column="1" Grid.Row="6">
                         <TextBox Text="{Binding Item.MainLabWorkflowDefinition.LabBuildDefinitionDetails.QuietPeriod}" Visibility="{Binding BuildScheduleViewModel.QuietPeriodVisible, Converter={StaticResource BoolToHiddenConverter}}" />

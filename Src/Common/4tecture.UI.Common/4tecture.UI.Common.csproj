@@ -79,7 +79,10 @@
     <Compile Include="Events\ShowMessageEvent.cs" />
     <Compile Include="Events\ShowQuestionMessageEvent.cs" />
     <Compile Include="Extensions\LinqHierarchyExtension.cs" />
+    <Compile Include="Extensions\LocalizableEnumExtension.cs" />
+    <Compile Include="Extensions\LocalizedEnumDescriptionExtension.cs" />
     <Compile Include="Helper\DataTemplateHelper.cs" />
+    <Compile Include="Helper\LocalizableDescriptionAttribute.cs" />
     <Compile Include="Helper\RegionNames.cs" />
     <Compile Include="Helper\SelectableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
