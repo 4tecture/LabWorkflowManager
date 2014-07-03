@@ -1,4 +1,5 @@
 ﻿using System.Windows.Data;
+using LabWorkflowManager.TFS.Common.GlobalCommands;
 using Microsoft.Practices.Prism.Events;
 using _4tecture.UI.Common.Helper;
 using _4tecture.UI.Common.Extensions;
@@ -53,6 +54,9 @@ namespace LabWorkflowManager.UI.ViewModels
             this.DeleteBuildDefinitionsCommand = new DelegateCommand(DeleteExistingBuildDefinitions, () => !this.IsGeneratingBuildDefinitions);
             this.AddDeploymentScriptCommand = new DelegateCommand(AddDeploymentScript);
             this.RemoveDeploymentScriptCommand = new DelegateCommand<DeploymentScript>(RemoveDeploymentScript);
+            this.RefreshDataCommand = new DelegateCommand(InitializeData);
+
+            CompositeApplicationCommands.RefreshCommand.RegisterCommand(this.RefreshDataCommand);
 
             this.Item.PropertyChanged += (sender, args) =>
             {
@@ -224,6 +228,7 @@ namespace LabWorkflowManager.UI.ViewModels
         public ICommand GenerateBuildDefinitionsCommand { get; private set; }
         public ICommand AddDeploymentScriptCommand { get; private set; }
         public ICommand RemoveDeploymentScriptCommand { get; private set; }
+        public ICommand RefreshDataCommand { get; private set; }
 
         public ICommand CloseViewCommand { get; internal set; }
         public bool IsViewClosable { get { return true; } }

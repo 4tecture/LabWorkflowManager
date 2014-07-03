@@ -54,7 +54,7 @@ namespace LabWorkflowManager.Bootstrapping
 
         protected override System.Windows.DependencyObject CreateShell()
         {
-            var view = this.Container.TryResolve<Shell>();
+            var view = this.Container.Resolve<Shell>();
             Application.Current.MainWindow = view;
             view.Show();
             return view;

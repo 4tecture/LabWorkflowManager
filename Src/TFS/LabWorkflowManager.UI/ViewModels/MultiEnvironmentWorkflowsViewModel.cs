@@ -1,4 +1,5 @@
-﻿using _4tecture.UI.Common.Events;
+﻿using LabWorkflowManager.TFS.Common.GlobalCommands;
+using _4tecture.UI.Common.Events;
 using _4tecture.UI.Common.Helper;
 using _4tecture.UI.Common.Services;
 using LabWorkflowManager.TFS.Common;
@@ -62,6 +63,8 @@ namespace LabWorkflowManager.UI.ViewModels
             this.SaveCommand = new DelegateCommand(() => this.workflowManagerStorage.Save(this.CurrentWorkflowDefinitionFile), () => !string.IsNullOrWhiteSpace(this.CurrentWorkflowDefinitionFile));
             this.SaveAsCommand = new DelegateCommand(() => { string filepath; if (this.fileDialogService.SaveFile(out filepath)) { this.workflowManagerStorage.Save(filepath); this.RaisePropertyChanged(() => this.CurrentWorkflowDefinitionFile); } }, () => !string.IsNullOrWhiteSpace(this.CurrentWorkflowDefinitionFile));
             this.DeleteDefinitionCommand = new DelegateCommand<MultiEnvironmentWorkflowDefinition>(DeleteDefinition);
+
+            CompositeApplicationCommands.SaveAllCommand.RegisterCommand(this.SaveCommand);
 
             this.tfsConnectivity.PropertyChanged += (source, args) =>
             {

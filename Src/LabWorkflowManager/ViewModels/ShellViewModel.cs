@@ -19,10 +19,5 @@ namespace LabWorkflowManager.ViewModels
                 return string.Format(ApplicationStrings.ApplicationInformation, version);
             }
         }
-
-        internal void HandleMainWindowClose(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
