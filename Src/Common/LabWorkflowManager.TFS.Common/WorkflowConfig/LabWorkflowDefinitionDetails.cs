@@ -11,19 +11,82 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
     public class LabWorkflowDefinitionDetails : NotificationObjectWithValidation
     {
         private LabBuildDefinitionDetails labBuildDefinitionDetails;
-        public LabBuildDefinitionDetails LabBuildDefinitionDetails { get { return this.labBuildDefinitionDetails; } set { this.labBuildDefinitionDetails = value; this.AddIsDirtyObservableChildren(value); this.RaisePropertyChanged(() => this.LabBuildDefinitionDetails); } }
+
+        public LabBuildDefinitionDetails LabBuildDefinitionDetails
+        {
+            get
+            {
+                return this.labBuildDefinitionDetails;
+            }
+            set
+            {
+                this.labBuildDefinitionDetails = value;
+                this.AddIsDirtyObservableChildren(value);
+                this.RaisePropertyChanged(() => this.LabBuildDefinitionDetails);
+            }
+        }
 
         private SourceBuildDetails sourceBuildDetails;
-        public SourceBuildDetails SourceBuildDetails { get { return this.sourceBuildDetails; } set { this.sourceBuildDetails = value; this.AddIsDirtyObservableChildren(value); this.RaisePropertyChanged(() => this.SourceBuildDetails); } }
+        public SourceBuildDetails SourceBuildDetails
+        {
+            get
+            {
+                return this.sourceBuildDetails;
+            }
+            set
+            {
+                this.sourceBuildDetails = value;
+                this.AddIsDirtyObservableChildren(value); this.RaisePropertyChanged(() => this.SourceBuildDetails);
+            }
+        }
 
         private LabEnvironmentDetails labEnvironmentDetails;
-        public LabEnvironmentDetails LabEnvironmentDetails { get { return this.labEnvironmentDetails; } set { this.labEnvironmentDetails = value; this.AddIsDirtyObservableChildren(value); this.RaisePropertyChanged(() => this.LabEnvironmentDetails); } }
+
+        public LabEnvironmentDetails LabEnvironmentDetails
+        {
+            get
+            {
+                return this.labEnvironmentDetails;
+            }
+            set
+            {
+                this.labEnvironmentDetails = value;
+                this.AddIsDirtyObservableChildren(value);
+                this.RaisePropertyChanged(() => this.LabEnvironmentDetails);
+            }
+        }
 
         private DeploymentDetails deploymentDetails;
-        public DeploymentDetails DeploymentDetails { get { return this.deploymentDetails; } set { this.deploymentDetails = value; this.AddIsDirtyObservableChildren(value); this.RaisePropertyChanged(() => this.DeploymentDetails); } }
+
+        public DeploymentDetails DeploymentDetails
+        {
+            get
+            {
+                return this.deploymentDetails;
+            }
+            set
+            {
+                this.deploymentDetails = value;
+                this.AddIsDirtyObservableChildren(value);
+                this.RaisePropertyChanged(() => this.DeploymentDetails);
+            }
+        }
 
         private TestDetails testDetails;
-        public TestDetails TestDetails { get { return this.testDetails; } set { this.testDetails = value; this.AddIsDirtyObservableChildren(value); this.RaisePropertyChanged(() => this.TestDetails); } }
+
+        public TestDetails TestDetails
+        {
+            get
+            {
+                return this.testDetails;
+            }
+            set
+            {
+                this.testDetails = value;
+                this.AddIsDirtyObservableChildren(value);
+                this.RaisePropertyChanged(() => this.TestDetails);
+            }
+        }
 
         internal LabWorkflowDefinitionDetails Clone()
         {

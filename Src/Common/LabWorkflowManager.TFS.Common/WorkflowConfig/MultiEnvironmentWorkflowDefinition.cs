@@ -22,11 +22,11 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
                 DeploymentDetails = new DeploymentDetails(),
                 TestDetails = new TestDetails()
             };
+
             this.Environments = new ObservableCollection<MultiEnvironmentWorkflowEnvironment>();
-            
-            this.AddIsDirtyObservableChildren(this.MainLabWorkflowDefinition);
-            this.AddIsDirtyObservableCollection(this.Environments);
         }
+
+        
 
         private string name;
         public string Name
@@ -66,11 +66,25 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
             {
                 this.mainLabWorkflowDefinition = value;
                 this.RaisePropertyChanged(() => this.MainLabWorkflowDefinition);
+                this.AddIsDirtyObservableChildren(this.MainLabWorkflowDefinition);
             }
         }
 
         private ObservableCollection<MultiEnvironmentWorkflowEnvironment> environments;
-        public ObservableCollection<MultiEnvironmentWorkflowEnvironment> Environments { get { return this.environments; } set { this.environments = value; this.RaisePropertyChanged(() => this.Environments); } }
+
+        public ObservableCollection<MultiEnvironmentWorkflowEnvironment> Environments
+        {
+            get
+            {
+                return this.environments;
+            }
+            set
+            {
+                this.environments = value;
+                this.RaisePropertyChanged(() => this.Environments);
+                this.AddIsDirtyObservableCollection(this.Environments);
+            }
+        }
 
         public IEnumerable<LabWorkflowDefinitionDetails> GetEnvironmentSpecificLabWorkflowDefinitionDetails()
         {
@@ -98,11 +112,10 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
         }
     }
 
-    public class MultiEnvironmentWorkflowEnvironment : NotificationObject
+    public class MultiEnvironmentWorkflowEnvironment : NotificationObjectWithValidation
     {
         public MultiEnvironmentWorkflowEnvironment()
         {
-            //this.Roles = new ObservableCollection<string>();
             this.TestConfigurationIds = new ObservableCollection<int>();
         }
 
@@ -112,8 +125,6 @@ namespace LabWorkflowManager.TFS.Common.WorkflowConfig
         private string environmentName;
         public string EnvironmentName { get { return this.environmentName; } set { this.environmentName = value; this.RaisePropertyChanged(() => this.EnvironmentName); } }
 
-        //private ObservableCollection<string> roles;
-        //public ObservableCollection<string> Roles { get { return this.roles; } set { this.roles = value; this.RaisePropertyChanged(() => this.Roles); } }
 
         private ObservableCollection<int> testConfigurationIds;
         public ObservableCollection<int> TestConfigurationIds { get { return this.testConfigurationIds; } set { this.testConfigurationIds = value; this.RaisePropertyChanged(() => this.TestConfigurationIds); } }

@@ -115,14 +115,22 @@ namespace _4tecture.UI.Common.ViewModels
 
         [IgnoreDataMember]
         [XmlIgnore]
-        public bool IsDirty { get { return this.isDirty; } private set { this.isDirty = value; this.RaisePropertyChanged(() => this.IsDirty); } }
+        public bool IsDirty
+        {
+            get { return this.isDirty; }
+            private set
+            {
+                this.isDirty = value;
+                this.RaisePropertyChanged(() => this.IsDirty);
+            }
+        }
 
         public void ResetIsDirty()
         {
-            this.isDirty = false;
+            this.IsDirty = false;
             foreach (var child in dirtyObservedChildren)
             {
-                child.IsDirty = false;
+                child.ResetIsDirty();
             }
         }
 
@@ -132,14 +140,18 @@ namespace _4tecture.UI.Common.ViewModels
             foreach (var child in children)
             {
                 dirtyObservedChildren.Add(child);
-                child.PropertyChanged += (sender, args) =>
-                {
-                    if (args.PropertyName.Equals("IsDirty") && ((NotificationObjectWithValidation)sender).IsDirty)
-                    {
-                       this.IsDirty = true;
-                    }
-                };
+                child.PropertyChanged += BubbleChildDirtyEvent;
             }
+        }
+
+        private void BubbleChildDirtyEvent(object sender, PropertyChangedEventArgs args)
+        {
+
+            if (args.PropertyName.Equals("IsDirty") && ((NotificationObjectWithValidation)sender).IsDirty)
+            {
+                this.IsDirty = true;
+            }
+
         }
 
         public void AddIsDirtyObservableCollection(params IEnumerable[] collections)
