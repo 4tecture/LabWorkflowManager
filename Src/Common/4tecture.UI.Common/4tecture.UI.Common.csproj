@@ -74,6 +74,7 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="DependencyInjection\IDependencyContainer.cs" />
     <Compile Include="DependencyInjection\LifetimeManager.cs" />
+    <Compile Include="Events\ApplicationClosingInterceptorEvent.cs" />
     <Compile Include="Events\ConfigurationChangedEvent.cs" />
     <Compile Include="Events\GetLocalizedStringEvent.cs" />
     <Compile Include="Events\ShowMessageEvent.cs" />

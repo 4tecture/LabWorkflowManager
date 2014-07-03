@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Practices.Prism.Events;
+using _4tecture.UI.Common.Events;
 
 namespace LabWorkflowManager.Views
 {
@@ -22,10 +24,18 @@ namespace LabWorkflowManager.Views
     /// </summary>
     public partial class Shell : MetroWindow
     {
-        public Shell(ShellViewModel viewmodel)
+        private IEventAggregator eventAggregator;
+        public Shell(ShellViewModel viewmodel, IEventAggregator eventAggregator)
         {
             InitializeComponent();
+            this.eventAggregator = eventAggregator;
             this.DataContext = viewmodel;
+            this.Closing += Shell_Closing;
+        }
+
+        void Shell_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.eventAggregator.GetEvent<ApplicationClosingInterceptorEvent>().Publish(e);
         }
     }
 }

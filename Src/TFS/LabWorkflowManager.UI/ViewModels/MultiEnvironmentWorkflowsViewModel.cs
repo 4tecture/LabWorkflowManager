@@ -1,4 +1,5 @@
-﻿using _4tecture.UI.Common.Helper;
+﻿using _4tecture.UI.Common.Events;
+using _4tecture.UI.Common.Helper;
 using _4tecture.UI.Common.Services;
 using LabWorkflowManager.TFS.Common;
 using LabWorkflowManager.TFS.Common.WorkflowConfig;
@@ -80,6 +81,29 @@ namespace LabWorkflowManager.UI.ViewModels
             if (this.workflowManagerStorage.LastTFSConnection != null)
             {
                 this.tfsConnectivity.Connect(this.workflowManagerStorage.LastTFSConnection.Uri, this.workflowManagerStorage.LastTFSConnection.Project);
+            }
+
+            this.eventAggregator.GetEvent<ApplicationClosingInterceptorEvent>().Subscribe(this.HandleApplicationClosing);
+        }
+
+        private void HandleApplicationClosing(System.ComponentModel.CancelEventArgs obj)
+        {
+            if (obj.Cancel == false)
+            {
+                if (this.Definitions.Any(o => o.IsDirty))
+                {
+                    var questionArgs = new ShowQuestionMessageArgs(){ Msg = ModuleStrings.MsgUnsavedChangesExit};
+                    this.eventAggregator.GetEvent<ShowQuestionMessageEvent>().Publish(questionArgs);
+
+                    if (questionArgs.Result == MessageResult.Yes)
+                    {
+                        obj.Cancel = false;
+                    }
+                    else
+                    {
+                        obj.Cancel = true;
+                    }
+                }
             }
         }
 
