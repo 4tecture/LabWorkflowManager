@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabWorkflowManager", "LabWorkflowManager\LabWorkflowManager.csproj", "{63732A02-FB54-4117-8CC6-20572650941C}"
 EndProject
@@ -40,8 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5C4CB9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{C2A986AE-873C-4C92-9BFB-A6DECF566D8B}"
 	ProjectSection(SolutionItems) = preProject
-		.build\AssemblyVersioning.ps1 = .build\AssemblyVersioning.ps1
-		.build\PreBuild.ps1 = .build\PreBuild.ps1
+		.build\PreBuildSteps.ps1 = .build\PreBuildSteps.ps1
 	EndProjectSection
 EndProject
 Global
@@ -161,16 +160,16 @@ Global
 		{67DD2F0B-5FED-4F94-BAB2-4DEBC0B58CB5} = {E1880AFA-B424-4211-93CC-B1EFAE340E87}
 		{F2CF26EA-7D76-4B53-8401-BB31B8BD1AA0} = {E1880AFA-B424-4211-93CC-B1EFAE340E87}
 		{A28091BD-73ED-4D5C-8CFA-0D3490036C04} = {40227755-8CDD-457B-8607-13B3E83156B2}
+		{E89DB45E-C2E3-4093-BF7C-75852F556B72} = {FCE8B512-3D8F-4B51-996E-34E481A70981}
 		{E346BE1E-146A-461E-8684-35A91D8F1075} = {40227755-8CDD-457B-8607-13B3E83156B2}
+		{FF617798-87EF-4625-9E3B-3239BF33F703} = {0095B096-09D6-476B-867E-5C2A28675C0E}
 		{196764C2-058B-477F-BA10-D61E668A6784} = {40227755-8CDD-457B-8607-13B3E83156B2}
 		{F7045FC2-2A97-4630-92C2-BD504777766D} = {40227755-8CDD-457B-8607-13B3E83156B2}
-		{E89DB45E-C2E3-4093-BF7C-75852F556B72} = {FCE8B512-3D8F-4B51-996E-34E481A70981}
-		{FF617798-87EF-4625-9E3B-3239BF33F703} = {0095B096-09D6-476B-867E-5C2A28675C0E}
 		{BF19ECB6-41BC-49FB-8AA1-E40613BB79F5} = {0095B096-09D6-476B-867E-5C2A28675C0E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.Logging.6.0.1304.0\lib\NET45
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
