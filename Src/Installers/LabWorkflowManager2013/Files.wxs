@@ -27,7 +27,7 @@
         <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.TeamFoundation.Lab.Workflow.Activities.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll" />
         <File Source="$(var.LabWorkflowManager.TargetDir)\Microsoft.WITDataStore.dll" />
-        <File Source="$(var.LabWorkflowManager.TargetDir)\Newtonsoft.Json.dll" />
+        <!--<File Source="$(var.LabWorkflowManager.TargetDir)\Newtonsoft.Json.dll" />-->
         <File Source="$(var.LabWorkflowManager.TargetDir)\System.Windows.Interactivity.dll" />
       </Component>
       <!--<Directory Id="de" Name="de">
